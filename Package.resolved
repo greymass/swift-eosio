@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "open-crypto",
+        "repositoryURL": "https://github.com/vapor/open-crypto.git",
+        "state": {
+          "branch": "master",
+          "revision": "06d26edb8e28295bb7103b4f950d5ea58d634c1b",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,4 @@
+--ranges no-space
+--swiftversion 5
+--enable isEmpty
+--self insert
