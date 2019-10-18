@@ -27,10 +27,10 @@ final class ABICodableTests: XCTestCase {
             "memo": "thanks for the fish",
         ]
 
-        let jsonData = try! jsonEncoder.encode(transferData, asType: "transfer", using: Transfer.abi)
+        let jsonData = try jsonEncoder.encode(transferData, asType: "transfer", using: Transfer.abi)
 
         let jsonDecoder = JSONDecoder()
-        let decodedAny = try! jsonDecoder.decode("transfer", from: jsonData, using: Transfer.abi)
+        let decodedAny = try jsonDecoder.decode("transfer", from: jsonData, using: Transfer.abi)
         let decodedObj = decodedAny as! [String: Any]
 
         XCTAssertEqual(decodedObj["from"] as? Name, "foo")
@@ -38,7 +38,7 @@ final class ABICodableTests: XCTestCase {
         XCTAssertEqual(decodedObj["quantity"] as? Asset, "0 DUCKS")
         XCTAssertEqual(decodedObj["memo"] as? String, "thanks for the fish")
 
-        let decodedTyped = try! jsonDecoder.decode(Transfer.self, from: jsonData)
+        let decodedTyped = try jsonDecoder.decode(Transfer.self, from: jsonData)
 
         XCTAssertEqual(decodedObj["from"] as? Name, decodedTyped.from)
         XCTAssertEqual(decodedObj["to"] as? Name, decodedTyped.to)

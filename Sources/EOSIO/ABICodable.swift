@@ -206,6 +206,8 @@ private func _encodeAny(_ value: Any,
         try _encodeAnyFields(value, to: encoder, usingType: type)
     } else if type.variant != nil {
         fatalError("not implemented")
+    } else if type.other != nil {
+        try _encodeAny(value, to: encoder, usingType: type.other!)
     } else {
         throw EncodingError.invalidValue(value, EncodingError.Context(
             codingPath: encoder.codingPath,
@@ -217,16 +219,35 @@ private func _encodeAny(_ value: Any,
 private func _encodeAnyFields(_ value: Any,
                               to encoder: Encoder,
                               usingType type: ABI.ResolvedType) throws {
-    guard let object = value as? [String: Any] else {
-        throw EncodingError.invalidValue(value, EncodingError.Context(
-            codingPath: encoder.codingPath,
-            debugDescription: "Expected object"
-        ))
+    func encodeObject(_ value: Any, to encoder: Encoder) throws {
+        guard let object = value as? [String: Any] else {
+            throw EncodingError.invalidValue(value, EncodingError.Context(
+                codingPath: encoder.codingPath,
+                debugDescription: "Expected object"
+            ))
+        }
+        var container = encoder.container(keyedBy: ABIKey.self)
+        for field in type.fields! {
+            let fieldEncoder = container.superEncoder(forKey: ABIKey(field.name))
+            try _encodeAny(object[field.name] as Any, to: fieldEncoder, usingType: field.type)
+        }
     }
-    var container = encoder.container(keyedBy: ABIKey.self)
-    for field in type.fields! {
-        let fieldEncoder = container.superEncoder(forKey: ABIKey(field.name))
-        try _encodeAny(object[field.name] as Any, to: fieldEncoder, usingType: field.type)
+    if type.flags.contains(.array) {
+        guard let array = value as? [Any] else {
+            throw EncodingError.invalidValue(value, EncodingError.Context(
+                codingPath: encoder.codingPath,
+                debugDescription: "Expected object"
+            ))
+        }
+        if let abiEncoder = encoder as? ABIEncoder {
+            abiEncoder.appendVarint(UInt64(array.count))
+        }
+        var container = encoder.unkeyedContainer()
+        for arrayValue in array {
+            try encodeObject(arrayValue, to: container.superEncoder())
+        }
+    } else {
+        try encodeObject(value, to: encoder)
     }
 }
 
@@ -309,6 +330,8 @@ func _decodeAny(_ type: ABI.ResolvedType,
         return try _decodeAnyFields(type, from: decoder)
     } else if type.variant != nil {
         fatalError("not implemented")
+    } else if type.other != nil {
+        return try _decodeAny(type.other!, from: decoder)
     } else {
         throw DecodingError.dataCorrupted(DecodingError.Context(
             codingPath: decoder.codingPath,
@@ -319,30 +342,49 @@ func _decodeAny(_ type: ABI.ResolvedType,
 
 func _decodeAnyFields(_ type: ABI.ResolvedType,
                       from decoder: Decoder) throws -> Any {
-    var object: [String: Any] = [:]
-    let container = try decoder.container(keyedBy: ABIKey.self)
-    for field in type.fields! {
-        let fieldEncoder = try container.superDecoder(forKey: ABIKey(field.name))
-        object[field.name] = try _decodeAny(field.type, from: fieldEncoder)
+    func decode(from decoder: Decoder) throws -> Any {
+        var object: [String: Any] = [:]
+        let container = try decoder.container(keyedBy: ABIKey.self)
+        for field in type.fields! {
+            let fieldEncoder = try container.superDecoder(forKey: ABIKey(field.name))
+            object[field.name] = try _decodeAny(field.type, from: fieldEncoder)
+        }
+        return object
     }
-    return object
+    if type.flags.contains(.array) {
+        var rv: [Any] = []
+        if let abiDecoder = decoder as? ABIDecoder {
+            let count = try abiDecoder.decode(UInt.self)
+            for _ in 0..<count {
+                rv.append(try decode(from: decoder))
+            }
+        } else {
+            var container = try decoder.unkeyedContainer()
+            while !container.isAtEnd {
+                rv.append(try decode(from: try container.superDecoder()))
+            }
+        }
+        return rv
+    } else {
+        return try decode(from: decoder)
+    }
 }
 
 func _decodeAnyBuiltIn(_ type: ABI.ResolvedType,
                        from decoder: Decoder) throws -> Any {
-    func decodeAny<T: Decodable>(_: T.Type) throws -> Any {
-        let container = try decoder.singleValueContainer()
+    func decode<T: Decodable>(_: T.Type) throws -> Any {
         if type.flags.contains(.array) {
-            return try container.decode([T].self)
+            return try decodeOptional([T].self)
         } else {
-            return try container.decode(T.self)
+            return try decodeOptional(T.self)
         }
     }
-    func decode<T: Decodable>(_: T.Type) throws -> Any {
+    func decodeOptional<T: Decodable>(_: T.Type) throws -> Any {
+        let container = try decoder.singleValueContainer()
         if type.flags.contains(.optional) {
-            return (try? decodeAny(T.self)) as Any
+            return (try? container.decode(T?.self)) as Any
         } else {
-            return try decodeAny(T.self)
+            return try container.decode(T.self)
         }
     }
     switch type.builtIn! {

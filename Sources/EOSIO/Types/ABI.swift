@@ -45,10 +45,12 @@ public struct ABI: Equatable, Hashable {
     public final class ResolvedType: CustomStringConvertible {
         public let name: String
         public let flags: Flags
+
         public var parent: ResolvedType?
         public var builtIn: BuiltIn?
         public var variant: [ResolvedType]?
         public var fields: [(name: String, type: ResolvedType)]?
+        public var other: ResolvedType?
 
         public enum BuiltIn: String {
             case asset
@@ -100,7 +102,12 @@ public struct ABI: Equatable, Hashable {
         }
     }
 
-    func resolveType(_ name: String, _ parent: ResolvedType? = nil) -> ResolvedType {
+    public func resolveType(_ name: String) -> ResolvedType {
+        var seen = [String: ResolvedType]()
+        return self.resolveType(name, nil, &seen)
+    }
+
+    func resolveTypeName(_ name: String) -> (String, ResolvedType.Flags) {
         var name = name
         var flags: ResolvedType.Flags = []
         if name.hasSuffix("$") {
@@ -115,16 +122,25 @@ public struct ABI: Equatable, Hashable {
             name.removeLast(2)
             flags.insert(.array)
         }
-        name = self.resolveTypeAlias(name)
-        let type = ResolvedType(name, flags)
-        if let fields = self.resolveStruct(name) {
-            type.fields = fields.map { ($0.name, self.resolveType($0.type, parent)) }
-        } else if let variant = self.getVariant(name) {
-            type.variant = variant.types.map { self.resolveType($0) }
-        } else if let builtIn = ResolvedType.BuiltIn(rawValue: name) {
+        return (self.resolveTypeAlias(name), flags)
+    }
+
+    func resolveType(_ name: String, _ parent: ResolvedType?, _ seen: inout [String: ResolvedType]) -> ResolvedType {
+        let res = self.resolveTypeName(name)
+        let type = ResolvedType(res.0, res.1)
+        type.parent = parent
+        if let existing = seen[name] {
+            type.other = existing
+            return type
+        }
+        seen[name] = type
+        if let fields = self.resolveStruct(type.name) {
+            type.fields = fields.map { ($0.name, self.resolveType($0.type, type, &seen)) }
+        } else if let variant = self.getVariant(type.name) {
+            type.variant = variant.types.map { self.resolveType($0, parent, &seen) }
+        } else if let builtIn = ResolvedType.BuiltIn(rawValue: type.name) {
             type.builtIn = builtIn
         }
-        type.parent = parent
         return type
     }
 
@@ -162,37 +178,37 @@ public struct ABI: Equatable, Hashable {
 
 public extension ABI {
     struct TypeDef: ABICodable, Equatable, Hashable {
-        let newTypeName: String
-        let type: String
+        public let newTypeName: String
+        public let type: String
 
-        init(_ newTypeName: String, _ type: String) {
+        public init(_ newTypeName: String, _ type: String) {
             self.newTypeName = newTypeName
             self.type = type
         }
     }
 
     struct Field: ABICodable, Equatable, Hashable {
-        let name: String
-        let type: String
+        public let name: String
+        public let type: String
 
-        init(_ name: String, _ type: String) {
+        public init(_ name: String, _ type: String) {
             self.name = name
             self.type = type
         }
     }
 
     struct Struct: ABICodable, Equatable, Hashable {
-        let name: String
-        let base: String
-        let fields: [Field]
+        public let name: String
+        public let base: String
+        public let fields: [Field]
 
-        init(_ name: String, _ fields: [Field]) {
+        public init(_ name: String, _ fields: [Field]) {
             self.name = name
             self.base = ""
             self.fields = fields
         }
 
-        init(_ name: String, _ base: String, _ fields: [Field]) {
+        public init(_ name: String, _ base: String, _ fields: [Field]) {
             self.name = name
             self.base = base
             self.fields = fields
@@ -200,17 +216,17 @@ public extension ABI {
     }
 
     struct Action: ABICodable, Equatable, Hashable {
-        let name: Name
-        let type: String
-        let ricardianContract: String
+        public let name: Name
+        public let type: String
+        public let ricardianContract: String
 
-        init(_ nameAndType: Name, ricardian: String = "") {
+        public init(_ nameAndType: Name, ricardian: String = "") {
             self.name = nameAndType
             self.type = String(nameAndType)
             self.ricardianContract = ricardian
         }
 
-        init(_ name: Name, _ type: String, ricardian: String = "") {
+        public init(_ name: Name, _ type: String, ricardian: String = "") {
             self.name = name
             self.type = type
             self.ricardianContract = ricardian
@@ -218,13 +234,13 @@ public extension ABI {
     }
 
     struct Table: ABICodable, Equatable, Hashable {
-        let name: Name
-        let indexType: String
-        let keyNames: [String]
-        let keyTypes: [String]
-        let type: String
+        public let name: Name
+        public let indexType: String
+        public let keyNames: [String]
+        public let keyTypes: [String]
+        public let type: String
 
-        init(_ name: Name, _ type: String, _ indexType: String, _ keyNames: [String] = [], _ keyTypes: [String] = []) {
+        public init(_ name: Name, _ type: String, _ indexType: String, _ keyNames: [String] = [], _ keyTypes: [String] = []) {
             self.name = name
             self.type = type
             self.indexType = indexType
@@ -234,20 +250,20 @@ public extension ABI {
     }
 
     struct Clause: ABICodable, Equatable, Hashable {
-        let id: String
-        let body: String
+        public let id: String
+        public let body: String
 
-        init(_ id: String, _ body: String) {
+        public init(_ id: String, _ body: String) {
             self.id = id
             self.body = body
         }
     }
 
     struct Variant: ABICodable, Equatable, Hashable {
-        let name: String
-        let types: [String]
+        public let name: String
+        public let types: [String]
 
-        init(_ name: String, _ types: [String]) {
+        public init(_ name: String, _ types: [String]) {
             self.name = name
             self.types = types
         }
