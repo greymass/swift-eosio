@@ -25,6 +25,28 @@ final class TypeTests: XCTestCase {
         XCTAssertEqual(asset.value, 0)
         XCTAssertEqual(asset.units, 0)
 
+        XCTAssertEqual("0.40 PANIC" as Asset + "0.02 PANIC", "0.42 PANIC")
+        XCTAssertEqual("0.63 PANIC" as Asset - "0.21 PANIC", "0.42 PANIC")
+        XCTAssertEqual("3.00 PANIC" as Asset * "0.14 PANIC", "0.42 PANIC")
+        XCTAssertEqual("2.22 PANIC" as Asset / "2.00 PANIC", "1.11 PANIC")
+        XCTAssertEqual("0.40 PANIC" as Asset + 0.02, "0.42 PANIC")
+        XCTAssertEqual("0.63 PANIC" as Asset - 0.21, "0.42 PANIC")
+        XCTAssertEqual("3.00 PANIC" as Asset * 0.14, "0.42 PANIC")
+        XCTAssertEqual("2.22 PANIC" as Asset / 2, "1.11 PANIC")
+
+        var mutable = Asset(10.0, "4,MUTS")
+        mutable += 10
+        mutable *= 42
+        mutable -= 1
+        mutable /= 16
+        XCTAssertEqual(mutable, "52.4375 MUTS")
+        mutable.value = 10
+        mutable += "10.0000 MUTS"
+        mutable *= "42.0000 MUTS"
+        mutable -= "1.0000 MUTS"
+        mutable /= "16.0000 MUTS"
+        XCTAssertEqual(mutable, "52.4375 MUTS")
+
         var hpAsset = Asset(units: 1, symbol: "18,THINGS")
         XCTAssertEqual(hpAsset.value, 1e-18)
         hpAsset.value += 1e-18

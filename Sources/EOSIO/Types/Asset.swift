@@ -284,3 +284,77 @@ extension Asset.Symbol: LosslessStringConvertible {
         return self.stringValue
     }
 }
+
+extension Asset {
+    public static func += (lhs: inout Asset, rhs: Asset) {
+        assert(lhs.symbol == rhs.symbol, "adding assets with different symbols")
+        lhs.units += rhs.units
+    }
+
+    public static func -= (lhs: inout Asset, rhs: Asset) {
+        assert(lhs.symbol == rhs.symbol, "subtracting assets with different symbols")
+        lhs.units -= rhs.units
+    }
+
+    public static func *= (lhs: inout Asset, rhs: Asset) {
+        assert(lhs.symbol == rhs.symbol, "multiplying assets with different symbols")
+        lhs.value *= rhs.value
+    }
+
+    public static func /= (lhs: inout Asset, rhs: Asset) {
+        assert(lhs.symbol == rhs.symbol, "dividing assets with different symbols")
+        lhs.value /= rhs.value
+    }
+
+    public static func + (lhs: Asset, rhs: Asset) -> Asset {
+        assert(lhs.symbol == rhs.symbol, "adding assets with different symbols")
+        return Asset(units: lhs.units + rhs.units, symbol: lhs.symbol)
+    }
+
+    public static func - (lhs: Asset, rhs: Asset) -> Asset {
+        assert(lhs.symbol == rhs.symbol, "subtracting assets with different symbols")
+        return Asset(units: lhs.units - rhs.units, symbol: lhs.symbol)
+    }
+
+    public static func * (lhs: Asset, rhs: Asset) -> Asset {
+        assert(lhs.symbol == rhs.symbol, "multiplying assets with different symbols")
+        return Asset(lhs.value * rhs.value, lhs.symbol)
+    }
+
+    public static func / (lhs: Asset, rhs: Asset) -> Asset {
+        assert(lhs.symbol == rhs.symbol, "dividing assets with different symbols")
+        return Asset(lhs.value / rhs.value, lhs.symbol)
+    }
+
+    public static func += (lhs: inout Asset, rhs: Double) {
+        lhs.value += rhs
+    }
+
+    public static func -= (lhs: inout Asset, rhs: Double) {
+        lhs.value -= rhs
+    }
+
+    public static func *= (lhs: inout Asset, rhs: Double) {
+        lhs.value *= rhs
+    }
+
+    public static func /= (lhs: inout Asset, rhs: Double) {
+        lhs.value /= rhs
+    }
+
+    public static func + (lhs: Asset, rhs: Double) -> Asset {
+        return Asset(lhs.value + rhs, lhs.symbol)
+    }
+
+    public static func - (lhs: Asset, rhs: Double) -> Asset {
+        return Asset(lhs.value - rhs, lhs.symbol)
+    }
+
+    public static func * (lhs: Asset, rhs: Double) -> Asset {
+        return Asset(lhs.value * rhs, lhs.symbol)
+    }
+
+    public static func / (lhs: Asset, rhs: Double) -> Asset {
+        return Asset(lhs.value / rhs, lhs.symbol)
+    }
+}

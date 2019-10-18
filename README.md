@@ -52,7 +52,8 @@ print(action.tip!.units) // 300
 
 // types conform to standrad protocols where applicable
 print(action.from == "2goodgenes") // true
-print(action.tip!.value * 10) // 30.0
+print(action.tip! * 10) // "30.00 BUCKZ"
+print(action.tip! + "0.99 BUCKZ") // "3.99 BUCKZ"
 print(Name(String(action.from).replacingOccurrences(of: "good", with: "BÅÅD"))) // 2....genes
 
 // encode action to json
@@ -107,7 +108,8 @@ let myAbiJson = """
 }
 """
 let jsonDecoder = JSONDecoder()
-let abi = try! jsonDecoder.decode(ABI.self, from: myAbiJson.data(using: .utf8)!) // ABI defs are also ABICodable
+// ABI defs are also ABICodable
+let abi = try! jsonDecoder.decode(ABI.self, from: myAbiJson.data(using: .utf8)!)
 print(abi.resolveStruct("my_action")!.map({ $0.name })) // ["message", "from", "tip", "extra"]
 
 // untyped decoding
