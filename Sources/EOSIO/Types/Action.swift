@@ -1,22 +1,32 @@
-//
-//  Action.swift
-//  EOSIO
-//
-//  Created by Johan Nordberg on 2019-10-15.
-//
+/// EOSIO action type.
+/// - Author: Johan Nordberg <code@johan-nordberg.com>
 
 import Foundation
 
 /// Type representing an EOSIO Action.
 public struct Action: ABICodable, Equatable, Hashable {
     /// The account (a.k.a. contract) to run action on.
-    let account: Name
+    public var account: Name
     /// The name of the action.
-    let name: Name
-    /// The signer(s) of the action.
-    let authorization: [PermissionLevel]
+    public var name: Name
+    /// The permissions authorizing the action.
+    public var authorization: [PermissionLevel]
     /// The ABI-encoded action data.
-    let data: Data
+    public var data: Data
+
+    public init(account: Name, name: Name, authorization: [PermissionLevel] = [], data: Data = Data()) {
+        self.account = account
+        self.name = name
+        self.authorization = authorization
+        self.data = data
+    }
+
+    public init<T: ABIEncodable>(account: Name, name: Name, authorization: [PermissionLevel] = [], value: T) throws {
+        self.account = account
+        self.name = name
+        self.authorization = authorization
+        self.data = try ABIEncoder().encode(value)
+    }
 }
 
 extension Action {

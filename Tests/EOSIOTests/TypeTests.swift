@@ -77,4 +77,47 @@ final class TypeTests: XCTestCase {
         XCTAssertNil(Asset.Symbol("invalid string" as String))
         XCTAssertEqual("invalid literal" as Asset.Symbol, "0,INVALID")
     }
+
+    func testTransaction() {
+        let ref = loadTestDataPair("transaction")
+
+        let header = TransactionHeader(
+            expiration: TimePointSec("2019-05-25T01:49:05")!,
+            refBlockNum: 23205,
+            refBlockPrefix: 2_823_474_609,
+            maxNetUsageWords: 0,
+            maxCpuUsageMs: 0,
+            delaySec: 0
+        )
+
+        let action = Action(
+            account: "decentiumorg",
+            name: "post",
+            authorization: [
+                PermissionLevel(
+                    actor: "almstdigital",
+                    permission: "active"
+                )
+            ],
+            data: """
+            104d76cca58c65340b48656c6c6f20576f
+            726c640100010040466f722048616e6e61
+            205265792c206d61792074686520776f72
+            6c6420796f752067726f7720757020696e
+            2062652061732062726967687420617320
+            796f752e01020100011457656c636f6d65
+            20746f20446563656e7469756d00
+            """
+        )
+
+        let transaction = Transaction(
+            header: header,
+            contextFreeActions: [],
+            actions: [action],
+            transactionExtensions: []
+        )
+        
+        AssertABICodable(transaction, ref.json, ref.bin)
+        XCTAssertEqual(transaction.id, "0ef9aa310e6e7efb7b10192dc80e5b09826c4369be6b1ba54990b8a66302500e")
+    }
 }

@@ -112,10 +112,14 @@ public extension ABIDecoder {
     }
 
     func decode<T: Decodable>(_ type: T.Type) throws -> T {
-        guard let abiType = type as? ABIDecodable.Type else {
+        switch type {
+        case is UInt.Type:
+            return UInt(try self.readVarint()) as! T
+        case let abiType as ABIDecodable.Type:
+            return try abiType.init(fromAbi: self) as! T
+        default:
             throw Error.typeNotConformingToABIDecodable(type)
         }
-        return try abiType.init(fromAbi: self) as! T
     }
 
     /// Read the appropriate number of raw bytes directly into the given value.

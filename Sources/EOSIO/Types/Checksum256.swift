@@ -3,7 +3,7 @@ import Foundation
 import OpenCrypto // TODO: use CryptoKit on supported platforms
 
 /// The EOSIO checksum256 type, a.k.a SHA256.
-typealias Checksum256 = SHA256Digest
+public typealias Checksum256 = SHA256Digest
 
 extension Checksum256 {
     internal init(_ data: Data) {
@@ -29,7 +29,7 @@ extension Checksum256: LosslessStringConvertible {
         self.init(data)
     }
 
-    var description: String {
+    public var description: String {
         return Data(self).hexEncodedString()
     }
 }

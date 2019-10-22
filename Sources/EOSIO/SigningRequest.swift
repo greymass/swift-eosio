@@ -17,7 +17,7 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
     enum RequestType: Equatable, Hashable {
         case action(Action)
         case actions([Action])
-        case transaction(UInt8)
+        case transaction(Transaction)
     }
 
     struct Callback: Equatable, Hashable, ABICodable {
@@ -111,8 +111,9 @@ extension SigningRequest.RequestType: ABICodable {
         case let .actions(actions):
             try container.encode("actions")
             try container.encode(actions)
-        case let .transaction(tx):
-            fatalError("not implemented")
+        case let .transaction(transaction):
+            try container.encode("transaction")
+            try container.encode(transaction)
         }
     }
 
@@ -124,8 +125,9 @@ extension SigningRequest.RequestType: ABICodable {
         case let .actions(actions):
             try encoder.encode(1 as UInt8)
             try encoder.encode(actions)
-        case let .transaction(tx):
-            fatalError("not implemented")
+        case let .transaction(transaction):
+            try encoder.encode(2 as UInt8)
+            try encoder.encode(transaction)
         }
     }
 }

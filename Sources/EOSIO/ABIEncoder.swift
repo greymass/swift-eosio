@@ -59,12 +59,7 @@ public final class ABIEncoder {
     }
 
     public func encode(_ value: UInt) throws {
-        var v = value
-        while v > 127 {
-            self.data.append(UInt8(v & 0x7F | 0x80))
-            v >>= 7
-        }
-        self.data.append(UInt8(v))
+        self.appendVarint(UInt64(value))
     }
 
     public func encode<T: Sequence>(contentsOf sequence: T) throws where T.Element == UInt8 {
@@ -76,10 +71,14 @@ public final class ABIEncoder {
     }
 
     public func encode(_ value: Encodable) throws {
-        guard let abiValue = value as? ABIEncodable else {
+        switch value {
+        case let varint as UInt:
+            self.appendVarint(UInt64(varint))
+        case let abiValue as ABIEncodable:
+            try abiValue.abiEncode(to: self)
+        default:
             throw Error.typeNotConformingToAbiEncodable(type(of: value))
         }
-        try abiValue.abiEncode(to: self)
     }
 
     /// Append variable integer to encoder buffer.
