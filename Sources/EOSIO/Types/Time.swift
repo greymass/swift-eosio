@@ -6,16 +6,28 @@ public struct TimePoint: ABICodable, Equatable, Hashable {
     var value: Int64
 }
 
+/// ISO8601-ish formatter used to format EOSIO timestamps.
+public class TimePointFormatter: DateFormatter {
+    public override init() {
+        super.init()
+        self.configure()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        self.configure()
+    }
+
+    internal func configure() {
+        self.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        self.timeZone = TimeZone(secondsFromGMT: 0)
+        self.locale = Locale(identifier: "en_US_POSIX")
+    }
+}
+
 /// Type representing a timestap with second accuracy.
 public struct TimePointSec: ABICodable, Equatable, Hashable {
-    static var dateFormatter: DateFormatter {
-        print("Y U NO LAZY?")
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        formatter.timeZone = TimeZone(secondsFromGMT: 0)
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        return formatter
-    }
+    static let dateFormatter = TimePointFormatter()
 
     /// Seconds sinze 1970.
     var value: UInt32
