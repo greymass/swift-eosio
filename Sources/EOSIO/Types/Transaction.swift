@@ -2,13 +2,12 @@
 /// - Author: Johan Nordberg <code@johan-nordberg.com>
 
 import Foundation
-import OpenCrypto
 
 public typealias TransactionId = Checksum256
 
 extension TransactionId {
     public static var Invalid: Self {
-        return TransactionId([])
+        return TransactionId(bytes: Data(repeating: 0, count: 32))
     }
 }
 
@@ -55,22 +54,20 @@ public struct SignedTransaction: ABICodable, Equatable, Hashable {
 // MARK: Signing digest
 
 extension Transaction {
-    
     public var id: TransactionId {
         let encoder = ABIEncoder()
         guard let data: Data = try? encoder.encode(self) else {
             return TransactionId.Invalid
         }
-        return SHA256.hash(data: data)
+        return Checksum256.hash(data)
     }
-    
+
     public func digest(using chainId: Data) throws -> Checksum256 {
         let encoder = ABIEncoder()
         var data: Data = try encoder.encode(self)
         data.insert(contentsOf: chainId, at: 0)
-        return SHA256.hash(data: data)
+        return Checksum256.hash(data)
     }
-    
 }
 
 // MARK: ABI Coding

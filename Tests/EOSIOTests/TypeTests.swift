@@ -97,7 +97,7 @@ final class TypeTests: XCTestCase {
                 PermissionLevel(
                     actor: "almstdigital",
                     permission: "active"
-                )
+                ),
             ],
             data: """
             104d76cca58c65340b48656c6c6f20576f
@@ -116,8 +116,15 @@ final class TypeTests: XCTestCase {
             actions: [action],
             transactionExtensions: []
         )
-        
+
         AssertABICodable(transaction, ref.json, ref.bin)
         XCTAssertEqual(transaction.id, "0ef9aa310e6e7efb7b10192dc80e5b09826c4369be6b1ba54990b8a66302500e")
+    }
+
+    func testChecksum256() {
+        XCTAssertEqual(
+            Checksum256.hash("hello".data(using: .utf8)!),
+            "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+        )
     }
 }

@@ -9,12 +9,12 @@ let package = Package(
     ],
     dependencies: [
         // .package(url: "https://github.com/attaswift/BigInt.git", from: "5.0.0"),
-        .package(url: "https://github.com/vapor/open-crypto.git", .branch("master")),
+        .package(url: "https://github.com/greymass/secp256k1.git", .branch("master")),
     ],
     targets: [
         .target(
             name: "EOSIO",
-            dependencies: ["OpenCrypto"]
+            dependencies: ["secp256k1"]
         ),
         .testTarget(
             name: "EOSIOTests",

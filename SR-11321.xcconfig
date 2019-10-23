@@ -1,0 +1,3 @@
+// Fix dependency header search paths when generated with `swift package generate-xcodeproj`
+// https://bugs.swift.org/browse/SR-11321
+HEADER_SEARCH_PATHS = $(inherited) $(SRCROOT)/../secp256k1/include $(SRCROOT)/../secp256k1/src $(SRCROOT)/../secp256k1

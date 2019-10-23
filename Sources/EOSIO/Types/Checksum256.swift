@@ -1,22 +1,33 @@
 
 import Foundation
-import OpenCrypto // TODO: use CryptoKit on supported platforms
+import secp256k1
 
 /// The EOSIO checksum256 type, a.k.a SHA256.
-public typealias Checksum256 = SHA256Digest
+public struct Checksum256: Equatable, Hashable {
+    let bytes: Data
+
+    /// Create a new `Checksum256` from given data.
+    /// - Parameter data: Data to be hashed.
+    public static func hash(_ data: Data) -> Checksum256 {
+        var hash = secp256k1_sha256()
+        secp256k1_sha256_initialize(&hash)
+        data.withUnsafeBytes {
+            guard let p = $0.baseAddress else { return }
+            secp256k1_sha256_write(&hash, p.assumingMemoryBound(to: UInt8.self), $0.count)
+        }
+        var bytes = Data(repeating: 0, count: 32)
+        bytes.withUnsafeMutableBytes {
+            guard let p = $0.baseAddress else { return }
+            secp256k1_sha256_finalize(&hash, p.assumingMemoryBound(to: UInt8.self))
+        }
+        return Checksum256(bytes)
+    }
+}
 
 extension Checksum256 {
-    internal init(_ data: Data) {
-        self.init(Array(data))
-    }
-
-    internal init(_ bytes: [UInt8]) {
+    internal init(_ bytes: Data) {
         precondition(bytes.count == 32, "invalid checksum")
-        self = unsafeBitCast(bytes, to: Checksum256.self)
-    }
-
-    public func verify<D: DataProtocol>(_ data: D) -> Bool {
-        return SHA256.hash(data: data) == self
+        self.bytes = bytes
     }
 }
 
@@ -30,7 +41,7 @@ extension Checksum256: LosslessStringConvertible {
     }
 
     public var description: String {
-        return Data(self).hexEncodedString()
+        return self.bytes.hexEncodedString()
     }
 }
 
@@ -58,10 +69,10 @@ extension Checksum256: ABICodable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(Data(self))
+        try container.encode(self.bytes)
     }
 
     public func abiEncode(to encoder: ABIEncoder) throws {
-        try encoder.encode(contentsOf: Data(self))
+        try encoder.encode(contentsOf: self.bytes)
     }
 }

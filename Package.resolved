@@ -2,11 +2,11 @@
   "object": {
     "pins": [
       {
-        "package": "open-crypto",
-        "repositoryURL": "https://github.com/vapor/open-crypto.git",
+        "package": "secp256k1",
+        "repositoryURL": "https://github.com/greymass/secp256k1.git",
         "state": {
           "branch": "master",
-          "revision": "06d26edb8e28295bb7103b4f950d5ea58d634c1b",
+          "revision": "143b3cd70de50ae7d9eb039f80ebda4ce06b4571",
           "version": null
         }
       }
