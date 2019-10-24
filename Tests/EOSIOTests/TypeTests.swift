@@ -82,7 +82,7 @@ final class TypeTests: XCTestCase {
         let ref = loadTestDataPair("transaction")
 
         let header = TransactionHeader(
-            expiration: TimePointSec("2019-05-25T01:49:05")!,
+            expiration: "2019-05-25T01:49:05",
             refBlockNum: 23205,
             refBlockPrefix: 2_823_474_609,
             maxNetUsageWords: 0,

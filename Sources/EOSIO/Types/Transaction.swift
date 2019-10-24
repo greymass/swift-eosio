@@ -7,7 +7,7 @@ public typealias TransactionId = Checksum256
 
 extension TransactionId {
     public static var Invalid: Self {
-        return TransactionId(bytes: Data(repeating: 0, count: 32))
+        return TransactionId(Data(repeating: 0, count: 32))
     }
 }
 

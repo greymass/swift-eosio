@@ -17,14 +17,11 @@ public struct Checksum256: Equatable, Hashable {
         }
         var bytes = Data(repeating: 0, count: 32)
         bytes.withUnsafeMutableBytes {
-            guard let p = $0.baseAddress else { return }
-            secp256k1_sha256_finalize(&hash, p.assumingMemoryBound(to: UInt8.self))
+            secp256k1_sha256_finalize(&hash, $0.baseAddress!.assumingMemoryBound(to: UInt8.self))
         }
         return Checksum256(bytes)
     }
-}
 
-extension Checksum256 {
     internal init(_ bytes: Data) {
         precondition(bytes.count == 32, "invalid checksum")
         self.bytes = bytes

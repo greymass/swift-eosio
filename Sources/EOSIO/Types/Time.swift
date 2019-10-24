@@ -26,7 +26,7 @@ public class TimePointFormatter: DateFormatter {
 }
 
 /// Type representing a timestap with second accuracy.
-public struct TimePointSec: ABICodable, Equatable, Hashable {
+public struct TimePointSec: Equatable, Hashable {
     static let dateFormatter = TimePointFormatter()
 
     /// Seconds sinze 1970.
@@ -36,7 +36,7 @@ public struct TimePointSec: ABICodable, Equatable, Hashable {
         self.value = timestamp
     }
 
-    init?(_ date: String) {
+    public init?(_ date: String) {
         guard let date = Self.dateFormatter.date(from: date) else {
             return nil
         }
@@ -52,7 +52,9 @@ public struct TimePointSec: ABICodable, Equatable, Hashable {
     }
 }
 
-extension TimePointSec {
+// MARK: ABI Coding
+
+extension TimePointSec: ABICodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         guard let instance = Self(try container.decode(String.self)) else {
@@ -75,5 +77,19 @@ extension TimePointSec {
 
     public func abiEncode(to encoder: ABIEncoder) throws {
         try encoder.encode(self.value)
+    }
+}
+
+// MARK: Language extensions
+
+extension TimePointSec: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        self = TimePointSec(value) ?? TimePointSec(0)
+    }
+}
+
+extension TimePointSec: LosslessStringConvertible {
+    public var description: String {
+        return self.stringValue
     }
 }
