@@ -200,19 +200,3 @@ internal class Secp256k1Context {
         return self.serialize(publicKey: pubkey)
     }
 }
-
-private extension UnsafeRawBufferPointer {
-    /// Returns a C compatible buffer pointer.
-    /// - Attention:Unsafe to use unless count > 0
-    var bufPtr: UnsafePointer<UInt8> {
-        self.baseAddress!.assumingMemoryBound(to: UInt8.self)
-    }
-}
-
-private extension UnsafeMutableRawBufferPointer {
-    /// Returns a C compatible mutable buffer pointer.
-    /// - Attention:Unsafe to use unless count > 0
-    var bufPtr: UnsafeMutablePointer<UInt8> {
-        self.baseAddress!.assumingMemoryBound(to: UInt8.self)
-    }
-}

@@ -14,7 +14,10 @@ let package = Package(
     targets: [
         .target(
             name: "EOSIO",
-            dependencies: ["secp256k1"]
+            dependencies: ["secp256k1", "crypto"]
+        ),
+        .target(
+            name: "crypto"
         ),
         .testTarget(
             name: "EOSIOTests",
