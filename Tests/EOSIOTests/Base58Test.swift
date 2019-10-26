@@ -61,10 +61,25 @@ let base64_base58_pairs = [
 ]
 
 class Base58Test: XCTestCase {
+    func testRipemd160() {
+        XCTAssertEqual(
+            "".utf8Data.ripemd160Digest,
+            "9c1185a5c5e9fc54612808977ee8f548b2258d31"
+        )
+        XCTAssertEqual(
+            "The quick brown fox jumps over the lazy dog".utf8Data.ripemd160Digest,
+            "37f332f68db77bd9d7edd4969571ad671cf9dd3b"
+        )
+        XCTAssertEqual(
+            "The quick brown fox jumps over the lazy cog".utf8Data.ripemd160Digest,
+            "132072df690933835eb8b6ad0b77e7b6f14acad7"
+        )
+    }
+
     func testDecode() {
         for (b64, b58, graphene) in base64_base58_pairs {
-            let options: Data.Base58CheckOptions = graphene ? .grapheneChecksum : []
-            let data = Data(base58CheckEncoded: b58, options: options)
+            let checksumType: Data.Base58CheckType = graphene ? .ripemd160 : .sha256d
+            let data = Data(base58CheckEncoded: b58, checksumType)
             XCTAssertEqual(data?.base64EncodedString(), b64)
         }
         XCTAssertEqual(Data(base58Encoded: "StV1DL6CwTryKyV"), "hello world".data(using: .utf8))
@@ -72,9 +87,9 @@ class Base58Test: XCTestCase {
 
     func testEncode() {
         for (b64, b58, graphene) in base64_base58_pairs {
-            let options: Data.Base58CheckOptions = graphene ? .grapheneChecksum : []
+            let checksumType: Data.Base58CheckType = graphene ? .ripemd160 : .sha256d
             let data = Data(base64Encoded: b64)!
-            XCTAssertEqual(data.base58CheckEncodedString(options: options), b58)
+            XCTAssertEqual(data.base58CheckEncodedString(checksumType), b58)
         }
         XCTAssertEqual("hello world".data(using: .utf8)!.base58EncodedString(), "StV1DL6CwTryKyV")
     }

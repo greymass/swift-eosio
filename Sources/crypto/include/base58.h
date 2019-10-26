@@ -31,11 +31,5 @@
 size_t base58_encode(const uint8_t *data, size_t datalen, char *str,
                      size_t strsize);
 size_t base58_decode(const char *str, uint8_t *data, size_t datalen);
-size_t base58_encode_check(const uint8_t *data, size_t datalen, char *str,
-                           size_t strsize);
-size_t base58_decode_check(const char *str, uint8_t *data, size_t datalen);
-size_t base58gph_encode_check(const uint8_t *data, size_t datalen, char *str,
-                              size_t strsize);
-size_t base58gph_decode_check(const char *str, uint8_t *data, size_t datalen);
 
 #endif

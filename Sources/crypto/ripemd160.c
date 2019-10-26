@@ -25,9 +25,10 @@
  *  http://ehash.iaik.tugraz.at/wiki/RIPEMD-160
  */
 
+#include "include/ripemd160.h"
+
 #include <string.h>
 
-#include "ripemd160.h"
 #include "memzero.h"
 
 /*

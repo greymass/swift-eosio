@@ -92,3 +92,9 @@ extension StringProtocol where Self: RangeReplaceableCollection {
         removeAll { $0.isNewline || $0.isWhitespace }
     }
 }
+
+extension String {
+    var utf8Data: Data {
+        return Data(self.utf8)
+    }
+}

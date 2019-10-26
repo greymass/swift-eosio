@@ -1,25 +1,15 @@
 
 import Foundation
-import secp256k1
 
 /// The EOSIO checksum256 type, a.k.a SHA256.
 public struct Checksum256: Equatable, Hashable {
-    let bytes: Data
+    /// The 32-byte sha256 checksum.
+    public let bytes: Data
 
     /// Create a new `Checksum256` from given data.
     /// - Parameter data: Data to be hashed.
     public static func hash(_ data: Data) -> Checksum256 {
-        var hash = secp256k1_sha256()
-        secp256k1_sha256_initialize(&hash)
-        data.withUnsafeBytes {
-            guard let p = $0.baseAddress else { return }
-            secp256k1_sha256_write(&hash, p.assumingMemoryBound(to: UInt8.self), $0.count)
-        }
-        var bytes = Data(repeating: 0, count: 32)
-        bytes.withUnsafeMutableBytes {
-            secp256k1_sha256_finalize(&hash, $0.baseAddress!.assumingMemoryBound(to: UInt8.self))
-        }
-        return Checksum256(bytes)
+        return Checksum256(data.sha256Digest)
     }
 
     internal init(_ bytes: Data) {
