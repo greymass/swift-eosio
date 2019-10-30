@@ -118,7 +118,7 @@ extension PublicKey: LosslessStringConvertible {
         }
         self = instance
     }
-    
+
     public var description: String {
         return self.stringValue
     }

@@ -17,7 +17,7 @@ public struct PrivateKey: Equatable, Hashable {
         case invalidK1(_ message: String)
         case unknownKeyType
     }
-    
+
     /// Invalid `PrivateKey`, used to represent invalid string literals.
     public static let invalid = PrivateKey(value: .unknown(name: "XX", data: Data(repeating: 0, count: 8)))
 
@@ -39,6 +39,7 @@ public struct PrivateKey: Equatable, Hashable {
         self.value = value
     }
 
+    /// Create a `PrivateKey` instance from a secp256k1 key encoded in WIF format or using the EOSIO-style `PVT_<curve>_base56secret` format.
     public init(stringValue: String) throws {
         if stringValue.starts(with: "PVT_") { // new EOSIO format
             let parts = stringValue.split(separator: "_")
@@ -66,6 +67,7 @@ public struct PrivateKey: Equatable, Hashable {
         }
     }
 
+    /// Sign a 32-byte digest using this key.
     func sign(_ hash: Checksum256) throws -> Signature {
         switch self.value {
         case let .k1(secret):
@@ -75,9 +77,21 @@ public struct PrivateKey: Equatable, Hashable {
             throw Error.unknownKeyType
         }
     }
-    
+
+    /// Sign a data buffer using this key.
     func sign(_ data: Data) throws -> Signature {
         return try self.sign(Checksum256.hash(data))
+    }
+
+    /// Return the corresponding public key for this instance.
+    func getPublic() throws -> PublicKey {
+        switch self.value {
+        case let .k1(secret):
+            let res = try Secp256k1.shared.createPublic(fromSecret: secret)
+            return try PublicKey(fromK1Data: res)
+        case .unknown:
+            throw Error.unknownKeyType
+        }
     }
 
     /// The key type as a string, .e.g. K1 or R1.
@@ -90,10 +104,21 @@ public struct PrivateKey: Equatable, Hashable {
         }
     }
 
+    /// The key secret.
+    var keyData: Data {
+        switch self.value {
+        case let .k1(secret):
+            return secret
+        case let .unknown(_, data):
+            return data
+        }
+    }
+
+    /// The private key represented as WIF* for k1 keys or EOSIO-style `PVT_<type>_base58` for others.
     var stringValue: String {
         switch self.value {
         case let .k1(secret): // encode as WIF
-            var data = Data([0x80])
+            var data = Data([0x80]) // network id is fixed to 0x80 (a.k.a. mainnet)
             data.append(contentsOf: secret)
             return data.base58CheckEncodedString(.sha256d)!
         case let .unknown(name, data):
@@ -110,7 +135,7 @@ private func signK1(message: Data, using secret: Data) throws -> (Data, Int32) {
     var ndata = Data(count: 32)
     repeat {
         guard ndata[0] != 255 else {
-            // if we haven't found a canonical signature by now something is seriously wrong
+            // if we haven't found a "canonical" signature by now something is seriously wrong
             throw NSError(domain: "gov.damogran.heart-of-gold", code: 42, userInfo: nil)
         }
         ndata[0] += 1
@@ -119,6 +144,9 @@ private func signK1(message: Data, using secret: Data) throws -> (Data, Int32) {
     return result
 }
 
+/// here be dragons
+/// https://github.com/EOSIO/eos/issues/6699
+/// https://github.com/EOSIO/eos/issues/4299
 private func isCanonicalK1(_ sig: Data) -> Bool {
     return (
         (sig[0] & 0x80 == 0) &&
@@ -156,11 +184,5 @@ extension PrivateKey: CustomStringConvertible {
             return "InvalidPrivateKey"
         }
         return "PrivateKey\(self.keyType)"
-    }
-}
-
-extension PrivateKey: CustomDebugStringConvertible {
-    public var debugDescription: String {
-        self.description
     }
 }
