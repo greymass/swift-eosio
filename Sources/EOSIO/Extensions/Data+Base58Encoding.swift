@@ -4,7 +4,7 @@
 import crypto
 import Foundation
 
-internal extension Data {
+public extension Data {
     /// Base58 encoding and decoding options.
     enum Base58CheckType {
         /// Use double-SHA256 checksum (Bitcoin-style).
