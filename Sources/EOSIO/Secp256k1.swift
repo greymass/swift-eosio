@@ -5,7 +5,7 @@ import Foundation
 import secp256k1
 
 /// Class representing a libsecp256k1 context.
-internal class Secp256k1Context {
+internal class Secp256k1 {
     struct Flags: OptionSet {
         let rawValue: Int32
         static let none = Flags(rawValue: SECP256K1_CONTEXT_NONE)
@@ -34,14 +34,14 @@ internal class Secp256k1Context {
     ///
     /// Shared context is thread-safe and should be used in most cases since creating a new
     /// context is 100 times more expensice than a signing or verifying operation.
-    static let shared = Secp256k1Context(flags: [.sign, .verify])
+    static let shared = Secp256k1(flags: [.sign, .verify])
 
     private let ctx: OpaquePointer
     private let lockQueue = DispatchQueue(label: "Secp256k1Context", qos: .default)
 
     /// Create a new context.
     /// - Parameter flags: Flags used to initialize the context.
-    init(flags: Secp256k1Context.Flags = .none) {
+    init(flags: Flags = .none) {
         self.ctx = secp256k1_context_create(UInt32(flags.rawValue))
     }
 
