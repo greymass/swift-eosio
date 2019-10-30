@@ -33,7 +33,7 @@ internal extension Data {
     /// - Parameter checksumType: Checksum to use when decoding data, defaults to the standard double-sha256.
     /// - Note: Returns `nil` if decoding or the check fails.
     init?(base58CheckEncoded str: String, _ checksumType: Base58CheckType = .sha256d) {
-        guard let decoded = Data(base58Encoded: str) else {
+        guard let decoded = Data(base58Encoded: str), decoded.count > 4 else {
             return nil
         }
         let data = decoded.prefix(decoded.count - 4)
