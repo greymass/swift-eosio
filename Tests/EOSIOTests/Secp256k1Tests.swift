@@ -36,6 +36,7 @@ class Secp256k1Test: XCTestCase {
         XCTAssertThrowsError(try Secp256k1.shared.recover(message: message, signature: result.0, recoveryId: 2))
         XCTAssertThrowsError(try Secp256k1.shared.recover(message: message, signature: "fafa", recoveryId: 0))
         XCTAssertThrowsError(try Secp256k1.shared.recover(message: "beef", signature: result.0, recoveryId: result.1))
+        XCTAssertTrue(Secp256k1.shared.verify(signature: result.0, message: message, publicKey: publicKey))
     }
 
     func testCustomContext() throws {

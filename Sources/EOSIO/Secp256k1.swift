@@ -199,4 +199,38 @@ internal class Secp256k1 {
         }
         return self.serialize(publicKey: pubkey)
     }
+
+    /// Verify signature using given message and public key.
+    /// - Parameter signature: 64-byte signature.
+    /// - Parameter message: 32-byte message to verify.
+    /// - Parameter publicKey: 33- or 65-byte public key to verify against.
+    /// - Returns: `true` verification is successful, `false` otherwise.
+    func verify(signature: Data, message: Data, publicKey: Data) -> Bool {
+        let sig = UnsafeMutablePointer<secp256k1_ecdsa_signature>.allocate(capacity: 1)
+        defer { sig.deallocate() }
+        guard signature.withUnsafeBytes({
+            guard $0.count == 64 else {
+                return false
+            }
+            return secp256k1_ecdsa_signature_parse_compact(self.ctx, sig, $0.bufPtr) == 1
+        }) else {
+            return false
+        }
+        let pubkey = UnsafeMutablePointer<secp256k1_pubkey>.allocate(capacity: 1)
+        defer { pubkey.deallocate() }
+        guard publicKey.withUnsafeBytes({
+            guard !$0.isEmpty else {
+                return false
+            }
+            return secp256k1_ec_pubkey_parse(self.ctx, pubkey, $0.bufPtr, $0.count) == 1
+        }) else {
+            return false
+        }
+        return message.withUnsafeBytes { msg32 -> Bool in
+            guard msg32.count == 32 else {
+                return false
+            }
+            return secp256k1_ecdsa_verify(self.ctx, sig, msg32.bufPtr, pubkey) == 1
+        }
+    }
 }
