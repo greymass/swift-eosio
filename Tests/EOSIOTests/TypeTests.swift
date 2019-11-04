@@ -1,6 +1,47 @@
 @testable import EOSIO
 import XCTest
 
+/// Asserts that given value encodes both to expected json and binary abi and back.
+func AssertABICodable<T: ABICodable & Equatable>(_ value: T,
+                                                 _ expectedJson: String,
+                                                 _ expectedAbi: Data,
+                                                 file: StaticString = #file,
+                                                 line: UInt = #line) {
+    let jsonEncoder = JSONEncoder()
+    jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
+    jsonEncoder.dataEncodingStrategy = .custom { data, encoder in
+        var container = encoder.singleValueContainer()
+        try container.encode(data.hexEncodedString())
+    }
+    let jsonDecoder = JSONDecoder()
+    jsonDecoder.keyDecodingStrategy = .convertFromSnakeCase
+    jsonDecoder.dataDecodingStrategy = .custom { decoder -> Data in
+        let container = try decoder.singleValueContainer()
+        return Data(hexEncoded: try container.decode(String.self))
+    }
+    let actualAbi: Data
+    let actualJson: String
+    let valueFromAbi: T
+    let valueFromJson: T
+    let valueFromExpectedAbi: T
+    do {
+        actualAbi = try ABIEncoder.encode(value)
+        let actualJsonData = try jsonEncoder.encode(value)
+        actualJson = String(bytes: actualJsonData, encoding: .utf8)!
+        valueFromAbi = try ABIDecoder.decode(T.self, data: actualAbi)
+        valueFromJson = try jsonDecoder.decode(T.self, from: actualJsonData)
+        valueFromExpectedAbi = try ABIDecoder.decode(T.self, data: expectedAbi)
+    } catch {
+        XCTFail("Coding error: \(error)", file: file, line: line)
+        return
+    }
+    XCTAssertEqual(actualAbi.hexEncodedString(), expectedAbi.hexEncodedString(), file: file, line: line)
+    XCTAssertEqual(actualJson.normalizedJSON, expectedJson.normalizedJSON, file: file, line: line)
+    XCTAssertEqual(valueFromAbi, value, file: file, line: line)
+    XCTAssertEqual(valueFromJson, value, file: file, line: line)
+    XCTAssertEqual(valueFromExpectedAbi, value, file: file, line: line)
+}
+
 final class TypeTests: XCTestCase {
     func testName() {
         XCTAssertEqual(Name(0).stringValue, ".............")
@@ -67,7 +108,7 @@ final class TypeTests: XCTestCase {
         XCTAssertEqual(symbol?.stringValue, "4,EOS")
         XCTAssertEqual(symbol, "4,EOS")
         XCTAssertEqual(symbol, Asset.Symbol(symbol?.description ?? ""))
-        XCTAssertThrowsError(try Asset.Symbol(rawValue: 0))
+        XCTAssertThrowsError(try Asset.Symbol(rawSymbol: 0))
         XCTAssertThrowsError(try Asset.Symbol(0, ""))
         XCTAssertThrowsError(try Asset.Symbol(4, "M0NEYz"))
         XCTAssertThrowsError(try Asset.Symbol(4, "☙FLRNZ☙"))

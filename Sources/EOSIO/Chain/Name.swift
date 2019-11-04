@@ -4,7 +4,7 @@
 import Foundation
 
 /// Type representing a EOSIO name.
-public struct Name: Equatable, Hashable {
+public struct Name: RawRepresentable, Equatable, Hashable {
     private static let charMap: [Character] = Array(".12345abcdefghijklmnopqrstuvwxyz")
 
     /// The raw value of the name.

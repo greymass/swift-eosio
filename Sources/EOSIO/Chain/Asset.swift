@@ -91,10 +91,10 @@ extension Asset {
         public let rawValue: UInt64
 
         /// Create a new `Asset.Symbol` with a raw value.
-        /// - Parameter rawValue: The raw value of the symbol.
+        /// - Parameter rawSymbol: The raw value of the symbol.
         /// - Note: Normally not used directly, see the other constructors.
-        public init(rawValue: UInt64) throws {
-            self.rawValue = rawValue
+        public init(rawSymbol: UInt64) throws {
+            self.rawValue = rawSymbol
             if self.precision > Self.maxPrecision {
                 throw Error.invalidSymbolPrecision(message: "Must \(Self.maxPrecision) or less")
             }
@@ -120,7 +120,7 @@ extension Asset {
             bytes.insert(precision, at: 0)
             while bytes.count < 8 { bytes.append(0) }
             let value = bytes.withUnsafeBytes { CFSwapInt64LittleToHost($0.load(as: UInt64.self)) }
-            try self.init(rawValue: value)
+            try self.init(rawSymbol: value)
         }
 
         /// Create a new `Asset.Symbol` from a string representation.
@@ -154,6 +154,11 @@ extension Asset {
         /// String representation of symbol.
         public var stringValue: String {
             return "\(self.precision),\(self.name)"
+        }
+
+        /// The symbol code.
+        public var symbolCode: UInt64 {
+            return self.rawValue >> 8
         }
 
         /// Number formatter configured to display numbers with this symbols presicion.
@@ -213,8 +218,7 @@ extension Asset.Symbol: ABICodable {
 
     public init(fromAbi decoder: ABIDecoder) throws {
         var container = try decoder.unkeyedContainer()
-        let rawValue = try container.decode(UInt64.self)
-        try self.init(rawValue: rawValue)
+        try self.init(rawSymbol: try container.decode(UInt64.self))
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -282,6 +286,22 @@ extension Asset.Symbol: LosslessStringConvertible {
 
     public var description: String {
         return self.stringValue
+    }
+}
+
+extension Asset.Symbol: RawRepresentable {
+    public init?(rawValue: UInt64) {
+        guard let instance = try? Self(rawSymbol: rawValue) else {
+            return nil
+        }
+        self = instance
+    }
+}
+
+extension Asset: Comparable {
+    public static func < (lhs: Asset, rhs: Asset) -> Bool {
+        assert(lhs.symbol == rhs.symbol, "comparing assets with different symbols")
+        return lhs.units < rhs.units
     }
 }
 

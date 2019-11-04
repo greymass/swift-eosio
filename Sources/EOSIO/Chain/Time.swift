@@ -1,41 +1,75 @@
+/// EOSIO time types.
+/// - Author: Johan Nordberg <code@johan-nordberg.com>
 
 import Foundation
 
-/// Microsecond resolution timestamp since epoch.
-public struct TimePoint: ABICodable, Equatable, Hashable {
-    var value: Int64
-}
+/// Type representing a timestap with microsecond accuracy.
+public struct TimePoint: Equatable, Hashable {
+    internal static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        return formatter
+    }()
 
-/// ISO8601-ish formatter used to format EOSIO timestamps.
-public class TimePointFormatter: DateFormatter {
-    public override init() {
-        super.init()
-        self.configure()
+    /// Nanoseconds since 1970.
+    public var value: Int64
+
+    /// Create a new instance.
+    /// - Parameter value: Nanoseconds since 1970.
+    public init(_ value: Int64) {
+        self.value = value
+    }
+    
+    /// Create a new instance from a date.
+    public init(_ date: Date) {
+        self.value = Int64(date.timeIntervalSince1970 * 1_000_000)
     }
 
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        self.configure()
+    /// Create a new instance from a ISO 8601-ish date.
+    /// - Parameter stringValue: Date string, e.g. `2019-01-22T21:42:55.123`.
+    public init?(_ stringValue: String) {
+        guard let date = Self.dateFormatter.date(from: stringValue) else {
+            return nil
+        }
+        self.init(date)
     }
 
-    internal func configure() {
-        self.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
-        self.timeZone = TimeZone(secondsFromGMT: 0)
-        self.locale = Locale(identifier: "en_US_POSIX")
+    /// Date representation.
+    public var date: Date {
+        return Date(timeIntervalSince1970: TimeInterval(self.value / 1_000_000))
+    }
+
+    /// ISO 8601-ish formatted string.
+    public var stringValue: String {
+        return TimePointSec.dateFormatter.string(from: self.date)
     }
 }
 
 /// Type representing a timestap with second accuracy.
 public struct TimePointSec: Equatable, Hashable {
-    static let dateFormatter = TimePointFormatter()
+    internal static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        return formatter
+    }()
 
     /// Seconds sinze 1970.
-    var value: UInt32
+    public var value: UInt32
 
-    init(_ timestamp: UInt32) {
-        self.value = timestamp
+    /// Create a new instance from raw value.
+    /// - Parameter value: Seconds since 1970.
+    public init(_ value: UInt32) {
+        self.value = value
     }
 
+    /// Create a new instance from a ISO 8601-ish date.
+    /// - Parameter date: Date string, e.g. `2019-01-22T21:42:55`.
     public init?(_ date: String) {
         guard let date = Self.dateFormatter.date(from: date) else {
             return nil
@@ -43,16 +77,45 @@ public struct TimePointSec: Equatable, Hashable {
         self.value = UInt32(date.timeIntervalSince1970)
     }
 
-    var date: Date {
+    /// Date representation.
+    public var date: Date {
         return Date(timeIntervalSince1970: TimeInterval(self.value))
     }
 
-    var stringValue: String {
+    /// ISO 8601-ish formatted string.
+    public var stringValue: String {
         return Self.dateFormatter.string(from: self.date)
     }
 }
 
 // MARK: ABI Coding
+
+extension TimePoint: ABICodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let date = try container.decode(String.self)
+        guard let instance = Self(date) else {
+            throw DecodingError.dataCorruptedError(
+                in: container, debugDescription: "Unable to decode date"
+            )
+        }
+        self = instance
+    }
+
+    public init(fromAbi decoder: ABIDecoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.value = try container.decode(Int64.self)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.stringValue)
+    }
+
+    public func abiEncode(to encoder: ABIEncoder) throws {
+        try encoder.encode(self.value)
+    }
+}
 
 extension TimePointSec: ABICodable {
     public init(from decoder: Decoder) throws {
@@ -82,6 +145,24 @@ extension TimePointSec: ABICodable {
 
 // MARK: Language extensions
 
+extension TimePoint: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        self = TimePoint(value) ?? TimePoint(0)
+    }
+}
+
+extension TimePoint: LosslessStringConvertible {
+    public var description: String {
+        return self.stringValue
+    }
+}
+
+extension TimePoint: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: Int64) {
+        self.value = value
+    }
+}
+
 extension TimePointSec: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
         self = TimePointSec(value) ?? TimePointSec(0)
@@ -91,5 +172,11 @@ extension TimePointSec: ExpressibleByStringLiteral {
 extension TimePointSec: LosslessStringConvertible {
     public var description: String {
         return self.stringValue
+    }
+}
+
+extension TimePointSec: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: UInt32) {
+        self.value = value
     }
 }
