@@ -82,6 +82,7 @@ extension Transaction {
         let encoder = ABIEncoder()
         var data: Data = try encoder.encode(self)
         data.insert(contentsOf: chainId.bytes, at: 0)
+        data.append(Data(repeating: 0, count: 32))
         return Checksum256.hash(data)
     }
 }
