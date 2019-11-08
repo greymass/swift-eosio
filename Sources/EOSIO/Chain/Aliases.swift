@@ -7,6 +7,23 @@ import Foundation
 
 public typealias ChainId = Checksum256
 public typealias BlockId = Checksum256
+
+public extension BlockId {
+    /// Get the block prefix, the lower 32 bits of the `BlockId`.
+    var blockPrefix: UInt32 {
+        self.bytes.withUnsafeBytes {
+            $0.load(fromByteOffset: 8, as: UInt32.self)
+        }
+    }
+
+    /// Get the block number.
+    var blockNum: BlockNum {
+        self.bytes.withUnsafeBytes {
+            UInt32(bigEndian: $0.load(fromByteOffset: 0, as: UInt32.self))
+        }
+    }
+}
+
 // typealias TransactionId = Checksum256
 public typealias Digest = Checksum256
 public typealias Weight = UInt16
