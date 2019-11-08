@@ -109,7 +109,7 @@ public class Client {
             return Result.failure(Error.networkError(message: "Response body empty", error: nil))
         }
         let decoder = Client.JSONDecoder()
-        if httpResponse.statusCode != 200 {
+        if httpResponse.statusCode > 299 {
             do {
                 let error = try decoder.decode(ResponseError.self, from: data)
                 return Result.failure(Error.responseError(error: error))
