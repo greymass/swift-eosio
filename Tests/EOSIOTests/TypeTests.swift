@@ -160,4 +160,10 @@ final class TypeTests: XCTestCase {
             "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
         )
     }
+
+    func testBlockId() {
+        let id: BlockId = "0181700002e623f2bf291b86a10a5cec4caab4954d4231f31f050f4f86f26116"
+        XCTAssertEqual(id.blockPrefix, 2_249_927_103)
+        XCTAssertEqual(id.blockNum, 25_260_032)
+    }
 }
