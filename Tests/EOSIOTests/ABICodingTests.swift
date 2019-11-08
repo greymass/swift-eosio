@@ -174,4 +174,14 @@ final class ABICodableTests: XCTestCase {
             """
         )
     }
+
+    func testPublicKey() {
+        AssertABICodable(
+            PublicKey("PUB_K1_5AHoNnWetuDhKWSDx3WUf8W7Dg5xjHCMc4yHmmSiaJCFvvAgnB"),
+            """
+            "PUB_K1_5AHoNnWetuDhKWSDx3WUf8W7Dg5xjHCMc4yHmmSiaJCFvvAgnB"
+            """,
+            "000223E0AE8AACB41B06DC74AF1A56B2EB69133F07F7F75BD1D5E53316BFF195EDF4"
+        )
+    }
 }

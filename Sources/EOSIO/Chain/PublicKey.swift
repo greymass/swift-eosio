@@ -109,6 +109,57 @@ public struct PublicKey: Equatable, Hashable {
     }
 }
 
+// MARK: ABI Coding
+
+extension PublicKey: ABICodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        try self.init(stringValue: try container.decode(String.self))
+    }
+
+    public init(fromAbi decoder: ABIDecoder) throws {
+        let type = try decoder.decode(UInt8.self)
+        let data = try decoder.decode(Data.self, byteCount: 33)
+        if type == 0 {
+            self.value = .k1(key: data)
+        } else {
+            switch type {
+            case 1:
+                self.value = .unknown(name: "R1", data: data)
+            case 2:
+                self.value = .unknown(name: "WA", data: data)
+            default:
+                self.value = .unknown(name: "XX", data: data)
+            }
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.stringValue)
+    }
+
+    public func abiEncode(to encoder: ABIEncoder) throws {
+        switch self.value {
+        case let .k1(data):
+            try encoder.encode(0 as UInt8)
+            try encoder.encode(contentsOf: data)
+        case let .unknown(name, data):
+            let type: UInt8
+            switch name {
+            case "R1":
+                type = 1
+            case "WA":
+                type = 2
+            default:
+                type = 255
+            }
+            try encoder.encode(type)
+            try encoder.encode(contentsOf: data)
+        }
+    }
+}
+
 // MARK: Language extensions
 
 extension PublicKey: LosslessStringConvertible {

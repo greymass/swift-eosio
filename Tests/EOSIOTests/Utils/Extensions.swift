@@ -25,15 +25,15 @@ extension String {
     /// Decodes and re-encodes a JSON string with sorted keys and formatting.
     /// Also removes null keys, see: https://bugs.swift.org/browse/SR-9232
     var normalizedJSON: String {
-        let obj = try! JSONSerialization.jsonObject(with: self.data(using: .utf8)!, options: [])
+        let obj = try! JSONSerialization.jsonObject(with: self.data(using: .utf8)!, options: [.allowFragments])
         let opts: JSONSerialization.WritingOptions
         #if os(Linux)
-            opts = [.prettyPrinted, .sortedKeys]
+            opts = [.prettyPrinted, .sortedKeys, .fragmentsAllowed]
         #else
             if #available(macOS 10.13, *) {
-                opts = [.prettyPrinted, .sortedKeys]
+                opts = [.prettyPrinted, .sortedKeys, .fragmentsAllowed]
             } else {
-                opts = .prettyPrinted
+                opts = [.prettyPrinted, .fragmentsAllowed]
             }
         #endif
         let data = try! JSONSerialization.data(withJSONObject: obj, options: opts)
