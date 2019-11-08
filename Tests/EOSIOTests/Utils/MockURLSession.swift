@@ -43,12 +43,16 @@ struct MockSession: SessionAdapter {
         case .replay:
             return MockDataTask(session: self, request: request, completionHandler: completionHandler)
         case .record:
+            let fileUrl = self.fileUrl(for: request)
+            if FileManager.default.fileExists(atPath: fileUrl.path) {
+                print("MockSession: Using existing response for \(request.url!): \(fileUrl.lastPathComponent)")
+                return MockDataTask(session: self, request: request, completionHandler: completionHandler)
+            }
             let session = URLSession.shared
             let task: URLSessionDataTask = session.dataTask(with: request) { data, response, error in
                 if let data = data, let response = response as? HTTPURLResponse {
                     let res = FileResponse(response, data)
                     do {
-                        let fileUrl = self.fileUrl(for: request)
                         print("MockSession: Saving response from \(request.url!) to \(fileUrl.lastPathComponent)")
                         try res.write(to: fileUrl)
                     } catch {
