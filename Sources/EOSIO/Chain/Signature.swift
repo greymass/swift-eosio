@@ -117,6 +117,53 @@ public struct Signature: Equatable, Hashable {
     }
 }
 
+// MARK: ABI Coding
+
+extension Signature: ABICodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        try self.init(stringValue: try container.decode(String.self))
+    }
+
+    public init(fromAbi decoder: ABIDecoder) throws {
+        let type = try decoder.decode(UInt8.self)
+        let data = try decoder.decode(Data.self, byteCount: 65)
+        if type == 0 {
+            self = try Signature(fromK1Data: data)
+        } else {
+            switch type {
+            case 1:
+                self.value = .unknown(name: "R1", data: data)
+            case 2:
+                self.value = .unknown(name: "WA", data: data)
+            default:
+                self.value = .unknown(name: "XX", data: data)
+            }
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.stringValue)
+    }
+
+    public func abiEncode(to encoder: ABIEncoder) throws {
+        let type: UInt8
+        switch self.signatureType {
+        case "K1":
+            type = 0
+        case "R1":
+            type = 1
+        case "WA":
+            type = 2
+        default:
+            type = 255
+        }
+        try encoder.encode(type)
+        try encoder.encode(contentsOf: self.signatureData)
+    }
+}
+
 // MARK: Language extensions
 
 extension Signature: LosslessStringConvertible {
