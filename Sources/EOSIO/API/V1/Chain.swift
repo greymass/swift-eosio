@@ -192,4 +192,25 @@ public extension API.V1.Chain {
             self.table = table
         }
     }
+
+    /// Push a transaction.
+    struct PushTransaction: Request {
+        public static let path = "/v1/chain/push_transaction"
+        public struct Response: Decodable {
+            let transactionId: TransactionId
+            // TODO: decode traces
+            // let processed: transaction_trace
+        }
+
+        public var signedTransaction: SignedTransaction
+
+        public init(_ signedTransaction: SignedTransaction) {
+            self.signedTransaction = signedTransaction
+        }
+
+        public func encode(to encoder: Encoder) throws {
+            let packed = try PackedTransaction(self.signedTransaction)
+            try packed.encode(to: encoder)
+        }
+    }
 }

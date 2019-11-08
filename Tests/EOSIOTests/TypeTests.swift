@@ -132,10 +132,7 @@ final class TypeTests: XCTestCase {
             account: "decentiumorg",
             name: "post",
             authorization: [
-                PermissionLevel(
-                    actor: "almstdigital",
-                    permission: "active"
-                ),
+                PermissionLevel("almstdigital", "active"),
             ],
             data: """
             104d76cca58c65340b48656c6c6f20576f
@@ -152,6 +149,12 @@ final class TypeTests: XCTestCase {
 
         AssertABICodable(transaction, ref.json, ref.bin)
         XCTAssertEqual(transaction.id, "0ef9aa310e6e7efb7b10192dc80e5b09826c4369be6b1ba54990b8a66302500e")
+
+        // Test dynamic member lookup
+        var signed = SignedTransaction(transaction)
+        signed.expiration = 1_234_567_890
+        XCTAssertEqual(signed.transaction.header.expiration, 1_234_567_890)
+        XCTAssertEqual(signed.expiration, signed.transaction.header.expiration)
     }
 
     func testChecksum256() {

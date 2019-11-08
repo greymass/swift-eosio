@@ -35,8 +35,15 @@ public struct TransactionHeader: ABICodable, Equatable, Hashable {
         self.refBlockNum = refBlockNum
         self.refBlockPrefix = refBlockPrefix
     }
+
+    public init(expiration: TimePointSec, refBlockId: BlockId) {
+        self.expiration = expiration
+        self.refBlockNum = UInt16(refBlockId.blockNum & 0xFFFF)
+        self.refBlockPrefix = refBlockId.blockPrefix
+    }
 }
 
+@dynamicMemberLookup
 public struct Transaction: ABICodable, Equatable, Hashable {
     /// The transaction header.
     public var header: TransactionHeader
@@ -51,19 +58,67 @@ public struct Transaction: ABICodable, Equatable, Hashable {
         self.header = header
         self.actions = actions
     }
+
+    public subscript<T>(dynamicMember keyPath: WritableKeyPath<TransactionHeader, T>) -> T {
+        get { self.header[keyPath: keyPath] }
+        set { self.header[keyPath: keyPath] = newValue }
+    }
 }
 
+@dynamicMemberLookup
 public struct SignedTransaction: ABICodable, Equatable, Hashable {
     /// The transaction that is signed.
     public var transaction: Transaction
     /// List of signatures.
-    public var signatures: [Signature] = []
+    public var signatures: [Signature]
     /// Context-free action data, for each context-free action, there is an entry here.
-    public var contextFreeData: [Data] = []
+    public var contextFreeData: [Data]
 
-    public init(_ transaction: Transaction, signatures: [Signature] = []) {
+    public init(_ transaction: Transaction, signatures: [Signature] = [], contextFreeData: [Data] = []) {
         self.transaction = transaction
         self.signatures = signatures
+        self.contextFreeData = contextFreeData
+    }
+
+    public subscript<T>(dynamicMember keyPath: WritableKeyPath<Transaction, T>) -> T {
+        get { self.transaction[keyPath: keyPath] }
+        set { self.transaction[keyPath: keyPath] = newValue }
+    }
+}
+
+public struct PackedTransaction: ABICodable, Equatable, Hashable {
+    public enum Compression: UInt8, ABICodable {
+        case none = 0
+        case gzip = 1
+    }
+
+    public enum Error: Swift.Error {
+        case unsupportedCompression(Compression)
+    }
+
+    public let signatures: [Signature]
+    public let compression: Compression
+    public let packedContextFreeData: Data
+    public let packedTrx: Data
+
+    public init(_ signedTransaction: SignedTransaction) throws {
+        let encoder = ABIEncoder()
+        self.compression = .none
+        self.packedTrx = try encoder.encode(signedTransaction.transaction)
+        self.packedContextFreeData = try encoder.encode(signedTransaction.contextFreeData)
+        self.signatures = signedTransaction.signatures
+    }
+
+    public func unpack() throws -> SignedTransaction {
+        guard self.compression == .none else {
+            throw Error.unsupportedCompression(self.compression)
+        }
+        let decoder = ABIDecoder()
+        let transaction = try decoder.decode(Transaction.self, from: self.packedTrx)
+        let contextFreeData = try decoder.decode([Data].self, from: self.packedContextFreeData)
+        return SignedTransaction(transaction,
+                                 signatures: self.signatures,
+                                 contextFreeData: contextFreeData)
     }
 }
 
