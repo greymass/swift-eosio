@@ -25,7 +25,7 @@ public struct PrivateKey: Equatable, Hashable {
     private let value: StorageType
 
     /// Create a new `PrivateKey` instance from k1 data.
-    internal init(fromK1Data data: Data) throws {
+    public init(fromK1Data data: Data) throws {
         guard data.count == 33 else {
             throw Error.invalidK1("Expected 33 bytes, got \(data.count)")
         }
@@ -68,7 +68,7 @@ public struct PrivateKey: Equatable, Hashable {
     }
 
     /// Sign a 32-byte digest using this key.
-    func sign(_ hash: Checksum256) throws -> Signature {
+    public func sign(_ hash: Checksum256) throws -> Signature {
         switch self.value {
         case let .k1(secret):
             let res = try signK1(message: hash.bytes, using: secret)
@@ -79,12 +79,12 @@ public struct PrivateKey: Equatable, Hashable {
     }
 
     /// Sign a data buffer using this key.
-    func sign(_ data: Data) throws -> Signature {
+    public func sign(_ data: Data) throws -> Signature {
         return try self.sign(Checksum256.hash(data))
     }
 
     /// Return the corresponding public key for this instance.
-    func getPublic() throws -> PublicKey {
+    public func getPublic() throws -> PublicKey {
         switch self.value {
         case let .k1(secret):
             let res = try Secp256k1.shared.createPublic(fromSecret: secret)
@@ -95,7 +95,7 @@ public struct PrivateKey: Equatable, Hashable {
     }
 
     /// The key type as a string, .e.g. K1 or R1.
-    var keyType: String {
+    public var keyType: String {
         switch self.value {
         case .k1:
             return "K1"
@@ -105,7 +105,7 @@ public struct PrivateKey: Equatable, Hashable {
     }
 
     /// The key secret.
-    var keyData: Data {
+    public var keyData: Data {
         switch self.value {
         case let .k1(secret):
             return secret
@@ -115,7 +115,7 @@ public struct PrivateKey: Equatable, Hashable {
     }
 
     /// The private key represented as WIF* for k1 keys or EOSIO-style `PVT_<type>_base58` for others.
-    var stringValue: String {
+    public var stringValue: String {
         switch self.value {
         case let .k1(secret): // encode as WIF
             var data = Data([0x80]) // network id is fixed to 0x80 (a.k.a. mainnet)
