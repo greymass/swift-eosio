@@ -13,9 +13,9 @@ public extension API.V1.History {
             /// Account names controlled by key.
             public let accountNames: [Name]
         }
-        
+
         public var publicKey: PublicKey
-        
+
         public init(_ publicKey: PublicKey) {
             self.publicKey = publicKey
         }
