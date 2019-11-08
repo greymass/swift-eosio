@@ -59,4 +59,11 @@ final class APITests: XCTestCase {
         let actions = res?.decodedAbi?.actions.map { $0.name }
         XCTAssertEqual(actions, ["close", "create", "issue", "open", "retire", "transfer"])
     }
+    
+    func testGetKeyAccounts() {
+        let req = API.V1.History.GetKeyAccounts("EOS5sxJmaM1xuiuvTGH2GyUW1ZTpC2NZJjX7EtEDqJSPdF6Wos55V")
+        let res = try? client.sendSync(req).get()
+        XCTAssertEqual(res?.accountNames, ["catpianodogs"])
+    }
+    
 }

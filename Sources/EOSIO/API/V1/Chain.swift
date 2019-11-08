@@ -100,7 +100,7 @@ public extension API.V1.Chain {
 
         public var accountName: Name
         public var codeAsWasm = true
-        
+
         public init(_ accountName: Name) {
             self.accountName = accountName
         }
