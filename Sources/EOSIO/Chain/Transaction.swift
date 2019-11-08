@@ -24,31 +24,47 @@ public struct TransactionHeader: ABICodable, Equatable, Hashable {
     /// Specifies the lower 32 bits of the blockid.
     public var refBlockPrefix: UInt32
     /// Upper limit on total network bandwidth (in 8 byte words) billed for this transaction.
-    public var maxNetUsageWords: UInt
+    public var maxNetUsageWords: UInt = 0
     /// Upper limit on the total CPU time billed for this transaction.
-    public var maxCpuUsageMs: UInt8
+    public var maxCpuUsageMs: UInt8 = 0
     /// Number of seconds to delay this transaction for during which it may be canceled.
-    public var delaySec: UInt
+    public var delaySec: UInt = 0
+
+    public init(expiration: TimePointSec, refBlockNum: UInt16, refBlockPrefix: UInt32) {
+        self.expiration = expiration
+        self.refBlockNum = refBlockNum
+        self.refBlockPrefix = refBlockPrefix
+    }
 }
 
 public struct Transaction: ABICodable, Equatable, Hashable {
     /// The transaction header.
     public var header: TransactionHeader
     /// The context free actions in the transaction.
-    public var contextFreeActions: [Action]
+    public var contextFreeActions: [Action] = []
     /// The actions in the transaction.
-    public var actions: [Action]
+    public var actions: [Action] = []
     /// Transaction extensions.
-    public var transactionExtensions: [TransactionExtension]
+    public var transactionExtensions: [TransactionExtension] = []
+
+    public init(_ header: TransactionHeader, actions: [Action] = []) {
+        self.header = header
+        self.actions = actions
+    }
 }
 
 public struct SignedTransaction: ABICodable, Equatable, Hashable {
     /// The transaction that is signed.
     public var transaction: Transaction
     /// List of signatures.
-    public var signatures: [Data]
+    public var signatures: [Signature] = []
     /// Context-free action data, for each context-free action, there is an entry here.
-    public var contextFreeData: [Data]
+    public var contextFreeData: [Data] = []
+
+    public init(_ transaction: Transaction, signatures: [Signature] = []) {
+        self.transaction = transaction
+        self.signatures = signatures
+    }
 }
 
 // MARK: Signing digest

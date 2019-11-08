@@ -125,10 +125,7 @@ final class TypeTests: XCTestCase {
         let header = TransactionHeader(
             expiration: "2019-05-25T01:49:05",
             refBlockNum: 23205,
-            refBlockPrefix: 2_823_474_609,
-            maxNetUsageWords: 0,
-            maxCpuUsageMs: 0,
-            delaySec: 0
+            refBlockPrefix: 2_823_474_609
         )
 
         let action = Action(
@@ -151,12 +148,7 @@ final class TypeTests: XCTestCase {
             """
         )
 
-        let transaction = Transaction(
-            header: header,
-            contextFreeActions: [],
-            actions: [action],
-            transactionExtensions: []
-        )
+        let transaction = Transaction(header, actions: [action])
 
         AssertABICodable(transaction, ref.json, ref.bin)
         XCTAssertEqual(transaction.id, "0ef9aa310e6e7efb7b10192dc80e5b09826c4369be6b1ba54990b8a66302500e")
