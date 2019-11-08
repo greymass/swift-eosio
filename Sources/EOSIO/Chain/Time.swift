@@ -22,7 +22,7 @@ public struct TimePoint: Equatable, Hashable {
     public init(_ value: Int64) {
         self.value = value
     }
-    
+
     /// Create a new instance from a date.
     public init(_ date: Date) {
         self.value = Int64(date.timeIntervalSince1970 * 1_000_000)
@@ -66,6 +66,10 @@ public struct TimePointSec: Equatable, Hashable {
     /// - Parameter value: Seconds since 1970.
     public init(_ value: UInt32) {
         self.value = value
+    }
+
+    public init(_ date: Date) {
+        self.value = UInt32(date.timeIntervalSince1970)
     }
 
     /// Create a new instance from a ISO 8601-ish date.
