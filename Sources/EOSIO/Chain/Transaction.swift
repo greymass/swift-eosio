@@ -78,10 +78,10 @@ extension Transaction {
         return Checksum256.hash(data)
     }
 
-    public func digest(using chainId: Data) throws -> Checksum256 {
+    public func digest(using chainId: ChainId) throws -> Checksum256 {
         let encoder = ABIEncoder()
         var data: Data = try encoder.encode(self)
-        data.insert(contentsOf: chainId, at: 0)
+        data.insert(contentsOf: chainId.bytes, at: 0)
         return Checksum256.hash(data)
     }
 }
