@@ -83,6 +83,12 @@ public struct PrivateKey: Equatable, Hashable {
         return try self.sign(Checksum256.hash(data))
     }
 
+    /// Sign a transaction using this key.
+    public func sign(_ transaction: Transaction, using chainId: ChainId) throws -> Signature {
+        let digest = try transaction.digest(using: chainId)
+        return try self.sign(digest)
+    }
+
     /// Return the corresponding public key for this instance.
     public func getPublic() throws -> PublicKey {
         switch self.value {

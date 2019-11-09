@@ -30,12 +30,14 @@ public struct TransactionHeader: ABICodable, Equatable, Hashable {
     /// Number of seconds to delay this transaction for during which it may be canceled.
     public var delaySec: UInt = 0
 
+    /// Create a new transaction header.
     public init(expiration: TimePointSec, refBlockNum: UInt16, refBlockPrefix: UInt32) {
         self.expiration = expiration
         self.refBlockNum = refBlockNum
         self.refBlockPrefix = refBlockPrefix
     }
 
+    /// Create a new transaction header by getting the reference values from a block id.
     public init(expiration: TimePointSec, refBlockId: BlockId) {
         self.expiration = expiration
         self.refBlockNum = UInt16(refBlockId.blockNum & 0xFFFF)

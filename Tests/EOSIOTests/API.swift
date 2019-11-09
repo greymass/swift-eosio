@@ -24,7 +24,7 @@ struct BlogRow: ABICodable {
 let env = ProcessInfo.processInfo.environment
 let mockSession = MockSession(
     resourcePath.appendingPathComponent("API", isDirectory: true),
-    mode: .record // env["MOCK_RECORD"] != nil ? .record : .replay
+    mode: env["MOCK_RECORD"] != nil ? .record : .replay
 )
 let nodeAddress = URL(string: "https://jungle.greymass.com")! // only used when recording
 let client = Client(address: nodeAddress, session: mockSession)
@@ -85,13 +85,12 @@ final class APITests: XCTestCase {
 
         let info = try! client.sendSync(API.V1.Chain.GetInfo()).get()
 
-        let expiration = TimePointSec(info.headBlockTime.date.addingTimeInterval(60))
-        let header = TransactionHeader(expiration: expiration,
+        let expiration = info.headBlockTime.addingTimeInterval(60)
+        let header = TransactionHeader(expiration: TimePointSec(expiration),
                                        refBlockId: info.lastIrreversibleBlockId)
 
         let transaction = Transaction(header, actions: [action])
-        let digest = try! transaction.digest(using: "e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473")
-        let signature = try! key.sign(digest)
+        let signature = try! key.sign(transaction, using: info.chainId)
 
         let signedTransaction = SignedTransaction(transaction, signatures: [signature])
 

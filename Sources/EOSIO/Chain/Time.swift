@@ -28,6 +28,11 @@ public struct TimePoint: Equatable, Hashable {
         self.value = Int64(date.timeIntervalSince1970 * 1_000_000)
     }
 
+    /// Create a new instance from a `TimePointSec`
+    public init(_ timePointSec: TimePointSec) {
+        self.value = Int64(timePointSec.value) * 1_000_000
+    }
+
     /// Create a new instance from a ISO 8601-ish date.
     /// - Parameter stringValue: Date string, e.g. `2019-01-22T21:42:55.123`.
     public init?(_ stringValue: String) {
@@ -45,6 +50,16 @@ public struct TimePoint: Equatable, Hashable {
     /// ISO 8601-ish formatted string.
     public var stringValue: String {
         return TimePointSec.dateFormatter.string(from: self.date)
+    }
+
+    /// Adds a time interval to this time point.
+    mutating func addTimeInterval(_ timeInterval: TimeInterval) {
+        self.value += Int64(timeInterval * 1_000_000)
+    }
+
+    /// Creates a new time point by adding a time interval.
+    func addingTimeInterval(_ timeInterval: TimeInterval) -> TimePoint {
+        return TimePoint(self.value + Int64(timeInterval * 1_000_000))
     }
 }
 
@@ -68,8 +83,14 @@ public struct TimePointSec: Equatable, Hashable {
         self.value = value
     }
 
+    /// Create a new instance from a Date.
     public init(_ date: Date) {
         self.value = UInt32(date.timeIntervalSince1970)
+    }
+
+    /// Create a new instance from a TimePoint.
+    public init(_ timePoint: TimePoint) {
+        self.value = UInt32(timePoint.value / 1_000_000)
     }
 
     /// Create a new instance from a ISO 8601-ish date.
@@ -89,6 +110,16 @@ public struct TimePointSec: Equatable, Hashable {
     /// ISO 8601-ish formatted string.
     public var stringValue: String {
         return Self.dateFormatter.string(from: self.date)
+    }
+
+    /// Adds a time interval to this time point.
+    mutating func addTimeInterval(_ timeInterval: TimeInterval) {
+        self.value += UInt32(timeInterval)
+    }
+
+    /// Creates a new time point by adding a time interval.
+    func addingTimeInterval(_ timeInterval: TimeInterval) -> TimePointSec {
+        return TimePointSec(self.value + UInt32(timeInterval))
     }
 }
 
