@@ -98,7 +98,6 @@ final class TypeTests: XCTestCase {
         XCTAssertThrowsError(try Asset(stringValue: "123CONS"))
         XCTAssertThrowsError(try Asset(stringValue: "num4 BAD"))
         XCTAssertNil(Asset("invalid string" as String))
-        XCTAssertEqual("invalid literal" as Asset, "0 INVALID")
     }
 
     func testAssetSymbol() {
@@ -116,7 +115,6 @@ final class TypeTests: XCTestCase {
         XCTAssertThrowsError(try Asset.Symbol(stringValue: "-1,NEGS"))
         XCTAssertThrowsError(try Asset.Symbol(stringValue: "boops"))
         XCTAssertNil(Asset.Symbol("invalid string" as String))
-        XCTAssertEqual("invalid literal" as Asset.Symbol, "0,INVALID")
     }
 
     func testTransaction() {

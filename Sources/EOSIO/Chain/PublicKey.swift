@@ -18,9 +18,6 @@ public struct PublicKey: Equatable, Hashable {
         case unknownSignatureType
     }
 
-    /// Invalid public key, used to represent invalid string literals.
-    public static let invalid = PublicKey(value: .unknown(name: "XX", data: Data(repeating: 0, count: 8)))
-
     /// The key data.
     private let value: StorageType
 
@@ -177,10 +174,9 @@ extension PublicKey: LosslessStringConvertible {
 
 extension PublicKey: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        if let instance = try? PublicKey(stringValue: value) {
-            self = instance
-        } else {
-            self = Self.invalid
+        guard let instance = try? PublicKey(stringValue: value) else {
+            fatalError("Invalid PublicKey literal")
         }
+        self = instance
     }
 }

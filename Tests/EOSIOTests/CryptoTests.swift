@@ -69,11 +69,6 @@ final class CryptoTests: XCTestCase {
         XCTAssertEqual(unknownPriv.stringValue, "PVT_XY_5EL7pLoLEPEMJ3Qr4")
 
         XCTAssertEqual("\(unknownPriv)", "PrivateKeyXY")
-        XCTAssertEqual("\(PrivateKey.invalid)", "InvalidPrivateKey")
-
-        XCTAssertEqual("garbage literal", PublicKey.invalid)
-        XCTAssertEqual("garbage literal", PrivateKey.invalid)
-        XCTAssertEqual("garbage literal", Signature.invalid)
 
         XCTAssertNil(PublicKey("garbage" as String))
         XCTAssertNil(PrivateKey("garbage" as String))

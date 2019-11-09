@@ -18,9 +18,6 @@ public struct PrivateKey: Equatable, Hashable {
         case unknownKeyType
     }
 
-    /// Invalid `PrivateKey`, used to represent invalid string literals.
-    public static let invalid = PrivateKey(value: .unknown(name: "XX", data: Data(repeating: 0, count: 8)))
-
     /// The key data.
     private let value: StorageType
 
@@ -176,19 +173,15 @@ extension PrivateKey {
 
 extension PrivateKey: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        if let instance = try? PrivateKey(stringValue: value) {
-            self = instance
-        } else {
-            self = Self.invalid
+        guard let instance = try? PrivateKey(stringValue: value) else {
+            fatalError("Invalid PrivateKey literal")
         }
+        self = instance
     }
 }
 
 extension PrivateKey: CustomStringConvertible {
     public var description: String {
-        if self == Self.invalid {
-            return "InvalidPrivateKey"
-        }
         return "PrivateKey\(self.keyType)"
     }
 }

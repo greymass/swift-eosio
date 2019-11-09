@@ -182,7 +182,10 @@ extension TimePointSec: ABICodable {
 
 extension TimePoint: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self = TimePoint(value) ?? TimePoint(0)
+        guard let instance = TimePoint(value) else {
+            fatalError("Invalid TimePoint literal")
+        }
+        self = instance
     }
 }
 
@@ -200,7 +203,10 @@ extension TimePoint: ExpressibleByIntegerLiteral {
 
 extension TimePointSec: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self = TimePointSec(value) ?? TimePointSec(0)
+        guard let instance = TimePointSec(value) else {
+            fatalError("Invalid TimePointSec literal")
+        }
+        self = instance
     }
 }
 

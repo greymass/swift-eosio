@@ -234,30 +234,23 @@ extension Asset.Symbol: ABICodable {
 
 // MARK: Language extensions
 
-private let InvalidSymbol = try! Asset.Symbol(0, "INVALID")
-private let InvalidAsset = Asset(units: 0, symbol: InvalidSymbol)
-
 extension Asset: ExpressibleByStringLiteral {
     /// Creates an instance initialized to the given string value.
-    /// - Note: Invalid assets will be resolved to `0 INVALID`
     public init(stringLiteral value: String) {
-        if let asset = try? Self(stringValue: value) {
-            self = asset
-        } else {
-            self = InvalidAsset
+        guard let asset = try? Self(stringValue: value) else {
+            fatalError("Invalid Asset literal")
         }
+        self = asset
     }
 }
 
 extension Asset.Symbol: ExpressibleByStringLiteral {
     /// Creates an instance initialized to the given string value.
-    /// - Note: Invalid symbols will be resolved to `0,INVALID`
     public init(stringLiteral value: String) {
-        if let symbol = try? Self(stringValue: value) {
-            self = symbol
-        } else {
-            self = InvalidSymbol
+        guard let symbol = try? Self(stringValue: value) else {
+            fatalError("Invalid Symbol literal")
         }
+        self = symbol
     }
 }
 

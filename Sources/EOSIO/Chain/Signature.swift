@@ -18,9 +18,6 @@ public struct Signature: Equatable, Hashable {
         case unknownSignatureType
     }
 
-    /// Invalid signature, used to represent invalid string literals.
-    public static let invalid = Signature(value: .unknown(name: "XX", data: Data(repeating: 0, count: 8)))
-
     /// The signature data.
     private let value: StorageType
 
@@ -181,10 +178,9 @@ extension Signature: LosslessStringConvertible {
 
 extension Signature: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        if let instance = try? Signature(stringValue: value) {
-            self = instance
-        } else {
-            self = Self.invalid
+        guard let instance = try? Signature(stringValue: value) else {
+            fatalError("Invalid Signature literal")
         }
+        self = instance
     }
 }

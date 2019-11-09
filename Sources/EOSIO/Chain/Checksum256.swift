@@ -13,7 +13,7 @@ public struct Checksum256: Equatable, Hashable {
     }
 
     internal init(_ bytes: Data) {
-        precondition(bytes.count == 32, "invalid checksum")
+        assert(bytes.count == 32, "invalid checksum")
         self.bytes = bytes
     }
 }
@@ -34,7 +34,11 @@ extension Checksum256: LosslessStringConvertible {
 
 extension Checksum256: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        self.init(Data(hexEncoded: value))
+        let bytes = Data(hexEncoded: value)
+        guard bytes.count == 32 else {
+            fatalError("Invalid Checksum256 literal")
+        }
+        self.init(bytes)
     }
 }
 

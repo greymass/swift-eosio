@@ -3,14 +3,6 @@
 
 import Foundation
 
-public typealias TransactionId = Checksum256
-
-extension TransactionId {
-    public static var Invalid: Self {
-        return TransactionId(Data(repeating: 0, count: 32))
-    }
-}
-
 public struct TransactionExtension: ABICodable, Equatable, Hashable {
     public var type: UInt16
     public var data: Data
@@ -130,7 +122,7 @@ extension Transaction {
     public var id: TransactionId {
         let encoder = ABIEncoder()
         guard let data: Data = try? encoder.encode(self) else {
-            return TransactionId.Invalid
+            return Checksum256(Data(repeating: 0, count: 32))
         }
         return Checksum256.hash(data)
     }

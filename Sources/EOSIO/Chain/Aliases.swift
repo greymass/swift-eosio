@@ -24,7 +24,7 @@ public extension BlockId {
     }
 }
 
-// typealias TransactionId = Checksum256
+public typealias TransactionId = Checksum256
 public typealias Digest = Checksum256
 public typealias Weight = UInt16
 public typealias BlockNum = UInt32
