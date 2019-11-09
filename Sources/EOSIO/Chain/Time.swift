@@ -4,7 +4,7 @@
 import Foundation
 
 /// Type representing a timestap with microsecond accuracy.
-public struct TimePoint: Equatable, Hashable {
+public struct TimePoint: RawRepresentable, Equatable, Hashable {
     internal static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .iso8601)
@@ -15,22 +15,22 @@ public struct TimePoint: Equatable, Hashable {
     }()
 
     /// Nanoseconds since 1970.
-    public var value: Int64
+    public var rawValue: Int64
 
     /// Create a new instance.
     /// - Parameter value: Nanoseconds since 1970.
-    public init(_ value: Int64) {
-        self.value = value
+    public init(rawValue: Int64) {
+        self.rawValue = rawValue
     }
 
     /// Create a new instance from a date.
     public init(_ date: Date) {
-        self.value = Int64(date.timeIntervalSince1970 * 1_000_000)
+        self.rawValue = Int64(date.timeIntervalSince1970 * 1_000_000)
     }
 
     /// Create a new instance from a `TimePointSec`
     public init(_ timePointSec: TimePointSec) {
-        self.value = Int64(timePointSec.value) * 1_000_000
+        self.rawValue = Int64(timePointSec.rawValue) * 1_000_000
     }
 
     /// Create a new instance from a ISO 8601-ish date.
@@ -44,7 +44,7 @@ public struct TimePoint: Equatable, Hashable {
 
     /// Date representation.
     public var date: Date {
-        return Date(timeIntervalSince1970: TimeInterval(self.value / 1_000_000))
+        return Date(timeIntervalSince1970: TimeInterval(self.rawValue / 1_000_000))
     }
 
     /// ISO 8601-ish formatted string.
@@ -54,17 +54,17 @@ public struct TimePoint: Equatable, Hashable {
 
     /// Adds a time interval to this time point.
     mutating func addTimeInterval(_ timeInterval: TimeInterval) {
-        self.value += Int64(timeInterval * 1_000_000)
+        self.rawValue += Int64(timeInterval * 1_000_000)
     }
 
     /// Creates a new time point by adding a time interval.
     func addingTimeInterval(_ timeInterval: TimeInterval) -> TimePoint {
-        return TimePoint(self.value + Int64(timeInterval * 1_000_000))
+        return TimePoint(rawValue: self.rawValue + Int64(timeInterval * 1_000_000))
     }
 }
 
 /// Type representing a timestap with second accuracy.
-public struct TimePointSec: Equatable, Hashable {
+public struct TimePointSec: RawRepresentable, Equatable, Hashable {
     internal static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .iso8601)
@@ -75,22 +75,22 @@ public struct TimePointSec: Equatable, Hashable {
     }()
 
     /// Seconds sinze 1970.
-    public var value: UInt32
+    public var rawValue: UInt32
 
     /// Create a new instance from raw value.
     /// - Parameter value: Seconds since 1970.
-    public init(_ value: UInt32) {
-        self.value = value
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
     }
 
     /// Create a new instance from a Date.
     public init(_ date: Date) {
-        self.value = UInt32(date.timeIntervalSince1970)
+        self.rawValue = UInt32(date.timeIntervalSince1970)
     }
 
     /// Create a new instance from a TimePoint.
     public init(_ timePoint: TimePoint) {
-        self.value = UInt32(timePoint.value / 1_000_000)
+        self.rawValue = UInt32(timePoint.rawValue / 1_000_000)
     }
 
     /// Create a new instance from a ISO 8601-ish date.
@@ -99,12 +99,12 @@ public struct TimePointSec: Equatable, Hashable {
         guard let date = Self.dateFormatter.date(from: date) else {
             return nil
         }
-        self.value = UInt32(date.timeIntervalSince1970)
+        self.rawValue = UInt32(date.timeIntervalSince1970)
     }
 
     /// Date representation.
     public var date: Date {
-        return Date(timeIntervalSince1970: TimeInterval(self.value))
+        return Date(timeIntervalSince1970: TimeInterval(self.rawValue))
     }
 
     /// ISO 8601-ish formatted string.
@@ -114,12 +114,12 @@ public struct TimePointSec: Equatable, Hashable {
 
     /// Adds a time interval to this time point.
     mutating func addTimeInterval(_ timeInterval: TimeInterval) {
-        self.value += UInt32(timeInterval)
+        self.rawValue += UInt32(timeInterval)
     }
 
     /// Creates a new time point by adding a time interval.
     func addingTimeInterval(_ timeInterval: TimeInterval) -> TimePointSec {
-        return TimePointSec(self.value + UInt32(timeInterval))
+        return TimePointSec(rawValue: self.rawValue + UInt32(timeInterval))
     }
 }
 
@@ -139,7 +139,7 @@ extension TimePoint: ABICodable {
 
     public init(fromAbi decoder: ABIDecoder) throws {
         let container = try decoder.singleValueContainer()
-        self.value = try container.decode(Int64.self)
+        self.rawValue = try container.decode(Int64.self)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -148,7 +148,7 @@ extension TimePoint: ABICodable {
     }
 
     public func abiEncode(to encoder: ABIEncoder) throws {
-        try encoder.encode(self.value)
+        try encoder.encode(self.rawValue)
     }
 }
 
@@ -165,7 +165,7 @@ extension TimePointSec: ABICodable {
 
     public init(fromAbi decoder: ABIDecoder) throws {
         let container = try decoder.singleValueContainer()
-        self.value = try container.decode(UInt32.self)
+        self.rawValue = try container.decode(UInt32.self)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -174,7 +174,7 @@ extension TimePointSec: ABICodable {
     }
 
     public func abiEncode(to encoder: ABIEncoder) throws {
-        try encoder.encode(self.value)
+        try encoder.encode(self.rawValue)
     }
 }
 
@@ -194,7 +194,7 @@ extension TimePoint: LosslessStringConvertible {
 
 extension TimePoint: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: Int64) {
-        self.value = value
+        self.rawValue = value
     }
 }
 
@@ -212,6 +212,6 @@ extension TimePointSec: LosslessStringConvertible {
 
 extension TimePointSec: ExpressibleByIntegerLiteral {
     public init(integerLiteral value: UInt32) {
-        self.value = value
+        self.rawValue = value
     }
 }
