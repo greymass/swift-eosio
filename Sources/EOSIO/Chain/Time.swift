@@ -221,3 +221,15 @@ extension TimePointSec: ExpressibleByIntegerLiteral {
         self.rawValue = value
     }
 }
+
+extension TimePoint: Comparable {
+    public static func < (lhs: TimePoint, _: TimePoint) -> Bool {
+        return lhs.rawValue < lhs.rawValue
+    }
+}
+
+extension TimePointSec: Comparable {
+    public static func < (lhs: TimePointSec, rhs: TimePointSec) -> Bool {
+        return lhs.rawValue < rhs.rawValue
+    }
+}

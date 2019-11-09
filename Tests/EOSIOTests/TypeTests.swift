@@ -167,4 +167,14 @@ final class TypeTests: XCTestCase {
         XCTAssertEqual(id.blockPrefix, 2_249_927_103)
         XCTAssertEqual(id.blockNum, 25_260_032)
     }
+
+    func testTimePoint() {
+        let timeSec = TimePointSec(10)
+        XCTAssertEqual(timeSec, "1970-01-01T00:00:10")
+        XCTAssertGreaterThan(timeSec, 0)
+        var time = TimePoint(timeSec)
+        XCTAssertEqual(time.rawValue, 10_000_000)
+        time.addTimeInterval(0.123)
+        XCTAssertEqual(time, "1970-01-01T00:00:10.123")
+    }
 }
