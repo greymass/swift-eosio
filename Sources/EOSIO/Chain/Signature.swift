@@ -89,7 +89,7 @@ public struct Signature: Equatable, Hashable {
         return try self.recoverPublicKey(from: Checksum256.hash(message))
     }
 
-    var signatureType: String {
+    public var signatureType: String {
         switch self.value {
         case .k1:
             return "K1"
@@ -98,7 +98,7 @@ public struct Signature: Equatable, Hashable {
         }
     }
 
-    var signatureData: Data {
+    public var signatureData: Data {
         switch self.value {
         case let .k1(sig, recovery):
             return Data([UInt8(recovery) + 31]) + sig
@@ -107,7 +107,7 @@ public struct Signature: Equatable, Hashable {
         }
     }
 
-    var stringValue: String {
+    public var stringValue: String {
         let type = self.signatureType
         let encoded = self.signatureData.base58CheckEncodedString(.ripemd160Extra(Data(type.utf8)))!
         return "SIG_\(type)_\(encoded)"

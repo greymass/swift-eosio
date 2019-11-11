@@ -68,7 +68,7 @@ public struct PublicKey: Equatable, Hashable {
     }
 
     /// The key type as a string, .e.g. K1 or R1.
-    var keyType: String {
+    public var keyType: String {
         switch self.value {
         case .k1:
             return "K1"
@@ -78,7 +78,7 @@ public struct PublicKey: Equatable, Hashable {
     }
 
     /// The underlying key data.
-    var keyData: Data {
+    public var keyData: Data {
         switch self.value {
         case let .k1(data):
             return data
@@ -88,7 +88,7 @@ public struct PublicKey: Equatable, Hashable {
     }
 
     /// The string representation of the public key in modern EOSIO format, `PUB_<type>_<base58key>`.
-    var stringValue: String {
+    public var stringValue: String {
         let type = self.keyType
         let encoded = self.keyData.base58CheckEncodedString(.ripemd160Extra(Data(type.utf8)))!
         return "PUB_\(type)_\(encoded)"
@@ -96,7 +96,7 @@ public struct PublicKey: Equatable, Hashable {
 
     /// Legacy public key representation format, `EOS<base58key>`.
     /// - Note: Returns `nil` for other key formats than `K1`.
-    var legacyStringValue: String? {
+    public var legacyStringValue: String? {
         switch self.value {
         case let .k1(key):
             return "EOS\(key.base58CheckEncodedString(.ripemd160)!)"
