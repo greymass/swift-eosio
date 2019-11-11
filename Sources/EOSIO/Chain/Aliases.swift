@@ -71,3 +71,68 @@ private func BlockOne64(_ str: String) -> String {
     let len = bare.count
     return bare.padding(toLength: len + (4 - (len % 4)), withPad: "=", startingAt: 0)
 }
+
+public struct AccountResourceLimit: ABICodable, Equatable, Hashable {
+    /// Quantity used in current window.
+    public let used: Int64
+    /// Quantity available in current window (based upon fractional reserve).
+    public let available: Int64
+    /// Max per window under current congestion.
+    public let max: Int64
+}
+
+public struct PermissionLevelWeight: ABICodable, Equatable, Hashable {
+    let permission: PermissionLevel
+    let weight: Weight
+}
+
+public struct KeyWeight: ABICodable, Equatable, Hashable {
+    let key: PublicKey
+    let weight: Weight
+}
+
+public struct WaitWeight: ABICodable, Equatable, Hashable {
+    let waitSec: UInt32
+    let weight: Weight
+}
+
+public struct Authority: ABICodable, Equatable, Hashable {
+    let threshold: UInt32
+    let keys: [KeyWeight]
+    let accounts: [PermissionLevelWeight]
+    let waits: [WaitWeight]
+}
+
+/// EOSIO Float64 type, aka Double, encodes to a string on the wire instead of a number.
+///
+/// Swift typealiases are not honored for protocol resolution so we need a wrapper struct here.
+public struct Float64: Equatable, Hashable {
+    let value: Double
+}
+
+extension Float64: ABICodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        guard let value = Double(try container.decode(String.self)) else {
+            throw DecodingError.dataCorruptedError(
+                in: container, debugDescription: "Invalid Double string"
+            )
+        }
+        self.value = value
+    }
+
+    public init(fromAbi decoder: ABIDecoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.value = try container.decode(Double.self)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(String(self.value))
+    }
+
+    public func abiEncode(to encoder: ABIEncoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.value)
+    }
+}

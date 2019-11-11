@@ -99,4 +99,13 @@ final class APITests: XCTestCase {
 
         XCTAssertEqual(res.transactionId, transaction.id)
     }
+
+    func testGetAccount() {
+        let req = API.V1.Chain.GetAccount("eosio")
+        let res = try! client.sendSync(req).get()
+        XCTAssertEqual(res.accountName, "eosio")
+        XCTAssertEqual(res.cpuLimit.used, -1)
+        XCTAssertEqual(res.voterInfo?.proxy, 0)
+        XCTAssertEqual(res.voterInfo?.producers.count, 0)
+    }
 }

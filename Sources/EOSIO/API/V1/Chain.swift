@@ -6,6 +6,49 @@ public extension API.V1 {
 }
 
 public extension API.V1.Chain {
+    /// Type representing user resources from, the eosio.system contract.
+    struct UserResources: ABICodable, Equatable, Hashable {
+        let owner: Name
+        let netWeight: Asset
+        let cpuWeight: Asset
+        let ramBytes: Int64
+    }
+
+    /// Type representing delegated bandwidth, from the eosio.system contract.
+    struct DelegatedBandwidth: ABICodable, Equatable, Hashable {
+        let from: Name
+        let to: Name
+        let netWeight: Asset
+        let cpuWeight: Asset
+    }
+
+    /// Type representing a refund request, from the eosio.system contract.
+    struct RefundRequest: ABICodable, Equatable, Hashable {
+        let owner: Name
+        let requestTime: TimePointSec
+        let netAmount: Asset
+        let cpuAmount: Asset
+    }
+
+    /// Type representing a refund request, from the eosio.system contract.
+    struct VoterInfo: Decodable, Equatable, Hashable {
+        let owner: Name
+        let proxy: Name
+        let producers: [Name]
+        let staked: Int64
+        let lastVoteWeight: Float64
+        let proxiedVoteWeight: Float64
+        let isProxy: UInt8 // ABI says bool but eosio serializer gives a number?
+        // omitted, flags1, reserved2, reserved3
+    }
+
+    /// Permission type, only used in chain api.
+    struct Permission: ABICodable, Equatable, Hashable {
+        let permName: Name
+        let parent: Name
+        let requiredAuth: Authority
+    }
+
     /// Various details about the blockchain.
     struct GetInfo: Request {
         public static let path = "/v1/chain/get_info"
@@ -211,6 +254,43 @@ public extension API.V1.Chain {
         public func encode(to encoder: Encoder) throws {
             let packed = try PackedTransaction(self.signedTransaction)
             try packed.encode(to: encoder)
+        }
+    }
+
+    /// Fetch an EOSIO account.
+    struct GetAccount: Request {
+        public static let path = "/v1/chain/get_account"
+        public struct Response: Decodable {
+            public let accountName: Name
+            public let headBlockNum: BlockNum
+            public let headBlockTime: TimePoint
+            public let privileged: Bool
+            public let lastCodeUpdate: TimePoint
+            public let created: TimePoint
+            public let coreLiquidBalance: Asset?
+            public let ramQuota: Int64
+            public let netWeight: Int64
+            public let cpuWeight: Int64
+            public let netLimit: AccountResourceLimit
+            public let cpuLimit: AccountResourceLimit
+            public let ramUsage: Int64
+            public let permissions: [Permission]
+            // the following params are from the eosio.system contract
+            // these are represented by fc::variant in the api plugin
+            // and could be different types on a chain with another system contract
+            // most if not all major chains have these so should be ok for now
+            // TODO: implement a swift version of fc::variant
+            public let totalResources: UserResources?
+            public let selfDelegatedBandwidth: DelegatedBandwidth?
+            public let refundRequest: RefundRequest?
+            public let voterInfo: VoterInfo?
+        }
+
+        public var accountName: Name
+        public var expectedCoreSymbol: Asset.Symbol?
+
+        public init(_ accountName: Name) {
+            self.accountName = accountName
         }
     }
 }
