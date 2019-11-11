@@ -82,32 +82,77 @@ public struct AccountResourceLimit: ABICodable, Equatable, Hashable {
 }
 
 public struct PermissionLevelWeight: ABICodable, Equatable, Hashable {
-    let permission: PermissionLevel
-    let weight: Weight
+    public var permission: PermissionLevel
+    public var weight: Weight
+
+    public init(_ permission: PermissionLevel, weight: Weight = 1) {
+        self.permission = permission
+        self.weight = weight
+    }
 }
 
 public struct KeyWeight: ABICodable, Equatable, Hashable {
-    let key: PublicKey
-    let weight: Weight
+    public var key: PublicKey
+    public var weight: Weight
+
+    public init(_ key: PublicKey, weight: Weight = 1) {
+        self.key = key
+        self.weight = weight
+    }
 }
 
 public struct WaitWeight: ABICodable, Equatable, Hashable {
-    let waitSec: UInt32
-    let weight: Weight
+    public var waitSec: UInt32
+    public var weight: Weight
+
+    public init(_ waitSec: UInt32, weight: Weight = 1) {
+        self.waitSec = waitSec
+        self.weight = weight
+    }
 }
 
 public struct Authority: ABICodable, Equatable, Hashable {
-    let threshold: UInt32
-    let keys: [KeyWeight]
-    let accounts: [PermissionLevelWeight]
-    let waits: [WaitWeight]
+    public var threshold: UInt32
+    public var keys: [KeyWeight] = []
+    public var accounts: [PermissionLevelWeight] = []
+    public var waits: [WaitWeight] = []
+
+    init(_ key: PublicKey, delay: UInt32 = 0) {
+        self.threshold = 1
+        self.keys = [KeyWeight(key)]
+        if delay > 0 {
+            self.threshold += 1
+            self.waits.append(WaitWeight(delay))
+        }
+    }
+}
+
+extension Authority {
+    /// Total weight of all waits.
+    public var waitThreshold: UInt32 {
+        self.waits.reduce(0) { (val, wait) -> UInt32 in
+            val + UInt32(wait.weight)
+        }
+    }
+
+    /// Check if given public key has permission in this authority,
+    /// - Attention: Does not take indirect permissions for the key via account weights into account.
+    public func hasPermission(for publicKey: PublicKey) -> Bool {
+        let keyTreshhold = self.threshold - self.waitThreshold
+        for val in self.keys {
+            if val.key == publicKey, val.weight >= keyTreshhold {
+                return true
+            }
+        }
+        return false
+    }
 }
 
 /// EOSIO Float64 type, aka Double, encodes to a string on the wire instead of a number.
 ///
 /// Swift typealiases are not honored for protocol resolution so we need a wrapper struct here.
 public struct Float64: Equatable, Hashable {
-    let value: Double
+    public let value: Double
 }
 
 extension Float64: ABICodable {

@@ -8,45 +8,45 @@ public extension API.V1 {
 public extension API.V1.Chain {
     /// Type representing user resources from, the eosio.system contract.
     struct UserResources: ABICodable, Equatable, Hashable {
-        let owner: Name
-        let netWeight: Asset
-        let cpuWeight: Asset
-        let ramBytes: Int64
+        public let owner: Name
+        public let netWeight: Asset
+        public let cpuWeight: Asset
+        public let ramBytes: Int64
     }
 
     /// Type representing delegated bandwidth, from the eosio.system contract.
     struct DelegatedBandwidth: ABICodable, Equatable, Hashable {
-        let from: Name
-        let to: Name
-        let netWeight: Asset
-        let cpuWeight: Asset
+        public let from: Name
+        public let to: Name
+        public let netWeight: Asset
+        public let cpuWeight: Asset
     }
 
     /// Type representing a refund request, from the eosio.system contract.
     struct RefundRequest: ABICodable, Equatable, Hashable {
-        let owner: Name
-        let requestTime: TimePointSec
-        let netAmount: Asset
-        let cpuAmount: Asset
+        public let owner: Name
+        public let requestTime: TimePointSec
+        public let netAmount: Asset
+        public let cpuAmount: Asset
     }
 
     /// Type representing a refund request, from the eosio.system contract.
     struct VoterInfo: Decodable, Equatable, Hashable {
-        let owner: Name
-        let proxy: Name
-        let producers: [Name]
-        let staked: Int64
-        let lastVoteWeight: Float64
-        let proxiedVoteWeight: Float64
-        let isProxy: UInt8 // ABI says bool but eosio serializer gives a number?
+        public let owner: Name
+        public let proxy: Name
+        public let producers: [Name]
+        public let staked: Int64
+        public let lastVoteWeight: Float64
+        public let proxiedVoteWeight: Float64
+        public let isProxy: UInt8 // ABI says bool but eosio serializer gives a number?
         // omitted, flags1, reserved2, reserved3
     }
 
     /// Permission type, only used in chain api.
     struct Permission: ABICodable, Equatable, Hashable {
-        let permName: Name
-        let parent: Name
-        let requiredAuth: Authority
+        public let permName: Name
+        public let parent: Name
+        public let requiredAuth: Authority
     }
 
     /// Various details about the blockchain.

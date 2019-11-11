@@ -177,4 +177,15 @@ final class TypeTests: XCTestCase {
         time.addTimeInterval(0.123)
         XCTAssertEqual(time, "1970-01-01T00:00:10.123")
     }
+
+    func testAuthority() {
+        let key = "EOS8YttBP1djravhBMt1u4yWrafG6fyHNPyRKXWRMbrqrHBHtEYHt" as PublicKey
+        var auth = Authority(key)
+        XCTAssertTrue(auth.hasPermission(for: key))
+        auth.threshold += 1
+        XCTAssertFalse(auth.hasPermission(for: key))
+        XCTAssertFalse(auth.hasPermission(for: "EOS7uXbReU79nJNTSrTUVje8u5BDzxsQW9kNCvgiW3pctT1GcboKj"))
+        auth = Authority(key, delay: 60)
+        XCTAssertTrue(auth.hasPermission(for: key))
+    }
 }
