@@ -4,7 +4,7 @@
 import crypto
 import Foundation
 
-internal extension Data {
+public extension Data {
     var ripemd160Digest: Data {
         var rv = Data(repeating: 0, count: Int(RIPEMD160_DIGEST_LENGTH))
         self.withUnsafeBytes { msg in
