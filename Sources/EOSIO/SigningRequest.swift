@@ -33,7 +33,7 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
         case id(ChainId)
 
         /// Name of the chain.
-        var name: ChainName {
+        public var name: ChainName {
             switch self {
             case let .id(chainId):
                 return chainId.name
@@ -43,7 +43,7 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
         }
 
         /// The actual chain id.
-        var value: ChainId {
+        public var value: ChainId {
             switch self {
             case let .id(chainId):
                 return chainId
@@ -155,7 +155,7 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
     }
 
     /// All (unresolved) actions this reqeust contains.
-    var actions: [Action] {
+    public var actions: [Action] {
         switch self.req {
         case let .action(action):
             return [action]
@@ -167,7 +167,7 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
     }
 
     /// The unresolved transaction.
-    var transaction: Transaction {
+    public var transaction: Transaction {
         let actions: [Action]
         switch self.req {
         case let .transaction(tx):
@@ -182,12 +182,12 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
     }
 
     /// ABIs requred to resolve this transaction.
-    var requiredAbis: Set<Name> {
+    public var requiredAbis: Set<Name> {
         Set(self.actions.map { $0.account })
     }
 
     /// Resolve the transaction
-    func resolve(using permission: PermissionLevel, abis: [Name: ABI]) throws {
+    public func resolve(using permission: PermissionLevel, abis: [Name: ABI]) throws {
         var tx = self.transaction
         tx.actions = try tx.actions.map { action in
             var action = action
