@@ -181,3 +181,13 @@ extension Float64: ABICodable {
         try container.encode(self.value)
     }
 }
+
+public struct PermissionLevel: ABICodable, Equatable, Hashable {
+    public var actor: Name
+    public var permission: Name
+
+    public init(_ actor: Name, _ permission: Name) {
+        self.actor = actor
+        self.permission = permission
+    }
+}

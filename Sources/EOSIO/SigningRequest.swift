@@ -5,14 +5,52 @@ import Compression
 import Foundation
 
 public struct SigningRequest: ABICodable, Equatable, Hashable {
-    public let chainId: ChainIdVariant
-    public let req: RequestType
-    public let broadcast: Bool
-    public let callback: Callback?
+    /// The magic `Name` used to resolve action and permission to signing user.
+    public static let placeholder: Name = "............1"
+
+    /// Recursivley resolve any `Name` types found in value.
+    public static func resolvePlaceholders<T>(_ value: T, to name: Name) -> T {
+        var depth = 0
+        func resolve(_ value: Any) -> Any {
+            depth += 1
+            guard depth < 100 else { return value }
+            switch value {
+            case let n as Name:
+                return n == Self.placeholder ? name : n
+            case let array as [Any]:
+                return array.map(resolve)
+            case let object as [String: Any]:
+                return object.mapValues(resolve)
+            default:
+                return value
+            }
+        }
+        return resolve(value) as! T
+    }
 
     public enum ChainIdVariant: Equatable, Hashable {
         case alias(UInt8)
         case id(ChainId)
+
+        /// Name of the chain.
+        var name: ChainName {
+            switch self {
+            case let .id(chainId):
+                return chainId.name
+            case let .alias(num):
+                return ChainName(rawValue: num) ?? .unknown
+            }
+        }
+
+        /// The actual chain id.
+        var value: ChainId {
+            switch self {
+            case let .id(chainId):
+                return chainId
+            case let .alias(num):
+                return ChainId(ChainName(rawValue: num) ?? .unknown)
+            }
+        }
     }
 
     public enum RequestType: Equatable, Hashable {
@@ -26,20 +64,43 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
         let background: Bool
     }
 
+    /// All errors `SigningRequest` can throw.
     public enum Error: Swift.Error {
         case invalidBase64u
         case invalidData
         case unsupportedVersion
         case compressionUnsupported
+        case missingAbi(Name)
     }
 
-    public init(chainId: ChainIdVariant, req: RequestType, broadcast: Bool, callback: Callback?) {
-        self.chainId = chainId
-        self.req = req
+    /// The chain id for the request.
+    public let chainId: ChainIdVariant
+    /// The request data.
+    public let req: RequestType
+    /// Whether the request should be broadcast after it is accepted and signed.
+    public let broadcast: Bool
+    /// Callback to hit after request is signed and/or broadcast.
+    public let callback: Callback?
+
+    /// Create a signing request with actions.
+    public init(chainId: ChainId, actions: [Action], broadcast: Bool = true, callback: Callback) {
+        let name = chainId.name
+        self.chainId = name == .unknown ? .id(chainId) : .alias(name.rawValue)
+        self.req = actions.count == 1 ? .action(actions.first!) : .actions(actions)
         self.broadcast = broadcast
         self.callback = callback
     }
 
+    /// Create a signing request with a transaction.
+    public init(chainId: ChainId, transaction: Transaction, broadcast: Bool = true, callback: Callback) {
+        let name = chainId.name
+        self.chainId = name == .unknown ? .id(chainId) : .alias(name.rawValue)
+        self.req = .transaction(transaction)
+        self.broadcast = broadcast
+        self.callback = callback
+    }
+
+    /// Decode a signing request from a string.
     public init(_ string: String) throws {
         var string = string
         if string.starts(with: "eosio:") {
@@ -54,6 +115,8 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
         self = try SigningRequest(data)
     }
 
+    /// Decode a signing request from binary format.
+    /// - Note: The first byte is the header, rest is the abi-encoded signing request data.
     public init(_ data: Data) throws {
         var data = data
         guard let header = data.popFirst() else {
@@ -83,7 +146,154 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
         let decoder = ABIDecoder()
         self = try decoder.decode(SigningRequest.self, from: data)
     }
+
+    internal init(chainId: ChainIdVariant, req: RequestType, broadcast: Bool, callback: Callback?) {
+        self.chainId = chainId
+        self.req = req
+        self.broadcast = broadcast
+        self.callback = callback
+    }
+
+    /// All (unresolved) actions this reqeust contains.
+    var actions: [Action] {
+        switch self.req {
+        case let .action(action):
+            return [action]
+        case let .actions(actions):
+            return actions
+        case let .transaction(tx):
+            return tx.actions
+        }
+    }
+
+    /// The unresolved transaction.
+    var transaction: Transaction {
+        let actions: [Action]
+        switch self.req {
+        case let .transaction(tx):
+            return tx
+        case let .action(action):
+            actions = [action]
+        case let .actions(actionList):
+            actions = actionList
+        }
+        let header = TransactionHeader(expiration: 0, refBlockNum: 0, refBlockPrefix: 0)
+        return Transaction(header, actions: actions)
+    }
+
+    /// ABIs requred to resolve this transaction.
+    var requiredAbis: Set<Name> {
+        Set(self.actions.map { $0.account })
+    }
+
+    /// Resolve the transaction
+    func resolve(using permission: PermissionLevel, abis: [Name: ABI]) throws {
+        var tx = self.transaction
+        tx.actions = try tx.actions.map { action in
+            var action = action
+            guard let abi = abis[action.account] else {
+                throw Error.missingAbi(action.account)
+            }
+            let object = Self.resolvePlaceholders(try action.data(as: String(action.name), using: abi), to: permission.actor)
+            let encoder = ABIEncoder()
+            action.data = try encoder.encode(object, asType: String(action.name), using: abi)
+            action.authorization = action.authorization.map { auth in
+                var auth = auth
+                if auth.actor == Self.placeholder {
+                    auth.actor = permission.actor
+                }
+                if auth.permission == Self.placeholder {
+                    auth.permission = permission.permission
+                }
+                return auth
+            }
+            return action
+        }
+    }
 }
+
+// MARK: Chain names
+
+/// Type describing a known chain id.
+public enum ChainName: UInt8, CaseIterable, CustomStringConvertible {
+    case unknown = 0
+    case eos = 1
+    case telos = 2
+    case jungle = 3
+    case kylin = 4
+    case worbli = 5
+    case bos = 6
+    case meetone = 7
+    case insights = 8
+    case beos = 9
+
+    public var description: String {
+        switch self {
+        case .unknown:
+            return "Unknown"
+        case .eos:
+            return "EOS"
+        case .telos:
+            return "Telos"
+        case .jungle:
+            return "Jungle Testnet"
+        case .kylin:
+            return "CryptoKylin Testnet"
+        case .worbli:
+            return "WORBLI"
+        case .bos:
+            return "BOSCore"
+        case .meetone:
+            return "MEET.ONE"
+        case .insights:
+            return "Insights Network"
+        case .beos:
+            return "BEOS"
+        }
+    }
+
+    fileprivate var id: ChainId {
+        switch self {
+        case .unknown:
+            return "0000000000000000000000000000000000000000000000000000000000000000"
+        case .eos:
+            return "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906"
+        case .telos:
+            return "4667b205c6838ef70ff7988f6e8257e8be0e1284a2f59699054a018f743b1d11"
+        case .jungle:
+            return "e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473"
+        case .kylin:
+            return "5fff1dae8dc8e2fc4d5b23b2c7665c97f9e9d8edf2b6485a86ba311c25639191"
+        case .worbli:
+            return "73647cde120091e0a4b85bced2f3cfdb3041e266cbbe95cee59b73235a1b3b6f"
+        case .bos:
+            return "d5a3d18fbb3c084e3b1f3fa98c21014b5f3db536cc15d08f9f6479517c6a3d86"
+        case .meetone:
+            return "cfe6486a83bad4962f232d48003b1824ab5665c36778141034d75e57b956e422"
+        case .insights:
+            return "b042025541e25a472bffde2d62edd457b7e70cee943412b1ea0f044f88591664"
+        case .beos:
+            return "b912d19a6abd2b1b05611ae5be473355d64d95aeff0c09bedc8c166cd6468fe4"
+        }
+    }
+}
+
+extension ChainId {
+    public init(_ name: ChainName) {
+        self = name.id
+    }
+
+    public var name: ChainName {
+        for name in ChainName.allCases {
+            if self == name.id {
+                return name
+            }
+        }
+        return .unknown
+    }
+}
+
+// MARK: Abi coding
 
 extension SigningRequest.ChainIdVariant: ABICodable {
     public init(from decoder: Decoder) throws {

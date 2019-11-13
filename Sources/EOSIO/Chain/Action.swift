@@ -48,14 +48,3 @@ extension Action {
         return rv
     }
 }
-
-// TODO: move to own file
-public struct PermissionLevel: ABICodable, Equatable, Hashable {
-    public let actor: Name
-    public let permission: Name
-
-    public init(_ actor: Name, _ permission: Name) {
-        self.actor = actor
-        self.permission = permission
-    }
-}
