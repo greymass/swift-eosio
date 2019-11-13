@@ -31,12 +31,12 @@ public struct Action: ABICodable, Equatable, Hashable {
 
 extension Action {
     /// Decode action to compatible type.
-    func data<T: ABIDecodable>(as type: T.Type) throws -> T {
+    public func data<T: ABIDecodable>(as type: T.Type) throws -> T {
         return try ABIDecoder.decode(type, data: self.data)
     }
 
     /// Decode action data using ABI defenition.
-    func data(as type: String, using abi: ABI) throws -> [String: Any] {
+    public func data(as type: String, using abi: ABI) throws -> [String: Any] {
         let decoder = ABIDecoder()
         let result = try decoder.decode(type, from: self.data, using: abi)
         guard let rv = result as? [String: Any] else {
