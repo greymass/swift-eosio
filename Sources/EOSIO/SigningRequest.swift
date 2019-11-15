@@ -187,7 +187,7 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
     }
 
     /// Resolve the transaction
-    public func resolve(using permission: PermissionLevel, abis: [Name: ABI]) throws {
+    public func resolve(using permission: PermissionLevel, abis: [Name: ABI]) throws -> Transaction {
         var tx = self.transaction
         tx.actions = try tx.actions.map { action in
             var action = action
@@ -209,6 +209,7 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
             }
             return action
         }
+        return tx
     }
 }
 
