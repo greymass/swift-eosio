@@ -53,12 +53,12 @@ public struct TimePoint: RawRepresentable, Equatable, Hashable {
     }
 
     /// Adds a time interval to this time point.
-    mutating func addTimeInterval(_ timeInterval: TimeInterval) {
+    public mutating func addTimeInterval(_ timeInterval: TimeInterval) {
         self.rawValue += Int64(timeInterval * 1_000_000)
     }
 
     /// Creates a new time point by adding a time interval.
-    func addingTimeInterval(_ timeInterval: TimeInterval) -> TimePoint {
+    public func addingTimeInterval(_ timeInterval: TimeInterval) -> TimePoint {
         return TimePoint(rawValue: self.rawValue + Int64(timeInterval * 1_000_000))
     }
 }
@@ -113,12 +113,12 @@ public struct TimePointSec: RawRepresentable, Equatable, Hashable {
     }
 
     /// Adds a time interval to this time point.
-    mutating func addTimeInterval(_ timeInterval: TimeInterval) {
+    public mutating func addTimeInterval(_ timeInterval: TimeInterval) {
         self.rawValue += UInt32(timeInterval)
     }
 
     /// Creates a new time point by adding a time interval.
-    func addingTimeInterval(_ timeInterval: TimeInterval) -> TimePointSec {
+    public func addingTimeInterval(_ timeInterval: TimeInterval) -> TimePointSec {
         return TimePointSec(rawValue: self.rawValue + UInt32(timeInterval))
     }
 }
