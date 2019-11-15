@@ -26,8 +26,8 @@ public final class ABIDecoder {
 
     // TODO: split decoder into private and public class
     public func decode<T: Decodable>(_: T.Type, from data: Data) throws -> T {
+        self.data = Data(data)
         self.cursor = 0
-        self.data = data
         return try self.decode(T.self)
     }
 }
