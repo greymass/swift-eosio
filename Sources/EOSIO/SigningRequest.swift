@@ -354,6 +354,8 @@ extension SigningRequest.RequestType: ABICodable {
             self = .action(try container.decode(Action.self))
         case "actions":
             self = .actions(try container.decode([Action].self))
+        case "transaction":
+            self = .transaction(try container.decode(Transaction.self))
         default:
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unknown type in variant")
         }
@@ -366,6 +368,8 @@ extension SigningRequest.RequestType: ABICodable {
             self = .action(try decoder.decode(Action.self))
         case 1:
             self = .actions(try decoder.decode([Action].self))
+        case 2:
+            self = .transaction(try decoder.decode(Transaction.self))
         default:
             throw ABIDecoder.Error.unknownVariant(type)
         }
