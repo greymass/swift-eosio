@@ -240,7 +240,7 @@ public extension API.V1.Chain {
     struct PushTransaction: Request {
         public static let path = "/v1/chain/push_transaction"
         public struct Response: Decodable {
-            let transactionId: TransactionId
+            public let transactionId: TransactionId
             // TODO: decode traces
             // let processed: transaction_trace
         }
