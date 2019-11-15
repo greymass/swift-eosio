@@ -194,4 +194,21 @@ final class ABICodableTests: XCTestCase {
             "00205150A67288C3B393FDBA9061B05019C54B12BDAC295FC83BEBAD7CD63C7BB67D5CB8CC220564DA006240A58419F64D06A5C6E1FC62889816A6C3DFDD231ED389"
         )
     }
+
+    func testPermissionLevel() {
+        AssertABICodable(
+            PermissionLevel(SigningRequest.placeholder, SigningRequest.placeholder),
+            """
+            {"actor": "............1", "permission": "............1"}
+            """,
+            "01000000000000000100000000000000"
+        )
+        AssertABICodable(
+            [PermissionLevel(SigningRequest.placeholder, SigningRequest.placeholder)],
+            """
+            [{"actor": "............1", "permission": "............1"}]
+            """,
+            "0101000000000000000100000000000000"
+        )
+    }
 }
