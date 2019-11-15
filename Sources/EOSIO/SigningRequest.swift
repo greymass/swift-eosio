@@ -85,7 +85,7 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
 
         public func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: Keys.self)
-            try container.encodeIfPresent(self.transactionId, forKey: Keys(stringValue: "tx"))
+            try container.encodeIfPresent(self.transactionId?.bytes.hexEncodedString(), forKey: Keys(stringValue: "tx"))
             try container.encodeIfPresent(self.blockNum, forKey: Keys(stringValue: "bn"))
             for (i, sig) in self.signatures.enumerated() {
                 if i == 0 {
