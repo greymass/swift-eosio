@@ -64,8 +64,6 @@ public extension ABIDecoder {
         /// Attempted to decode a `Bool` where the byte representing it was not a `1` or a `0`.
         case boolOutOfRange(UInt8)
 
-        case malformedVarint
-
         /// Attempted to decode a `String` but the encoded `String` data was not valid UTF-8.
         case invalidUTF8(Data)
 
@@ -103,18 +101,12 @@ public extension ABIDecoder {
         }
     }
 
-    func decode(_: UInt.Type) throws -> UInt {
-        return UInt(try self.readVarint())
-    }
-
-    func decode(_: Int.Type) throws -> Int {
-        return Int(bitPattern: try self.decode(UInt.self))
-    }
-
     func decode<T: Decodable>(_ type: T.Type) throws -> T {
         switch type {
+        case is Int.Type:
+            return Int(try self.readVarint()) as! T
         case is UInt.Type:
-            return UInt(try self.readVarint()) as! T
+            return UInt(try self.readVaruint()) as! T
         case let abiType as ABIDecodable.Type:
             return try abiType.init(fromAbi: self) as! T
         default:
@@ -155,32 +147,33 @@ private extension ABIDecoder {
         return data
     }
 
-    func readVarint() throws -> UInt64 {
-        var available = self.data.count - self.cursor + 1
-        if available < 1 {
+    func readByte() throws -> UInt8 {
+        if self.cursor + 1 > self.data.count {
             throw Error.prematureEndOfData
         }
-        var c = self.data[self.cursor]
+        let byte = self.data[self.cursor]
         self.cursor += 1
-        available -= 1
-        if c & 0x80 == 0 {
-            return UInt64(c)
-        }
-        var value = UInt64(c & 0x7F)
-        var shift = UInt64(7)
-        while true {
-            if available < 1 || shift > 63 {
-                throw Error.malformedVarint
-            }
-            c = self.data[self.cursor]
-            self.cursor += 1
-            available -= 1
-            value |= UInt64(c & 0x7F) << shift
-            if c & 0x80 == 0 {
-                return value
-            }
-            shift += 7
-        }
+        return byte
+    }
+
+    func readVarint() throws -> Int32 {
+        var v: UInt32 = 0, b: UInt8 = 0, by: UInt32 = 0
+        repeat {
+            b = try self.readByte()
+            v |= UInt32(b & 0x7F) << by
+            by += 7
+        } while b & 0x80 != 0
+        return Int32(bitPattern: v)
+    }
+
+    func readVaruint() throws -> UInt32 {
+        var v: UInt64 = 0, b: UInt8 = 0, by: UInt8 = 0
+        repeat {
+            b = try self.readByte()
+            v |= UInt64(UInt32(b & 0x7F) << by)
+            by += 7
+        } while (b & 0x80) != 0 && by < 32
+        return UInt32(v)
     }
 }
 
