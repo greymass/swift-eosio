@@ -64,6 +64,38 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
         public let background: Bool
     }
 
+    public struct CallbackResponse: Encodable, Equatable, Hashable {
+        public var signatures: [Signature] = []
+        public var transactionId: TransactionId?
+        public var blockNum: BlockNum?
+
+        private struct Keys: CodingKey {
+            var stringValue: String
+            var intValue: Int? { return nil }
+            init(stringValue: String) {
+                self.stringValue = stringValue
+            }
+
+            init?(intValue _: Int) {
+                return nil
+            }
+        }
+
+        public init() {}
+
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: Keys.self)
+            try container.encodeIfPresent(self.transactionId, forKey: Keys(stringValue: "tx"))
+            try container.encodeIfPresent(self.blockNum, forKey: Keys(stringValue: "bn"))
+            for (i, sig) in self.signatures.enumerated() {
+                if i == 0 {
+                    try container.encode(sig, forKey: Keys(stringValue: "sig"))
+                }
+                try container.encode(sig, forKey: Keys(stringValue: "sig\(i)"))
+            }
+        }
+    }
+
     /// All errors `SigningRequest` can throw.
     public enum Error: Swift.Error {
         case invalidBase64u
