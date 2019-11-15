@@ -60,8 +60,8 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
     }
 
     public struct Callback: Equatable, Hashable, ABICodable {
-        let url: String
-        let background: Bool
+        public let url: String
+        public let background: Bool
     }
 
     /// All errors `SigningRequest` can throw.
