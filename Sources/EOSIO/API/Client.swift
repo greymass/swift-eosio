@@ -31,6 +31,14 @@ public struct ResponseError: Codable {
     public let message: String
     /// The underlying EOSIO error.
     public let error: Info
+
+    public var errorDescription: String {
+        var rv = self.error.what
+        if let detail = self.error.details.first {
+            rv += ": \(detail.message)"
+        }
+        return rv
+    }
 }
 
 let SWIFT_EOSIO_VERSION = "1.0.0"
@@ -60,7 +68,7 @@ public class Client {
             case let .codingError(message, error):
                 return "Unable to serialize data: \(message) (caused by \(String(describing: error))"
             case let .responseError(error):
-                return "Error: \(error.error.what) (code=\(error.error.code))"
+                return error.errorDescription
             }
         }
     }

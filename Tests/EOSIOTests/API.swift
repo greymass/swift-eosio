@@ -108,4 +108,42 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.voterInfo?.proxy, 0)
         XCTAssertEqual(res.voterInfo?.producers.count, 0)
     }
+
+    func testErrorMessage() {
+        let key = PrivateKey("5J2DVkkD59X146qkrBTjGykUA634pFkdU7gSA7Y3bcDbthCt9md")
+
+        let transfer = Transfer(
+            from: "eosio",
+            to: "teamgreymass",
+            quantity: "10000000.0000 EOS",
+            memo: "Thanks!"
+        )
+
+        let action = try! Action(
+            account: "eosio.token",
+            name: "transfer",
+            authorization: [PermissionLevel("iamthewalrus", "active")],
+            value: transfer
+        )
+
+        let info = try! client.sendSync(API.V1.Chain.GetInfo()).get()
+
+        let expiration = info.headBlockTime.addingTimeInterval(60)
+        let header = TransactionHeader(expiration: TimePointSec(expiration),
+                                       refBlockId: info.lastIrreversibleBlockId)
+
+        let transaction = Transaction(header, actions: [action])
+        let signature = try! key.sign(transaction, using: info.chainId)
+
+        let signedTransaction = SignedTransaction(transaction, signatures: [signature])
+
+        let req = API.V1.Chain.PushTransaction(signedTransaction)
+        let res = client.sendSync(req)
+        switch res {
+        case .success:
+            XCTFail()
+        case let .failure(error):
+            XCTAssertEqual(error.localizedDescription, "Missing required authority: missing authority of eosio")
+        }
+    }
 }
