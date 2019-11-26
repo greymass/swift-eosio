@@ -28,6 +28,11 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
         return resolve(value) as! T
     }
 
+    public struct RequestSignature: ABICodable, Equatable, Hashable {
+        public let signer: Name
+        public let signature: Signature
+    }
+
     public enum ChainIdVariant: Equatable, Hashable {
         case alias(UInt8)
         case id(ChainId)
@@ -106,30 +111,34 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
     }
 
     /// The chain id for the request.
-    public let chainId: ChainIdVariant
+    public var chainId: ChainIdVariant
     /// The request data.
-    public let req: RequestType
+    public var req: RequestType
     /// Whether the request should be broadcast after it is accepted and signed.
-    public let broadcast: Bool
+    public var broadcast: Bool
     /// Callback to hit after request is signed and/or broadcast.
-    public let callback: Callback?
+    public var callback: Callback?
+    /// Request signature.
+    public var signature: BinaryExtension<RequestSignature>
 
     /// Create a signing request with actions.
-    public init(chainId: ChainId, actions: [Action], broadcast: Bool = true, callback: Callback) {
+    public init(chainId: ChainId, actions: [Action], broadcast: Bool = true, callback: Callback? = nil, signature: RequestSignature? = nil) {
         let name = chainId.name
         self.chainId = name == .unknown ? .id(chainId) : .alias(name.rawValue)
         self.req = actions.count == 1 ? .action(actions.first!) : .actions(actions)
         self.broadcast = broadcast
         self.callback = callback
+        self.signature = BinaryExtension(signature)
     }
 
     /// Create a signing request with a transaction.
-    public init(chainId: ChainId, transaction: Transaction, broadcast: Bool = true, callback: Callback) {
+    public init(chainId: ChainId, transaction: Transaction, broadcast: Bool = true, callback: Callback? = nil, signature: RequestSignature? = nil) {
         let name = chainId.name
         self.chainId = name == .unknown ? .id(chainId) : .alias(name.rawValue)
         self.req = .transaction(transaction)
         self.broadcast = broadcast
         self.callback = callback
+        self.signature = BinaryExtension(signature)
     }
 
     /// Decode a signing request from a string.
@@ -179,11 +188,12 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
         self = try decoder.decode(SigningRequest.self, from: data)
     }
 
-    internal init(chainId: ChainIdVariant, req: RequestType, broadcast: Bool, callback: Callback?) {
+    internal init(chainId: ChainIdVariant, req: RequestType, broadcast: Bool, callback: Callback?, signature: RequestSignature?) {
         self.chainId = chainId
         self.req = req
         self.broadcast = broadcast
         self.callback = callback
+        self.signature = BinaryExtension(signature)
     }
 
     /// All (unresolved) actions this reqeust contains.
@@ -326,7 +336,7 @@ extension ChainId {
     }
 }
 
-// MARK: Abi coding
+// MARK: ABI Coding
 
 extension SigningRequest.ChainIdVariant: ABICodable {
     public init(from decoder: Decoder) throws {
