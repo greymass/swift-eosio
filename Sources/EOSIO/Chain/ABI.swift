@@ -1,9 +1,4 @@
-//
-//  ABI.swift
-//  EOSIO
-//
-//  Created by Johan Nordberg on 2019-10-15.
-//
+/// EOSIO ABI Defenition.
 
 import Foundation
 
