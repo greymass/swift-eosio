@@ -124,6 +124,46 @@ extension Array: ABIDecodable where Element: Decodable {
     }
 }
 
+/// Like optional but only decoded if present at end of ABI stream.
+public struct BinaryExtension<Value: ABICodable>: ABICodable {
+    public let value: Value?
+
+    public init(_ value: Value?) {
+        self.value = value
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try? decoder.singleValueContainer()
+        self.value = try? container?.decode(Value.self)
+    }
+
+    public init(fromAbi decoder: ABIDecoder) throws {
+        do {
+            self.value = try decoder.decode(Value.self)
+        } catch ABIDecoder.Error.prematureEndOfData {
+            self.value = nil
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        if let value = self.value {
+            try container.encode(value)
+        } else {
+            try container.encodeNil()
+        }
+    }
+
+    public func abiEncode(to encoder: ABIEncoder) throws {
+        if let value = self.value {
+            try encoder.encode(value)
+        }
+    }
+}
+
+extension BinaryExtension: Equatable where Value: Equatable {}
+extension BinaryExtension: Hashable where Value: Hashable {}
+
 extension Never: ABICodable {
     public init(from decoder: Decoder) throws {
         let ctx = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Attempted to decode Never")
@@ -400,8 +440,7 @@ func _decodeAnyBuiltIn(_ type: ABI.ResolvedType,
     case .int16: return try decode(Int16.self)
     case .int32: return try decode(Int32.self)
     case .int64: return try decode(Int64.self)
-    case .checksum256:
-        fatalError("not implem")
+    case .checksum256: return try decode(Checksum256.self)
     }
 }
 
