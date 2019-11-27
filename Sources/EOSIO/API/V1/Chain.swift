@@ -52,7 +52,7 @@ public extension API.V1.Chain {
     /// Various details about the blockchain.
     struct GetInfo: Request {
         public static let path = "/v1/chain/get_info"
-        public struct Response: Decodable {
+        public struct Response: Decodable, TaposSource {
             /// Hash representing the last commit in the tagged release.
             public let serverVersion: String
             /// Hash representing the ID of the chain.
@@ -84,6 +84,14 @@ public extension API.V1.Chain {
             public let forkDbHeadBlockNum: BlockNum?
             /// Hash representing the best known head in the fork database tree.
             public let forkDbHeadBlockId: BlockId?
+
+            public var taposValues: (refBlockNum: UInt16, refBlockPrefix: UInt32, expiration: TimePointSec?) {
+                let refBlockId = self.lastIrreversibleBlockId
+                let refBlockNum = UInt16(refBlockId.blockNum & 0xFFFF)
+                let refBlockPrefix = refBlockId.blockPrefix
+                let expiration = TimePointSec(self.headBlockTime.addingTimeInterval(60))
+                return (refBlockNum, refBlockPrefix, expiration)
+            }
         }
 
         public init() {}
