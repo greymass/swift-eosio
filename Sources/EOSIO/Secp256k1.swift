@@ -34,10 +34,13 @@ internal class Secp256k1 {
     ///
     /// Shared context is thread-safe and should be used in most cases since creating a new
     /// context is 100 times more expensice than a signing or verifying operation.
-    static let shared = Secp256k1(flags: [.sign, .verify])
+    static let shared: Secp256k1 = {
+        let ctx = Secp256k1(flags: [.sign, .verify])
+        try? ctx.randomize(using: Data.random(32))
+        return ctx
+    }()
 
     private let ctx: OpaquePointer
-    private let lockQueue = DispatchQueue(label: "Secp256k1Context", qos: .default)
 
     /// Create a new context.
     /// - Parameter flags: Flags used to initialize the context.
@@ -67,15 +70,15 @@ internal class Secp256k1 {
     /// because randomization is currently used only for signing. However, this is not
     /// guaranteed and may change in the future. It is safe to call this function on
     /// contexts not initialized for signing.
+    ///
+    /// - Attention: Not thread-safe.
     func randomize(using seed: Data) throws {
-        try self.lockQueue.sync { // randomize is not thread-safe
-            try seed.withUnsafeBytes {
-                guard $0.count == 32 else {
-                    throw Error.invalidRandomSeed
-                }
-                guard secp256k1_context_randomize(self.ctx, $0.bufPtr) == 1 else {
-                    throw Error.randomizationFailed
-                }
+        try seed.withUnsafeBytes {
+            guard $0.count == 32 else {
+                throw Error.invalidRandomSeed
+            }
+            guard secp256k1_context_randomize(self.ctx, $0.bufPtr) == 1 else {
+                throw Error.randomizationFailed
             }
         }
     }
