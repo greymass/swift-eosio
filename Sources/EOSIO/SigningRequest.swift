@@ -194,7 +194,10 @@ public struct SigningRequest: Equatable, Hashable {
 
     /// Whether the request should be broadcast after being signed.
     public var broadcast: Bool {
-        self.data.broadcast
+        if self.isIdentity {
+            return false
+        }
+        return self.data.broadcast
     }
 
     /// All (unresolved) actions this request contains.
