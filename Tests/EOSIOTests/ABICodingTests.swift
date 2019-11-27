@@ -7,14 +7,17 @@ struct Transfer: ABICodable, Equatable {
     let quantity: Asset
     let memo: String
 
-    static let abi = ABI(structs: [
-        ABI.Struct("transfer", [
-            ABI.Field("from", "name"),
-            ABI.Field("to", "name"),
-            ABI.Field("quantity", "asset"),
-            ABI.Field("memo", "string"),
-        ]),
-    ])
+    static let abi = ABI(
+        structs: [
+            ["transfer": [
+                ["from", "name"],
+                ["to", "name"],
+                ["quantity", "asset"],
+                ["memo", "string"],
+            ]],
+        ],
+        actions: ["transfer"]
+    )
 }
 
 final class ABICodableTests: XCTestCase {

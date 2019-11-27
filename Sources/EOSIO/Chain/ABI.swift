@@ -329,62 +329,122 @@ extension ABI: ABICodable {
     }
 }
 
+// MARK: Language extensions
+
+extension ABI.TypeDef: ExpressibleByArrayLiteral {
+    public init(arrayLiteral elements: String...) {
+        self = ABI.TypeDef(array: elements)
+    }
+
+    fileprivate init(array elements: [String]) {
+        guard elements.count == 2 else {
+            fatalError("Invalid ABI typedef literal")
+        }
+        self = ABI.TypeDef(elements[0], elements[1])
+    }
+}
+
+extension ABI.Action: ExpressibleByStringLiteral {
+    public init(stringLiteral string: String) {
+        self = ABI.Action(Name(string))
+    }
+}
+
+extension ABI.Action: ExpressibleByArrayLiteral {
+    public init(arrayLiteral elements: String...) {
+        self = ABI.Action(array: elements)
+    }
+
+    fileprivate init(array elements: [String]) {
+        switch elements.count {
+        case 2:
+            self = ABI.Action(Name(elements[0]), elements[1])
+        case 3:
+            self = ABI.Action(Name(elements[0]), elements[1], ricardian: elements[2])
+        default:
+            fatalError("Invalid ABI action literal")
+        }
+    }
+}
+
+extension ABI.Field: ExpressibleByArrayLiteral {
+    public init(arrayLiteral elements: String...) {
+        self = ABI.Field(array: elements)
+    }
+
+    fileprivate init(array elements: [String]) {
+        guard elements.count == 2 else {
+            fatalError("Invalid ABI field literal")
+        }
+        self = ABI.Field(elements[0], elements[1])
+    }
+}
+
+extension ABI.Struct: ExpressibleByDictionaryLiteral {
+    public init(dictionaryLiteral elements: (String, [[String]])...) {
+        guard elements.count == 1 else {
+            fatalError("Invalid ABI struct literal")
+        }
+        self = ABI.Struct(elements[0].0, elements[0].1.map { ABI.Field(array: $0) })
+    }
+}
+
 // MARK: ABI Defenition
 
 extension ABI {
     /// The ABI defenition for the ABI defenition.
     public static let abi = ABI(structs: [
-        ABI.Struct("extensions_entry", [
-            ABI.Field("tag", "uint16"),
-            ABI.Field("value", "bytes"),
-        ]),
-        ABI.Struct("type_def", [
-            ABI.Field("new_type_name", "string"),
-            ABI.Field("type", "string"),
-        ]),
-        ABI.Struct("field_def", [
-            ABI.Field("name", "string"),
-            ABI.Field("type", "string"),
-        ]),
-        ABI.Struct("struct_def", [
-            ABI.Field("name", "string"),
-            ABI.Field("base", "string"),
-            ABI.Field("fields", "field_def[]"),
-        ]),
-        ABI.Struct("action_def", [
-            ABI.Field("name", "name"),
-            ABI.Field("type", "string"),
-            ABI.Field("ricardian_contract", "string"),
-        ]),
-        ABI.Struct("table_def", [
-            ABI.Field("name", "name"),
-            ABI.Field("index_type", "string"),
-            ABI.Field("key_names", "string[]"),
-            ABI.Field("key_types", "string[]"),
-            ABI.Field("type", "string"),
-        ]),
-        ABI.Struct("clause_pair", [
-            ABI.Field("id", "string"),
-            ABI.Field("body", "string"),
-        ]),
-        ABI.Struct("error_message", [
-            ABI.Field("error_code", "uint64"),
-            ABI.Field("error_msg", "string"),
-        ]),
-        ABI.Struct("variant_def", [
-            ABI.Field("name", "string"),
-            ABI.Field("types", "string[]"),
-        ]),
-        ABI.Struct("abi_def", [
-            ABI.Field("version", "string"),
-            ABI.Field("types", "type_def[]"),
-            ABI.Field("structs", "struct_def[]"),
-            ABI.Field("actions", "action_def[]"),
-            ABI.Field("tables", "table_def[]"),
-            ABI.Field("ricardian_clauses", "clause_pair[]"),
-            ABI.Field("error_messages", "error_message[]"),
-            ABI.Field("abi_extensions", "extensions_entry[]"),
-            ABI.Field("variants", "variant_def[]$"),
-        ]),
+        ["extensions_entry": [
+            ["tag", "uint16"],
+            ["value", "bytes"],
+        ]],
+        ["type_def": [
+            ["new_type_name", "string"],
+            ["type", "string"],
+        ]],
+        ["field_def": [
+            ["name", "string"],
+            ["type", "string"],
+        ]],
+        ["struct_def": [
+            ["name", "string"],
+            ["base", "string"],
+            ["fields", "field_def[]"],
+        ]],
+        ["action_def": [
+            ["name", "name"],
+            ["type", "string"],
+            ["ricardian_contract", "string"],
+        ]],
+        ["table_def": [
+            ["name", "name"],
+            ["index_type", "string"],
+            ["key_names", "string[]"],
+            ["key_types", "string[]"],
+            ["type", "string"],
+        ]],
+        ["clause_pair": [
+            ["id", "string"],
+            ["body", "string"],
+        ]],
+        ["error_message": [
+            ["error_code", "uint64"],
+            ["error_msg", "string"],
+        ]],
+        ["variant_def": [
+            ["name", "string"],
+            ["types", "string[]"],
+        ]],
+        ["abi_def": [
+            ["version", "string"],
+            ["types", "type_def[]"],
+            ["structs", "struct_def[]"],
+            ["actions", "action_def[]"],
+            ["tables", "table_def[]"],
+            ["ricardian_clauses", "clause_pair[]"],
+            ["error_messages", "error_message[]"],
+            ["abi_extensions", "extensions_entry[]"],
+            ["variants", "variant_def[]$"],
+        ]],
     ])
 }
