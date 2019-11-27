@@ -9,6 +9,9 @@ public struct TransactionExtension: ABICodable, Equatable, Hashable {
 }
 
 public struct TransactionHeader: ABICodable, Equatable, Hashable {
+    /// Null transaction header.
+    public static let zero = TransactionHeader(expiration: 0, refBlockNum: 0, refBlockPrefix: 0)
+
     /// The time at which a transaction expires.
     public var expiration: TimePointSec
     /// Specifies a block num in the last 2^16 blocks.
