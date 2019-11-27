@@ -360,15 +360,13 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
         private struct Payload: Encodable, Equatable, Hashable {
             let signatures: [Signature]
             let request: ResolvedSigningRequest
-            let blockId: BlockId?
+            let blockNum: BlockNum?
 
             enum Key: String, CaseIterable, CodingKey {
                 /// The first signature.
                 case sig
                 /// Transaction ID as HEX-encoded string.
                 case tx
-                /// Block ID hint as HEX-encoded string (only present if transaction was broadcast).
-                case bi
                 /// Block number hint (only present if transaction was broadcast).
                 case bn
                 /// Signer authority, aka account name.
@@ -398,15 +396,10 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
                 case .tx:
                     return self.request.transaction.id.bytes.hexEncodedString()
                 case .bn:
-                    guard let id = self.blockId else {
+                    guard let blockNum = self.blockNum else {
                         return ""
                     }
-                    return String(id.blockNum)
-                case .bi:
-                    guard let id = self.blockId else {
-                        return ""
-                    }
-                    return String(id.bytes.hexEncodedString())
+                    return String(blockNum)
                 case .sa:
                     return String(self.request.signer.actor)
                 case .sp:
@@ -423,10 +416,6 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
                 }
                 var container = encoder.container(keyedBy: Key.self)
                 for key in Key.allCases {
-                    if key == .bn {
-                        try container.encodeIfPresent(self.blockId?.blockNum, forKey: .bn)
-                        continue
-                    }
                     let value = self.stringValue(forKey: key)
                     guard !value.isEmpty else {
                         continue
@@ -438,8 +427,8 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
 
         private let data: Payload
 
-        fileprivate init(_ request: ResolvedSigningRequest, _ signatures: [Signature], _ blockId: BlockId?) {
-            self.data = Payload(signatures: signatures, request: request, blockId: blockId)
+        fileprivate init(_ request: ResolvedSigningRequest, _ signatures: [Signature], _ blockNum: BlockNum?) {
+            self.data = Payload(signatures: signatures, request: request, blockNum: blockNum)
         }
 
         /// The url where the callback should be delivered.
@@ -493,13 +482,13 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
 
     /// Get the request callback.
     /// - Parameter signatures: The signature(s) for obtained by signing the transaction for the requested signer.
-    /// - Parameter blockId: The block id hint obtained if the transaction was broadcast.
+    /// - Parameter blockNum: The block num hint obtained if the transaction was broadcast.
     /// - Returns: The resolved callback or `nil` if the request didn't specify any.
-    func getCallback(using signatures: [Signature], blockId: BlockId?) -> Callback? {
+    public func getCallback(using signatures: [Signature], blockNum: BlockNum?) -> Callback? {
         guard self.request.data.callback != nil else {
             return nil
         }
-        return Callback(self, signatures, blockId)
+        return Callback(self, signatures, blockNum)
     }
 }
 
