@@ -248,9 +248,14 @@ public extension API.V1.Chain {
     struct PushTransaction: Request {
         public static let path = "/v1/chain/push_transaction"
         public struct Response: Decodable {
+            public struct TransactionTrace: Decodable {
+                // TODO: fully decode traces
+                public let blockNum: BlockNum
+                public let producerBlockId: BlockId?
+            }
+
             public let transactionId: TransactionId
-            // TODO: decode traces
-            // let processed: transaction_trace
+            public let processed: TransactionTrace
         }
 
         public var signedTransaction: SignedTransaction
