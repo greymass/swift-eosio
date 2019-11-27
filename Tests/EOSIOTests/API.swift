@@ -98,6 +98,7 @@ final class APITests: XCTestCase {
         let res = try! client.sendSync(req).get()
 
         XCTAssertEqual(res.transactionId, transaction.id)
+        XCTAssertEqual(res.processed.blockNum, 60_423_261)
     }
 
     func testGetAccount() {
