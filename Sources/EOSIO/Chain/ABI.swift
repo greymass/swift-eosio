@@ -61,6 +61,7 @@ public struct ABI: Equatable, Hashable {
             case int64
             case string
             case checksum256
+            case public_key
         }
 
         public struct Flags: OptionSet {

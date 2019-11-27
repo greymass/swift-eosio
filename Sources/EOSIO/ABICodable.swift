@@ -297,6 +297,13 @@ private func _encodeAnyBuiltIn(_ value: Any,
     func encode<T: Encodable>(_ builtInType: T.Type, _ setValue: Any) throws {
         try _encodeValue(setValue, builtInType, to: encoder, usingType: type)
     }
+    func encodeS<T: Encodable & LosslessStringConvertible>(_ builtInType: T.Type, _ setValue: Any) throws {
+        var val = setValue
+        if let string = value as? String, let resolved = T(string) {
+            val = resolved
+        }
+        try _encodeValue(val, builtInType, to: encoder, usingType: type)
+    }
     switch type.builtIn! {
     case .string: try encode(String.self, value)
     case .int8: try encode(Int8.self, value)
@@ -307,26 +314,11 @@ private func _encodeAnyBuiltIn(_ value: Any,
     case .uint16: try encode(Int16.self, value)
     case .uint32: try encode(Int32.self, value)
     case .uint64: try encode(Int64.self, value)
-    case .name:
-        var name = value
-        if let string = value as? String {
-            name = Name(string)
-        }
-        try encode(Name.self, name)
-    case .asset:
-        var asset = value
-        if let string = value as? String, let resolved = Asset(string) {
-            asset = resolved
-        }
-        try encode(Asset.self, asset)
-    case .symbol:
-        var symbol = value
-        if let string = value as? String, let resolved = Asset.Symbol(string) {
-            symbol = resolved
-        }
-        try encode(Asset.Symbol.self, symbol)
-    case .checksum256:
-        fatalError("Not implemented")
+    case .name: try encodeS(Name.self, value)
+    case .asset: try encodeS(Asset.self, value)
+    case .symbol: try encodeS(Asset.Symbol.self, value)
+    case .checksum256: try encodeS(Checksum256.self, value)
+    case .public_key: try encodeS(PublicKey.self, value)
     }
 }
 
@@ -441,6 +433,7 @@ func _decodeAnyBuiltIn(_ type: ABI.ResolvedType,
     case .int32: return try decode(Int32.self)
     case .int64: return try decode(Int64.self)
     case .checksum256: return try decode(Checksum256.self)
+    case .public_key: return try decode(PublicKey.self)
     }
 }
 
