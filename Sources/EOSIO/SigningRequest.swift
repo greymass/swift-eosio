@@ -4,11 +4,14 @@
 import Compression
 import Foundation
 
-public struct SigningRequest: ABICodable, Equatable, Hashable {
+public struct SigningRequest: Equatable, Hashable {
     /// The magic `Name` used to resolve action and permission to signing user.
     public static let placeholder: Name = "............1"
 
-    /// Recursivley resolve any `Name` types found in value.
+    /// Placeholder permission level that resolve both actor and permission to signer.
+    public static let placeholderPermission = PermissionLevel(Self.placeholder, Self.placeholder)
+
+    /// Recursively resolve any `Name` types found in value.
     public static func resolvePlaceholders<T>(_ value: T, to name: Name) -> T {
         var depth = 0
         func resolve(_ value: Any) -> Any {
@@ -28,117 +31,65 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
         return resolve(value) as! T
     }
 
-    public struct RequestSignature: ABICodable, Equatable, Hashable {
-        public let signer: Name
-        public let signature: Signature
-    }
-
-    public enum ChainIdVariant: Equatable, Hashable {
-        case alias(UInt8)
-        case id(ChainId)
-
-        /// Name of the chain.
-        public var name: ChainName {
-            switch self {
-            case let .id(chainId):
-                return chainId.name
-            case let .alias(num):
-                return ChainName(rawValue: num) ?? .unknown
-            }
-        }
-
-        /// The actual chain id.
-        public var value: ChainId {
-            switch self {
-            case let .id(chainId):
-                return chainId
-            case let .alias(num):
-                return ChainId(ChainName(rawValue: num) ?? .unknown)
-            }
-        }
-    }
-
-    public enum RequestType: Equatable, Hashable {
-        case action(Action)
-        case actions([Action])
-        case transaction(Transaction)
-    }
-
-    public struct Callback: Equatable, Hashable, ABICodable {
-        public let url: String
-        public let background: Bool
-    }
-
-    public struct CallbackResponse: Encodable, Equatable, Hashable {
-        public var signatures: [Signature] = []
-        public var transactionId: TransactionId?
-        public var blockNum: BlockNum?
-
-        private struct Keys: CodingKey {
-            var stringValue: String
-            var intValue: Int? { return nil }
-            init(stringValue: String) {
-                self.stringValue = stringValue
-            }
-
-            init?(intValue _: Int) {
-                return nil
-            }
-        }
-
-        public init() {}
-
-        public func encode(to encoder: Encoder) throws {
-            var container = encoder.container(keyedBy: Keys.self)
-            try container.encodeIfPresent(self.transactionId?.bytes.hexEncodedString(), forKey: Keys(stringValue: "tx"))
-            try container.encodeIfPresent(self.blockNum, forKey: Keys(stringValue: "bn"))
-            for (i, sig) in self.signatures.enumerated() {
-                if i == 0 {
-                    try container.encode(sig, forKey: Keys(stringValue: "sig"))
-                }
-                try container.encode(sig, forKey: Keys(stringValue: "sig\(i)"))
-            }
-        }
-    }
-
     /// All errors `SigningRequest` can throw.
     public enum Error: Swift.Error {
-        case invalidBase64u
-        case invalidData
-        case unsupportedVersion
-        case compressionUnsupported
+        /// Decoding from URI or data failed.
+        case decodingFailed(_ message: String, reason: Swift.Error? = nil)
+        /// Encoding to URI failed.
+        case encodingFailed(_ message: String, reason: Swift.Error? = nil)
+        /// ABI definition missing when resolving request.
         case missingAbi(Name)
+        /// Tapos source missing when resolving request.
+        case missingTaposSource
     }
 
-    /// The chain id for the request.
-    public var chainId: ChainIdVariant
-    /// The request data.
-    public var req: RequestType
-    /// Whether the request should be broadcast after it is accepted and signed.
-    public var broadcast: Bool
-    /// Callback to hit after request is signed and/or broadcast.
-    public var callback: Callback?
-    /// Request signature.
-    public var signature: BinaryExtension<RequestSignature>
+    /// Underlying request data.
+    fileprivate var data: SigningRequestData
 
-    /// Create a signing request with actions.
-    public init(chainId: ChainId, actions: [Action], broadcast: Bool = true, callback: Callback? = nil, signature: RequestSignature? = nil) {
-        let name = chainId.name
-        self.chainId = name == .unknown ? .id(chainId) : .alias(name.rawValue)
-        self.req = actions.count == 1 ? .action(actions.first!) : .actions(actions)
-        self.broadcast = broadcast
-        self.callback = callback
-        self.signature = BinaryExtension(signature)
+    /// Request signature data.
+    fileprivate var sigData: RequestSignatureData?
+
+    /// Create a signing request with action(s).
+    /// - Parameter chainId: The chain id for which the request is valid.
+    /// - Parameter actions: The EOSIO actions to request a signature for.
+    /// - Parameter broadcast: Whether the signer should broadcast the transaction after signing.
+    /// - Parameter callback: Callback url signer should hit after signing and/or broadcasting.
+    /// - Parameter background: Whether the callback should be performed in the background.
+    public init(chainId: ChainId, actions: [Action], broadcast: Bool = true, callback: String? = nil, background: Bool = true) {
+        self = SigningRequest(chainId, req: actions.count == 1 ? .action(actions.first!) : .actions(actions),
+                              broadcast: broadcast, callback: callback, background: background)
     }
 
     /// Create a signing request with a transaction.
-    public init(chainId: ChainId, transaction: Transaction, broadcast: Bool = true, callback: Callback? = nil, signature: RequestSignature? = nil) {
-        let name = chainId.name
-        self.chainId = name == .unknown ? .id(chainId) : .alias(name.rawValue)
-        self.req = .transaction(transaction)
-        self.broadcast = broadcast
-        self.callback = callback
-        self.signature = BinaryExtension(signature)
+    /// - Parameter chainId: The chain id for which the request is valid.
+    /// - Parameter transaction: The transaction to request a signature for.
+    /// - Parameter broadcast: Whether the signer should broadcast the transaction after signing.
+    /// - Parameter callback: Callback url signer should hit after signing and/or broadcasting.
+    /// - Parameter background: Whether the callback should be performed in the background.
+    public init(chainId: ChainId, transaction: Transaction, broadcast: Bool = true, callback: String? = nil, background: Bool = true) {
+        self = SigningRequest(chainId, req: .transaction(transaction),
+                              broadcast: broadcast, callback: callback, background: background)
+    }
+
+    /// Create an identity request.
+    /// - Parameter chainId: The chain id for which the request is valid.
+    /// - Parameter identity: The account name to request identity for, defaults to placeholder name, i.e. signer selects.
+    /// - Parameter identityKey: Optional request key wallet implementer can use to verify subsequent requests.
+    /// - Parameter callback: Callback that wallet implementer should hit with the identity proof.
+    /// - Parameter background: Whether the callback should be performed in the background.
+    public init(chainId: ChainId, identity: Name = Self.placeholder, identityKey: PublicKey? = nil, callback: String, background: Bool = true) {
+        self = SigningRequest(chainId, req: .identity(IdentityData(account: identity, requestKey: identityKey)),
+                              broadcast: false, callback: callback, background: background)
+    }
+
+    private init(_ chainId: ChainId, req: SigningRequestData.RequestVariant, broadcast: Bool, callback: String?, background: Bool) {
+        self.data = SigningRequestData(
+            chainId: chainId,
+            req: req,
+            broadcast: broadcast,
+            callback: callback != nil ? SigningRequestData.Callback(url: callback!, background: background) : nil
+        )
+        self.sigData = nil
     }
 
     /// Decode a signing request from a string.
@@ -151,7 +102,7 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
             }
         }
         guard let data = Data(base64uEncoded: string) else {
-            throw Error.invalidBase64u
+            throw Error.decodingFailed("Unable to decode Base64u string")
         }
         self = try SigningRequest(data)
     }
@@ -161,16 +112,16 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
     public init(_ data: Data) throws {
         var data = data
         guard let header = data.popFirst() else {
-            throw Error.invalidData
+            throw Error.decodingFailed("Signature header missing")
         }
         let version = header & ~(1 << 7)
         guard version == 1 else {
-            throw Error.unsupportedVersion
+            throw Error.decodingFailed("Unsupported version")
         }
         if (header & 1 << 7) != 0 {
             data = try data.withUnsafeBytes { ptr in
                 guard !ptr.isEmpty else {
-                    throw Error.invalidData
+                    throw Error.decodingFailed("No data to decompress")
                 }
                 var size = 5_000_000
                 let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
@@ -179,30 +130,82 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
                     size = compression_decode_buffer(buffer, size, ptr.bufPtr, ptr.count, nil, COMPRESSION_ZLIB)
                 } else {
                     // TODO: compression fallback for linux
-                    throw Error.compressionUnsupported
+                    throw Error.decodingFailed("Compressed requests are not supported on your platform yet")
+                }
+                guard size != 5_000_000 else {
+                    throw Error.decodingFailed("Payload too large")
                 }
                 return Data(bytes: buffer, count: size)
             }
         }
         let decoder = ABIDecoder()
-        self = try decoder.decode(SigningRequest.self, from: data)
+        do {
+            self.data = try decoder.decode(SigningRequestData.self, from: data)
+            do {
+                self.sigData = try decoder.decode(RequestSignatureData.self)
+            } catch ABIDecoder.Error.prematureEndOfData {
+                self.sigData = nil
+            }
+        } catch {
+            throw Error.decodingFailed("Request data malformed", reason: error)
+        }
     }
 
-    internal init(chainId: ChainIdVariant, req: RequestType, broadcast: Bool, callback: Callback?, signature: RequestSignature?) {
-        self.chainId = chainId
-        self.req = req
-        self.broadcast = broadcast
-        self.callback = callback
-        self.signature = BinaryExtension(signature)
+    /// Whether the request has a callback.
+    public var hasCallback: Bool {
+        self.data.callback != nil
     }
 
-    /// All (unresolved) actions this reqeust contains.
+    /// Whether the request is an identity request.
+    public var isIdentity: Bool {
+        switch self.data.req {
+        case .identity:
+            return true
+        default:
+            return false
+        }
+    }
+
+    /// Present if the request is an identity request and requests a specific account.
+    /// - Note: This returns `nil` unless a specific identity has been requested, use`isIdentity` to check id requests.
+    public var identity: Name? {
+        switch self.data.req {
+        case let .identity(id):
+            return id.account == Self.placeholder ? nil : id.account
+        default:
+            return nil
+        }
+    }
+
+    /// Present if the request is an identity request and specifies a request key.
+    public var identityKey: PublicKey? {
+        switch self.data.req {
+        case let .identity(id):
+            return id.requestKey
+        default:
+            return nil
+        }
+    }
+
+    /// Chain ID this request is valid for.
+    public var chainId: ChainId {
+        self.data.chainId.value
+    }
+
+    /// Whether the request should be broadcast after being signed.
+    public var broadcast: Bool {
+        self.data.broadcast
+    }
+
+    /// All (unresolved) actions this request contains.
     public var actions: [Action] {
-        switch self.req {
+        switch self.data.req {
         case let .action(action):
             return [action]
         case let .actions(actions):
             return actions
+        case let .identity(id):
+            return [id.action]
         case let .transaction(tx):
             return tx.actions
         }
@@ -211,29 +214,77 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
     /// The unresolved transaction.
     public var transaction: Transaction {
         let actions: [Action]
-        switch self.req {
+        switch self.data.req {
         case let .transaction(tx):
             return tx
-        case let .action(action):
-            actions = [action]
-        case let .actions(actionList):
-            actions = actionList
+        default:
+            actions = self.actions
         }
-        let header = TransactionHeader(expiration: 0, refBlockNum: 0, refBlockPrefix: 0)
-        return Transaction(header, actions: actions)
+        return Transaction(TransactionHeader.zero, actions: actions)
     }
 
-    /// ABIs requred to resolve this transaction.
+    /// ABIs required to resolve this request.
     public var requiredAbis: Set<Name> {
-        Set(self.actions.map { $0.account })
+        Set(self.actions.compactMap { $0.account == 0 ? nil : $0.account })
     }
 
-    /// Resolve the transaction
-    public func resolve(using permission: PermissionLevel, abis: [Name: ABI]) throws -> Transaction {
+    /// Whether TaPoS values are required to resolve this request.
+    public var requiresTapos: Bool {
+        if self.isIdentity {
+            return false
+        }
+        let header = self.transaction.header
+        return header.refBlockNum == 0 && header.refBlockPrefix == 0 && header.expiration == 0
+    }
+
+    /// Request signature.
+    public var signature: Signature? {
+        self.sigData?.signature
+    }
+
+    /// Account that signed the request.
+    public var signer: Name? {
+        self.sigData?.signer
+    }
+
+    /// Signing digest.
+    public var digest: Checksum256 {
+        let encoder = ABIEncoder()
+        var data: Data = (try? encoder.encode(self.data)) ?? Data()
+        data.insert(contentsOf: [0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74], at: 0) // "request"
+        return Checksum256.hash(data)
+    }
+
+    /// Set the request signature and signer.
+    public mutating func setSignature(_ signature: Signature, signer: Name) {
+        self.sigData = RequestSignatureData(signer: signer, signature: signature)
+    }
+
+    /// Removes the request signature and signer.
+    public mutating func removeSignature() {
+        self.sigData = nil
+    }
+
+    /// Sets the request callback.
+    public mutating func setCallback(_ url: String, background: Bool) {
+        self.data.callback = SigningRequestData.Callback(url: url, background: background)
+    }
+
+    /// Removes the request callback.
+    public mutating func removeCallback() {
+        self.data.callback = nil
+    }
+
+    /// Resolve the signing request.
+    /// - Parameter permission: The permission level, aka signer, to use when resolving the request.
+    /// - Parameter abis: The ABI definitions needed to resolve the action data, see `requiredAbis`.
+    /// - Parameter tapos: The TaPoS source (e.g. block header or get info rpc call) used if request does not explicitly specify them, see `requiresTapos`.
+    /// - Returns: A resolved signing request ready to be signed and/or broadcast with a helper to resolve the callback if present.
+    public func resolve(using permission: PermissionLevel, abis: [Name: ABI] = [:], tapos: TaposSource? = nil) throws -> ResolvedSigningRequest {
         var tx = self.transaction
         tx.actions = try tx.actions.map { action in
             var action = action
-            guard let abi = abis[action.account] else {
+            guard let abi = abis[action.account] ?? (action.account == 0 ? IdentityData.abi : nil) else {
                 throw Error.missingAbi(action.account)
             }
             let object = Self.resolvePlaceholders(try action.data(as: String(action.name), using: abi), to: permission.actor)
@@ -251,7 +302,306 @@ public struct SigningRequest: ABICodable, Equatable, Hashable {
             }
             return action
         }
-        return tx
+        if !self.isIdentity, tx.header.expiration == 0, tx.header.refBlockNum == 0, tx.header.refBlockPrefix == 0 {
+            guard let tapos = tapos else {
+                throw Error.missingTaposSource
+            }
+            let values = tapos.taposValues
+            tx.refBlockNum = values.refBlockNum
+            tx.refBlockPrefix = values.refBlockPrefix
+            tx.expiration = values.expiration ?? TimePointSec(Date().addingTimeInterval(60))
+        }
+        return ResolvedSigningRequest(self, permission, tx)
+    }
+
+    /// Encode request to `eosio:` uri string.
+    public func encodeUri(compress: Bool = true) throws -> String {
+        let encoder = ABIEncoder()
+        var data: Data
+        do {
+            data = try encoder.encode(self.data)
+            if let sigData = self.sigData {
+                data.append(try encoder.encode(sigData))
+            }
+        } catch {
+            throw Error.encodingFailed("Unable to ABI-encode request data", reason: error)
+        }
+        var header: UInt8 = 1
+        if compress {
+            header |= 1 << 7
+            data = try data.withUnsafeBytes { ptr in
+                var size = ptr.count
+                let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+                defer { buffer.deallocate() }
+                if #available(iOS 9.0, OSX 10.11, *) {
+                    size = compression_encode_buffer(buffer, size, ptr.bufPtr, ptr.count, nil, COMPRESSION_ZLIB)
+                } else {
+                    // TODO: compression fallback for linux
+                    throw Error.encodingFailed("Compressed requests are not supported on your platform yet")
+                }
+                guard size != 0 else {
+                    throw Error.encodingFailed("Unknown compression error")
+                }
+                return Data(bytes: buffer, count: size)
+            }
+        }
+        data.insert(header, at: 0)
+        return "eosio:\(data.base64uEncodedString())"
+    }
+}
+
+// MARK: Resolved request
+
+public struct ResolvedSigningRequest: Hashable, Equatable {
+    public struct Callback: Encodable, Equatable, Hashable {
+        private struct Payload: Encodable, Equatable, Hashable {
+            let signatures: [Signature]
+            let request: ResolvedSigningRequest
+            let blockId: BlockId?
+
+            enum Key: String, CaseIterable, CodingKey {
+                /// The first signature.
+                case sig
+                /// Transaction ID as HEX-encoded string.
+                case tx
+                /// Block ID hint as HEX-encoded string (only present if transaction was broadcast).
+                case bi
+                /// Block number hint (only present if transaction was broadcast).
+                case bn
+                /// Signer authority, aka account name.
+                case sa
+                /// Signer permission, e.g. "active"
+                case sp
+            }
+
+            struct SignatureKey: CodingKey {
+                let stringValue: String
+                init(stringValue: String) {
+                    self.stringValue = stringValue
+                }
+
+                let intValue: Int? = nil
+                init?(intValue _: Int) {
+                    return nil
+                }
+
+                init(_ i: Int) {
+                    self.stringValue = "sig\(i)"
+                }
+            }
+
+            func stringValue(forKey key: Key) -> String {
+                switch key {
+                case .tx:
+                    return self.request.transaction.id.bytes.hexEncodedString()
+                case .bn:
+                    guard let id = self.blockId else {
+                        return ""
+                    }
+                    return String(id.blockNum)
+                case .bi:
+                    guard let id = self.blockId else {
+                        return ""
+                    }
+                    return String(id.bytes.hexEncodedString())
+                case .sa:
+                    return String(self.request.signer.actor)
+                case .sp:
+                    return String(self.request.signer.permission)
+                case .sig:
+                    return String(self.signatures[0])
+                }
+            }
+
+            public func encode(to encoder: Encoder) throws {
+                var sigContainer = encoder.container(keyedBy: SignatureKey.self)
+                for i in 1..<self.signatures.count {
+                    try sigContainer.encode(self.signatures[i], forKey: SignatureKey(i))
+                }
+                var container = encoder.container(keyedBy: Key.self)
+                for key in Key.allCases {
+                    if key == .bn {
+                        try container.encodeIfPresent(self.blockId?.blockNum, forKey: .bn)
+                        continue
+                    }
+                    let value = self.stringValue(forKey: key)
+                    guard !value.isEmpty else {
+                        continue
+                    }
+                    try container.encode(value, forKey: key)
+                }
+            }
+        }
+
+        private let data: Payload
+
+        fileprivate init(_ request: ResolvedSigningRequest, _ signatures: [Signature], _ blockId: BlockId?) {
+            self.data = Payload(signatures: signatures, request: request, blockId: blockId)
+        }
+
+        /// The url where the callback should be delivered.
+        public var url: String {
+            var url = self.data.request.request.data.callback!.url
+            for key in Payload.Key.allCases {
+                guard let range = url.range(of: "{{\(key.rawValue)}}") else { continue }
+                url.replaceSubrange(range, with: self.data.stringValue(forKey: key))
+            }
+            for i in 0..<self.data.signatures.count {
+                let key = "sig\(i)"
+                guard let range = url.range(of: "{{\(key)}}") else { continue }
+                url.replaceSubrange(range, with: String(self.data.signatures[i]))
+            }
+            return url
+        }
+
+        /// Whether the callback should be delivered in the background.
+        public var background: Bool {
+            return self.data.request.request.data.callback!.background
+        }
+
+        /// The JSON payload that should be delivered for background requests.
+        public var payload: String {
+            let encoder = JSONEncoder()
+            let data: Data
+            do {
+                data = try encoder.encode(self.data)
+            } catch {
+                return "\"\(error)\""
+            }
+            return String(bytes: data, encoding: .utf8)!
+        }
+    }
+
+    private let request: SigningRequest
+    public let signer: PermissionLevel
+    public private(set) var transaction: Transaction
+
+    fileprivate init(_ request: SigningRequest, _ signer: PermissionLevel, _ transaction: Transaction) {
+        self.request = request
+        self.signer = signer
+        self.transaction = transaction
+    }
+
+    /// The transaction header, only part of transaction that can be mutated after being resolved.
+    public var header: TransactionHeader {
+        get { self.transaction.header }
+        set { self.transaction.header = newValue }
+    }
+
+    /// Get the request callback.
+    /// - Parameter signatures: The signature(s) for obtained by signing the transaction for the requested signer.
+    /// - Parameter blockId: The block id hint obtained if the transaction was broadcast.
+    /// - Returns: The resolved callback or `nil` if the request didn't specify any.
+    func getCallback(using signatures: [Signature], blockId: BlockId?) -> Callback? {
+        guard self.request.data.callback != nil else {
+            return nil
+        }
+        return Callback(self, signatures, blockId)
+    }
+}
+
+// MARK: Data types
+
+private struct SigningRequestData: ABICodable, Hashable, Equatable {
+    /// Chain ID variant, either a chain name alias or full chainid checksum.
+    enum ChainIdVariant: Equatable, Hashable {
+        case alias(UInt8)
+        case id(ChainId)
+
+        init(_ chainId: ChainId) {
+            let name = chainId.name
+            self = name == .unknown ? .id(chainId) : .alias(name.rawValue)
+        }
+
+        /// Name of the chain.
+        var name: ChainName {
+            switch self {
+            case let .id(chainId):
+                return chainId.name
+            case let .alias(num):
+                return ChainName(rawValue: num) ?? .unknown
+            }
+        }
+
+        /// The actual chain id.
+        var value: ChainId {
+            switch self {
+            case let .id(chainId):
+                return chainId
+            case let .alias(num):
+                return ChainId(ChainName(rawValue: num) ?? .unknown)
+            }
+        }
+    }
+
+    enum RequestVariant: Equatable, Hashable {
+        case action(Action)
+        case actions([Action])
+        case transaction(Transaction)
+        case identity(IdentityData)
+    }
+
+    struct Callback: Equatable, Hashable, ABICodable {
+        let url: String
+        let background: Bool
+    }
+
+    /// The chain id for the request.
+    var chainId: ChainIdVariant
+    /// The request data.
+    var req: RequestVariant
+    /// Whether the request should be broadcast after it is accepted and signed.
+    var broadcast: Bool
+    /// Callback to hit after request is signed and/or broadcast.
+    var callback: Callback?
+
+    init(chainId: ChainId, req: RequestVariant, broadcast: Bool, callback: Callback?) {
+        self.chainId = ChainIdVariant(chainId)
+        self.req = req
+        self.broadcast = broadcast
+        self.callback = callback
+    }
+}
+
+private struct IdentityData: ABICodable, Equatable, Hashable {
+    public let account: Name
+    public let requestKey: PublicKey?
+
+    /// The mock action that is signed to prove identity.
+    public var action: Action {
+        try! Action(account: 0, name: "identity", value: self)
+    }
+
+    /// ABI definition for the mock identity contract.
+    public static let abi = ABI(
+        structs: [
+            ["identity": [
+                ["account", "name"],
+                ["request_key", "public_key?"],
+            ]],
+        ],
+        actions: ["identity"]
+    )
+}
+
+private struct RequestSignatureData: ABICodable, Equatable, Hashable {
+    public let signer: Name
+    public let signature: Signature
+}
+
+// MARK: Helpers
+
+/// Type that provides Transaction as Proof of Stake (TaPoS) values.
+public protocol TaposSource {
+    /// The TaPoS values.
+    /// - Note: Transaction expiration, technically not part of TaPoS values but in practice they are usually set together.
+    ///         Implementers can return nil expiration to have resolver set expiration from system time.
+    var taposValues: (refBlockNum: UInt16, refBlockPrefix: UInt32, expiration: TimePointSec?) { get }
+}
+
+extension TransactionHeader: TaposSource {
+    public var taposValues: (refBlockNum: UInt16, refBlockPrefix: UInt32, expiration: TimePointSec?) {
+        return (self.refBlockNum, self.refBlockPrefix, self.expiration)
     }
 }
 
@@ -338,7 +688,7 @@ extension ChainId {
 
 // MARK: ABI Coding
 
-extension SigningRequest.ChainIdVariant: ABICodable {
+extension SigningRequestData.ChainIdVariant: ABICodable {
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
         let type = try container.decode(String.self)
@@ -388,7 +738,7 @@ extension SigningRequest.ChainIdVariant: ABICodable {
     }
 }
 
-extension SigningRequest.RequestType: ABICodable {
+extension SigningRequestData.RequestVariant: ABICodable {
     public init(from decoder: Decoder) throws {
         var container = try decoder.unkeyedContainer()
         let type = try container.decode(String.self)
@@ -399,6 +749,8 @@ extension SigningRequest.RequestType: ABICodable {
             self = .actions(try container.decode([Action].self))
         case "transaction":
             self = .transaction(try container.decode(Transaction.self))
+        case "identity":
+            self = .identity(try container.decode(IdentityData.self))
         default:
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unknown type in variant")
         }
@@ -413,6 +765,8 @@ extension SigningRequest.RequestType: ABICodable {
             self = .actions(try decoder.decode([Action].self))
         case 2:
             self = .transaction(try decoder.decode(Transaction.self))
+        case 3:
+            self = .identity(try decoder.decode(IdentityData.self))
         default:
             throw ABIDecoder.Error.unknownVariant(type)
         }
@@ -430,6 +784,9 @@ extension SigningRequest.RequestType: ABICodable {
         case let .transaction(transaction):
             try container.encode("transaction")
             try container.encode(transaction)
+        case let .identity(identity):
+            try container.encode("identity")
+            try container.encode(identity)
         }
     }
 
@@ -444,6 +801,9 @@ extension SigningRequest.RequestType: ABICodable {
         case let .transaction(transaction):
             try encoder.encode(2 as UInt8)
             try encoder.encode(transaction)
+        case let .identity(identity):
+            try encoder.encode(3 as UInt8)
+            try encoder.encode(identity)
         }
     }
 }

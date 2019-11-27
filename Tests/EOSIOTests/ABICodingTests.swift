@@ -139,45 +139,6 @@ final class ABICodableTests: XCTestCase {
         )
     }
 
-    func testSigningRequest() {
-        AssertABICodable(
-            SigningRequest(
-                chainId: .id("aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906"),
-                req: .action(Action(
-                    account: "eosio.token",
-                    name: "transfer",
-                    authorization: [],
-                    data: "000000000000285D000000000000AE3910270000000000000442415A0000000003717578"
-                )),
-                broadcast: true,
-                callback: nil
-            ),
-            """
-            {
-                "chain_id": [
-                    "chain_id",
-                    "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906"
-                ],
-                "req": [
-                    "action",
-                    {
-                        "account": "eosio.token",
-                        "name": "transfer",
-                        "authorization": [],
-                        "data": "000000000000285d000000000000ae3910270000000000000442415a0000000003717578"
-                    }
-                ],
-                "broadcast": true
-            }
-            """,
-            """
-            01ACA376F206B8FC25A6ED44DBDC66547C36C6C33E3A119FFBEAEF943642
-            F0E9060000A6823403EA3055000000572D3CCDCD0024000000000000285D
-            000000000000AE3910270000000000000442415A00000000037175780100
-            """
-        )
-    }
-
     func testPublicKey() {
         AssertABICodable(
             PublicKey("PUB_K1_5AHoNnWetuDhKWSDx3WUf8W7Dg5xjHCMc4yHmmSiaJCFvvAgnB"),
