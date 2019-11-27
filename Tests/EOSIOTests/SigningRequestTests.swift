@@ -27,7 +27,7 @@ class SigningRequestTests: XCTestCase {
 
         let cb = resolved.getCallback(
             using: ["SIG_K1_KdHDFseJF6paedvSbfHFZzhbtBDVAM8LxeDJsrG33sENRbUQMFHX8CvtT9wRLo4fE4QGYtbp1rF6BqNQ6Pv5XgSocXwM67"],
-            blockId: "057c667944c37a4ddf654a6e9c45d84e899afcf663f27af44f07a378648c0515"
+            blockNum: 12345
         )
         XCTAssertEqual(cb?.url, "https://example.com?tx=cf3bc0107cceec48278665269b85d97643d399e9fc3e283f63d6ef074c52b804")
         XCTAssertEqual(
@@ -37,9 +37,8 @@ class SigningRequestTests: XCTestCase {
                 "sig": "SIG_K1_KdHDFseJF6paedvSbfHFZzhbtBDVAM8LxeDJsrG33sENRbUQMFHX8CvtT9wRLo4fE4QGYtbp1rF6BqNQ6Pv5XgSocXwM67",
                 "sp": "active",
                 "sa": "bar",
-                "bn": 92038777,
+                "bn": "12345",
                 "tx": "cf3bc0107cceec48278665269b85d97643d399e9fc3e283f63d6ef074c52b804",
-                "bi": "057c667944c37a4ddf654a6e9c45d84e899afcf663f27af44f07a378648c0515"
             }
             """.normalizedJSON
         )
