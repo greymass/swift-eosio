@@ -83,12 +83,14 @@ class SigningRequestTests: XCTestCase {
 
         XCTAssertEqual(req.isIdentity, true)
         XCTAssertEqual(req.identity, nil)
-        XCTAssertEqual(req.identityKey, "EOS5ZNmwoFDBPVnL2CYgZRpHqFfaK2M9bCFJJ1SapR9X4KPMabYBK")
+        XCTAssertEqual(req.identityKey, "PUB_K1_5ZNmwoFDBPVnL2CYgZRpHqFfaK2M9bCFJJ1SapR9X4KPRdJ9eK")
 
         let resolved = try! req.resolve(using: "foo@id")
         XCTAssertEqual(resolved.transaction.header, TransactionHeader.zero)
         let action = resolved.transaction.actions[0]
         XCTAssertEqual(action.account, 0)
         XCTAssertEqual(action.name, "identity")
+
+        XCTAssertEqual(try! req.encodeUri(), "eosio:gWNgZGZkgABGBqYI7x9Sxl36f-rbJt9s2lUzbYe3pdtE7WnPfxy7_pAph3k5A6NKTmZetpW-fnKGXmJeckZ-kR5IQN_QyNhE18TUzFzXwtLAgBEA")
     }
 }
