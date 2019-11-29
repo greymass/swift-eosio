@@ -371,8 +371,16 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
                 case bn
                 /// Signer authority, aka account name.
                 case sa
-                /// Signer permission, e.g. "active"
+                /// Signer permission, e.g. "active".
                 case sp
+                /// Expiration time used when resolving request.
+                case ex
+                /// Reference block num used when resolving request.
+                case rbn
+                /// Reference block id used when resolving request.
+                case rid
+                /// The originating signing request packed as a uri string.
+                case req
             }
 
             struct SignatureKey: CodingKey {
@@ -406,6 +414,14 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
                     return String(self.request.signer.permission)
                 case .sig:
                     return String(self.signatures[0])
+                case .req:
+                    return (try? self.request.request.encodeUri()) ?? ""
+                case .rbn:
+                    return String(self.request.transaction.refBlockNum)
+                case .rid:
+                    return String(self.request.transaction.refBlockPrefix)
+                case .ex:
+                    return self.request.transaction.expiration.stringValue
                 }
             }
 
