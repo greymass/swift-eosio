@@ -39,6 +39,10 @@ class SigningRequestTests: XCTestCase {
                 "sa": "bar",
                 "bn": "12345",
                 "tx": "cf3bc0107cceec48278665269b85d97643d399e9fc3e283f63d6ef074c52b804",
+                "ex": "1970-01-01T00:00:00",
+                "rbn": "0",
+                "rid": "0",
+                "req": "eosio:gWNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwcgom1FSUlBspa-fWpGYW5CTqpecn2tfUmFbXV1SUVvLCAA"
             }
             """.normalizedJSON
         )
