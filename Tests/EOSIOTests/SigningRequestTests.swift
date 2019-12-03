@@ -30,8 +30,9 @@ class SigningRequestTests: XCTestCase {
             blockNum: 12345
         )
         XCTAssertEqual(cb?.url, "https://example.com?tx=cf3bc0107cceec48278665269b85d97643d399e9fc3e283f63d6ef074c52b804")
+        let payload = String(bytes: try! cb!.getPayload(extra: ["foo": "bar"]), encoding: .utf8)!
         XCTAssertEqual(
-            cb?.payload.normalizedJSON,
+            payload.normalizedJSON,
             """
             {
                 "sig": "SIG_K1_KdHDFseJF6paedvSbfHFZzhbtBDVAM8LxeDJsrG33sENRbUQMFHX8CvtT9wRLo4fE4QGYtbp1rF6BqNQ6Pv5XgSocXwM67",
@@ -42,7 +43,8 @@ class SigningRequestTests: XCTestCase {
                 "ex": "1970-01-01T00:00:00",
                 "rbn": "0",
                 "rid": "0",
-                "req": "eosio:gWNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwcgom1FSUlBspa-fWpGYW5CTqpecn2tfUmFbXV1SUVvLCAA"
+                "req": "eosio:gWNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwcgom1FSUlBspa-fWpGYW5CTqpecn2tfUmFbXV1SUVvLCAA",
+                "foo": "bar"
             }
             """.normalizedJSON
         )

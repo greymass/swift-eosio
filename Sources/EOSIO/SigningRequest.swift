@@ -441,6 +441,27 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
             }
         }
 
+        private struct ExtendedPayload: Encodable {
+            let payload: Payload
+            let extra: [String: String]?
+
+            func encode(to encoder: Encoder) throws {
+                try self.payload.encode(to: encoder)
+                var container = encoder.container(keyedBy: StringCodingKey.self)
+                if let extra = self.extra {
+                    for (key, value) in extra {
+                        guard Payload.Key(rawValue: key) == nil, !key.starts(with: "sig") else {
+                            throw EncodingError.invalidValue(value, EncodingError.Context(
+                                codingPath: container.codingPath,
+                                debugDescription: "Reserved key '\(key)' used in extra data"
+                            ))
+                        }
+                        try container.encode(value, forKey: StringCodingKey(key))
+                    }
+                }
+            }
+        }
+
         private let data: Payload
 
         fileprivate init(_ request: ResolvedSigningRequest, _ signatures: [Signature], _ blockNum: BlockNum?) {
@@ -468,15 +489,11 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
         }
 
         /// The JSON payload that should be delivered for background requests.
-        public var payload: String {
+        /// - Parameter extra: Extra data to add to the payload, note that if any key conflicts with
+        ///                    the payload keys this method will throw.
+        public func getPayload(extra: [String: String]? = nil) throws -> Data {
             let encoder = JSONEncoder()
-            let data: Data
-            do {
-                data = try encoder.encode(self.data)
-            } catch {
-                return "\"\(error)\""
-            }
-            return String(bytes: data, encoding: .utf8)!
+            return try encoder.encode(ExtendedPayload(payload: self.data, extra: extra))
         }
     }
 
