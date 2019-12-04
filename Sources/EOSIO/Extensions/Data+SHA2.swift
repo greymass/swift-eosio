@@ -27,7 +27,7 @@ public extension Data {
                 return
             }
             rv.withUnsafeMutableBytes { hash -> Void in
-                sha256_Raw(msg.bufPtr, msg.count, hash.bufPtr)
+                sha512_Raw(msg.bufPtr, msg.count, hash.bufPtr)
             }
         }
         return rv
