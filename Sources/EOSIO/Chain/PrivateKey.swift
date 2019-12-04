@@ -97,6 +97,16 @@ public struct PrivateKey: Equatable, Hashable {
         }
     }
 
+    /// Get the shared secret for given public key.
+    public func sharedSecret(for publicKey: PublicKey) throws -> Data {
+        switch self.value {
+        case let .k1(secret):
+            return try Secp256k1.shared.sharedSecret(publicKey: publicKey.keyData, secretKey: secret)
+        case .unknown:
+            throw Error.unknownKeyType
+        }
+    }
+
     /// The key type as a string, .e.g. K1 or R1.
     public var keyType: String {
         switch self.value {
