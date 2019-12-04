@@ -44,4 +44,15 @@ class Secp256k1Test: XCTestCase {
         let message: Data = "b04a0f0301000000184a0f0301000000104b0f0301000000684a0f0301000000"
         _ = try ctx.sign(message: message, secretKey: secretKey)
     }
+
+    func testSharedSecret() throws {
+        let k1 = "beef000000000000000000000000000000000000000000000000000000000000" as Data
+        let k2 = "face000000000000000000000000000000000000000000000000000000000000" as Data
+        let k1Pub = try Secp256k1.shared.createPublic(fromSecret: k1)
+        let k2Pub = try Secp256k1.shared.createPublic(fromSecret: k2)
+        let s1 = try Secp256k1.shared.sharedSecret(publicKey: k1Pub, secretKey: k2)
+        let s2 = try Secp256k1.shared.sharedSecret(publicKey: k2Pub, secretKey: k1)
+        XCTAssertEqual(s1, s2)
+        XCTAssertEqual(s1, "def2d32f6b849198d71118ef53dbc3b679fe2b2c174ee4242a33e1a3f34c46fcbaa698fb599ca0e36f555dde2ac913a10563de2c33572155487cd8b34523de9e")
+    }
 }

@@ -1,6 +1,7 @@
 /// Swift wrapper for libsecp256k1.
 /// - Author: Johan Nordberg <code@johan-nordberg.com>
 
+import crypto
 import Foundation
 import secp256k1
 
@@ -22,6 +23,8 @@ internal class Secp256k1 {
         case recoveryFailed
         /// Invalid private key.
         case invalidSecretKey
+        /// Thrown if unable to parse public key data.
+        case invalidPublicKey
         /// Thrown if randomization seed isn't 32-bytes.
         case invalidRandomSeed
         /// Thrown if randomization unexpectedly fails.
@@ -33,7 +36,7 @@ internal class Secp256k1 {
     /// The shared secp256k1 context.
     ///
     /// Shared context is thread-safe and should be used in most cases since creating a new
-    /// context is 100 times more expensice than a signing or verifying operation.
+    /// context is 100 times more expensive than a signing or verifying operation.
     static let shared: Secp256k1 = {
         let ctx = Secp256k1(flags: [.sign, .verify])
         try? ctx.randomize(using: Data.random(32))
@@ -236,4 +239,38 @@ internal class Secp256k1 {
             return secp256k1_ecdsa_verify(self.ctx, sig, msg32.bufPtr, pubkey) == 1
         }
     }
+
+    /// Compute an EC Diffie-Hellman (ECDH) secret using SHA512.
+    /// - Parameter publicKey: 33- or 65-byte public key.
+    /// - Parameter secretKey: 32-byte secret key.
+    /// - Returns: 64-byte shared secret.
+    func sharedSecret(publicKey: Data, secretKey: Data) throws -> Data {
+        let pubkey = UnsafeMutablePointer<secp256k1_pubkey>.allocate(capacity: 1)
+        defer { pubkey.deallocate() }
+        try publicKey.withUnsafeBytes {
+            guard !$0.isEmpty else {
+                throw Error.invalidPublicKey
+            }
+            guard secp256k1_ec_pubkey_parse(ctx, pubkey, $0.bufPtr, $0.count) == 1 else {
+                throw Error.invalidPublicKey
+            }
+        }
+        let output = UnsafeMutablePointer<UInt8>.allocate(capacity: 64)
+        try secretKey.withUnsafeBytes {
+            guard !$0.isEmpty else {
+                throw Error.invalidSecretKey
+            }
+            guard secp256k1_ecdh(self.ctx, output, pubkey, $0.bufPtr, sha512_hash, nil) == 1 else {
+                throw Error.invalidSecretKey
+            }
+        }
+        return Data(bytesNoCopy: output, count: 64, deallocator: .free)
+    }
+}
+
+/// EOSIO-style EDCH hash function
+/// https://github.com/EOSIO/eosjs-ecc/blob/97c87d9a3ea338636ceb351116b5cc858710bd39/src/key_private.js#L81
+private func sha512_hash(output: UnsafeMutablePointer<UInt8>?, x: UnsafePointer<UInt8>?, y _: UnsafePointer<UInt8>?, data _: UnsafeMutableRawPointer?) -> Int32 {
+    sha512_Raw(x, 32, output)
+    return 1
 }
