@@ -176,15 +176,6 @@ extension Never: ABICodable {
     }
 }
 
-struct ABIKey: CodingKey {
-    let intValue: Int? = nil
-    let stringValue: String
-
-    init?(intValue _: Int) { return nil }
-    init(stringValue: String) { self.stringValue = stringValue }
-    init(_ string: String) { self.stringValue = string }
-}
-
 // MARK: Dynamic ABI Coding
 
 public extension CodingUserInfoKey {
@@ -266,9 +257,9 @@ private func _encodeAnyFields(_ value: Any,
                 debugDescription: "Expected object"
             ))
         }
-        var container = encoder.container(keyedBy: ABIKey.self)
+        var container = encoder.container(keyedBy: StringCodingKey.self)
         for field in type.fields! {
-            let fieldEncoder = container.superEncoder(forKey: ABIKey(field.name))
+            let fieldEncoder = container.superEncoder(forKey: StringCodingKey(field.name))
             try _encodeAny(object[field.name] as Any, to: fieldEncoder, usingType: field.type)
         }
     }
@@ -376,9 +367,9 @@ func _decodeAnyFields(_ type: ABI.ResolvedType,
                       from decoder: Decoder) throws -> Any {
     func decode(from decoder: Decoder) throws -> Any {
         var object: [String: Any] = [:]
-        let container = try decoder.container(keyedBy: ABIKey.self)
+        let container = try decoder.container(keyedBy: StringCodingKey.self)
         for field in type.fields! {
-            let fieldEncoder = try container.superDecoder(forKey: ABIKey(field.name))
+            let fieldEncoder = try container.superDecoder(forKey: StringCodingKey(field.name))
             object[field.name] = try _decodeAny(field.type, from: fieldEncoder)
         }
         return object
