@@ -43,7 +43,7 @@ class SigningRequestTests: XCTestCase {
                 "ex": "1970-01-01T00:00:00",
                 "rbn": "0",
                 "rid": "0",
-                "req": "eosio:gWNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwcgom1FSUlBspa-fWpGYW5CTqpecn2tfUmFbXV1SUVvLCAA",
+                "req": "esr:gmNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwSybUVJSUGylr59akZhbkJOql5yfa19SYVtdXVJRW8sAAA",
                 "foo": "bar"
             }
             """.normalizedJSON
@@ -51,40 +51,41 @@ class SigningRequestTests: XCTestCase {
     }
 
     func testEncodeDecode() {
-        let compressed = "eosio:gWNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwcgAAA"
-        let uncompressed = "eosio:AQABAACmgjQD6jBVAAAAVy08zc0BAQAAAAAAAAABAAAAAAAAADQBAAAAAAAAAAAAAAAAAChdAQAAAAAAAAAAUEVORwAAABNUaGFua3MgZm9yIHRoZSBmaXNoAQA"
+        let compressed = "esr://gmNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwczAAAA"
+        let uncompressed = "esr://AgABAACmgjQD6jBVAAAAVy08zc0BAQAAAAAAAAABAAAAAAAAADQBAAAAAAAAAAAAAAAAAChdAQAAAAAAAAAAUEVORwAAABNUaGFua3MgZm9yIHRoZSBmaXNoAwAA"
         let req1 = try! SigningRequest(compressed)
         let req2 = try! SigningRequest(uncompressed)
         XCTAssertEqual(req1, req2)
         XCTAssertEqual(try! req1.encodeUri(compress: false), uncompressed)
         XCTAssertEqual(try! req2.encodeUri(compress: true), compressed)
-        XCTAssertThrowsError(try SigningRequest("eosio:gWeeeeeeeeee"))
-        XCTAssertThrowsError(try SigningRequest("eosio:AQBAAAAAAAAABAAAAAAAAA"))
+        XCTAssertThrowsError(try SigningRequest("esr:gWeeeeeeeeee"))
+        XCTAssertThrowsError(try SigningRequest("esr://AQBAAAAAAAAABAAAAAAAAA"))
         XCTAssertThrowsError(try SigningRequest(""))
     }
 
     func testCreateSigned() {
         let key = PrivateKey("5K64TPiF79H6RgRZnQxEW8zxXEC2PrurQDEKJdLAkDaegJXMAz6")
-        let reqString = "eosio:gWNgZGBY1mTC_MoglIGBIVzX5uxZoAgIaMSCyBVvjYx0kAUYGNZZvmCGsJhd_YNBNHdGak5OvkJJRmpRKiMDAA"
+        let reqString = "esr://gmNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwczAAAA"
         var req = try! SigningRequest(reqString)
         XCTAssertNil(req.signer)
         XCTAssertNil(req.signature)
         req.setSignature(try! key.sign(req.digest), signer: "foobar")
-        XCTAssertEqual(try! req.encodeUri(), "eosio:gWNgZGBY1mTC_MoglIGBIVzX5uxZoAgIaMSCyBVvjYx0kAUYGNZZvmCGsJhd_YNBNHdGak5OvkJJRmpRKkR3TDFQtYKjRZLW-rkn5z86tuzPxn7zSXZ7lkyOdFE_-tTE8_bqS4ab6vnUd_LqHG3ZVHCmNnW9qt6zEx9amy_k_FC6nqX1Uf7TdgA")
+        XCTAssertEqual(try! req.encodeUri(), "esr://gmNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwQxREVOsEcsgX-9-jqsy1EhNQM_GM_FkQMIziUU1VU4PsmOn_3r5hUMumeN3PXvdSuWMm1o9u6-FmCwtPvR0haqt12fNKtlWzTuiNwA")
     }
 
     func testVerifySigned() {
         let key = try! PrivateKey("5K64TPiF79H6RgRZnQxEW8zxXEC2PrurQDEKJdLAkDaegJXMAz6").getPublic()
-        let reqString = "eosio:gWNgZGBY1mTC_MoglIGBIVzX5uxZoAgIaMSCyBVvjYx0kAUYGNZZvmCGsJhd_YNBNHdGak5OvkJJRmpRKkR3TDFQtYKjRZLW-rkn5z86tuzPxn7zSXZ7lkyOdFE_-tTE8_bqS4ab6vnUd_LqHG3ZVHCmNnW9qt6zEx9amy_k_FC6nqX1Uf7TdgA"
+        let reqString = "esr://gmNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwQxREVOsEcsgX-9-jqsy1EhNQM_GM_FkQMIziUU1VU4PsmOn_3r5hUMumeN3PXvdSuWMm1o9u6-FmCwtPvR0haqt12fNKtlWzTuiNwA"
         let req = try! SigningRequest(reqString)
-        XCTAssertEqual(req.signature, "SIG_K1_KdHDFseJF6paedvSbfHFZzhbtBDVAM8LxeDJsrG33sENRbUQMFHX8CvtT9wRLo4fE4QGYtbp1rF6BqNQ6Pv5XgSocXwM67")
+        XCTAssertEqual(req.signature, "SIG_K1_KBub1qmdiPpWA2XKKEZEG3EfKJBf38GETHzbd4t3CBdWLgdvFRLCqbcUsBbbYga6jmxfdSFfodMdhMYraKLhEzjSCsiuMs")
         XCTAssert(req.signature!.verify(req.digest, using: key))
+        XCTAssertEqual(try! req.signature!.recoverPublicKey(from: req.digest), key)
     }
 
     func testIdentity() {
         let req = SigningRequest(chainId: ChainId(.eos),
                                  identityKey: "EOS5ZNmwoFDBPVnL2CYgZRpHqFfaK2M9bCFJJ1SapR9X4KPMabYBK",
-                                 callback: "link://ch.anchor.link/1234-4567-8900")
+                                 callback: "https://ch.anchor.link/1234-4567-8900")
 
         XCTAssertEqual(req.isIdentity, true)
         XCTAssertEqual(req.identity, nil)
@@ -96,6 +97,24 @@ class SigningRequestTests: XCTestCase {
         XCTAssertEqual(action.account, 0)
         XCTAssertEqual(action.name, "identity")
 
-        XCTAssertEqual(try! req.encodeUri(), "eosio:gWNgZGZkgABGBqYI7x9Sxl36f-rbJt9s2lUzbYe3pdtE7WnPfxy7_pAph3k5A6NKTmZetpW-fnKGXmJeckZ-kR5IQN_QyNhE18TUzFzXwtLAgBEA")
+        XCTAssertEqual(try! req.encodeUri(), "esr://gmNgZGZkgABGBqYI7x9Sxl36f-rbJt9s2lUzbYe3pdtE7WnPfxy7_pAph3k5k2pGSUlBsZW-fnKGXmJeckZ-kV5OZl62vqGRsYmuiamZua6FpYEBAwA")
+    }
+
+    func testMetadata() throws {
+        let invitationKey = PrivateKey("5K64TPiF79H6RgRZnQxEW8zxXEC2PrurQDEKJdLAkDaegJXMAz6")
+        var request = SigningRequest(chainId: ChainId(.jungle), callback: "caldav://greymass.com", info: [
+            "date": "2019-12-24T21:00:00",
+            "title": "X-Mas Rave",
+            "location": "Greymass HQ",
+        ])
+        request.setSignature(try invitationKey.sign(request.digest), signer: "teamgreymass")
+        let uri = try request.encodeUri()
+        XCTAssertEqual(uri, "esr://gmNgZmZkgAIm0eTEnJTEMit9_fSi1MrcxOJiveT8XGbWksySnFSuCF3fxGKFoMSyVI6c_OTEksz8PG53qDoFj0CWlMSSVGEjA0NLXUMjXSOTECNDKwMDIGrYODEuVq33FIO8ft7PzXd__rP6cYbzhjH7Yie2hryM-ZOtmZ4LBRYuO3nhpbYG_4_5MRZvSn7IhkhGcbE2xToeLLb994XFeVGtSUY7KwA")
+        let decoded = try SigningRequest(uri)
+        XCTAssertEqual(decoded.info, [
+            "date": "2019-12-24T21:00:00",
+            "title": "X-Mas Rave",
+            "location": "Greymass HQ",
+        ])
     }
 }
