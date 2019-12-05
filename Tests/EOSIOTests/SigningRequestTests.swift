@@ -117,4 +117,14 @@ class SigningRequestTests: XCTestCase {
             "location": "Greymass HQ",
         ])
     }
+
+    func testComplexMetadata() throws {
+        var request = SigningRequest(chainId: ChainId(.jungle), callback: "https://greymass.com/partypay")
+        request.setInfo("amount", value: Asset("1.0 MOL"))
+        request.setInfo("snowman", string: "☃")
+        let uri = try request.encodeUri()
+        let decoded = try SigningRequest(uri)
+        XCTAssertEqual(decoded.getInfo("amount", as: Asset.self)?.units, 10)
+        XCTAssertEqual(decoded.getInfo("snowman", as: String.self), "☃")
+    }
 }
