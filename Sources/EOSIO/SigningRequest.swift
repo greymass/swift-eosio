@@ -111,7 +111,10 @@ public struct SigningRequest: Equatable, Hashable {
         var infoPairs: [SigningRequestData.InfoPair] = []
         if let info = info {
             for (key, value) in info.sorted(by: { $0.key > $1.key }) {
-                infoPairs.append(SigningRequestData.InfoPair(key: key, value: value))
+                guard let data = value.data(using: .utf8, allowLossyConversion: true) else {
+                    continue
+                }
+                infoPairs.append(SigningRequestData.InfoPair(key: key, value: data))
             }
         }
         self.data = SigningRequestData(
@@ -233,8 +236,14 @@ public struct SigningRequest: Equatable, Hashable {
     }
 
     /// Request metadata.
+    /// - Note: Keys that does not encode as utf-8 will be omitted, see `rawInfo`.
     public var info: [String: String] {
-        var rv: [String: String] = [:]
+        return self.rawInfo.compactMapValues { String(bytes: $0, encoding: .utf8) }
+    }
+
+    /// Raw request metadata.
+    public var rawInfo: [String: Data] {
+        var rv: [String: Data] = [:]
         for pair in self.data.info {
             rv[pair.key] = pair.value
         }
@@ -323,6 +332,66 @@ public struct SigningRequest: Equatable, Hashable {
     /// Removes the request callback.
     public mutating func removeCallback() {
         self.data.callback = ""
+    }
+
+    /// Set metadata key to data value.
+    public mutating func setInfo(_ key: String, data: Data) {
+        let pair = SigningRequestData.InfoPair(key: key, value: data)
+        if let existingIdx = self.data.info.firstIndex(where: { $0.key == key }) {
+            self.data.info[existingIdx] = pair
+        } else {
+            self.data.info.append(pair)
+        }
+    }
+
+    /// Set metadata key to string value.
+    /// - Note: Key will be unset if string fails to encode to UTF-8.
+    public mutating func setInfo(_ key: String, string: String) {
+        if let data = string.data(using: .utf8, allowLossyConversion: true) {
+            self.setInfo(key, data: data)
+        } else {
+            self.removeInfo(key)
+        }
+    }
+
+    /// Set metadata key to any `ABIEncodable` value.
+    /// - Note: Key will be unset if value fails do encode.
+    public mutating func setInfo<T: ABIEncodable>(_ key: String, value: T) {
+        if let data: Data = try? ABIEncoder().encode(value) {
+            self.setInfo(key, data: data)
+        } else {
+            self.removeInfo(key)
+        }
+    }
+
+    /// Remove metadata value for key, or all values if key is `nil`.
+    public mutating func removeInfo(_ key: String? = nil) {
+        if let key = key {
+            self.data.info.removeAll { $0.key == key }
+        } else {
+            self.data.info = []
+        }
+    }
+
+    /// Get data for info key.
+    public func getInfo(_ key: String) -> Data? {
+        return self.data.info.first { $0.key == key }?.value
+    }
+
+    /// Get string for info key.
+    public func getInfo(_ key: String, as _: String.Type) -> String? {
+        if let data = self.getInfo(key) {
+            return String(bytes: data, encoding: .utf8)
+        }
+        return nil
+    }
+
+    /// Get `ABIDecodable` for info key.
+    public func getInfo<T: ABIDecodable>(_ key: String, as _: T.Type) -> T? {
+        if let data = self.getInfo(key) {
+            return try? ABIDecoder().decode(T.self, from: data)
+        }
+        return nil
     }
 
     /// Resolve the signing request.
@@ -622,7 +691,7 @@ private struct SigningRequestData: ABICodable, Hashable, Equatable {
 
     struct InfoPair: Equatable, Hashable, ABICodable {
         let key: String
-        let value: String
+        let value: Data
     }
 
     struct RequestFlags: OptionSet, Equatable, Hashable {
