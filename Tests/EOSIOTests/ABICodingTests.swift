@@ -161,14 +161,14 @@ final class ABICodableTests: XCTestCase {
 
     func testPermissionLevel() {
         AssertABICodable(
-            PermissionLevel(SigningRequest.placeholder, SigningRequest.placeholder),
+            SigningRequest.placeholderPermission,
             """
-            {"actor": "............1", "permission": "............1"}
+            {"actor": "............1", "permission": "............2"}
             """,
-            "01000000000000000100000000000000"
+            "01000000000000000200000000000000"
         )
         AssertABICodable(
-            [PermissionLevel(SigningRequest.placeholder, SigningRequest.placeholder)],
+            [PermissionLevel(SigningRequest.actorPlaceholder, SigningRequest.actorPlaceholder)],
             """
             [{"actor": "............1", "permission": "............1"}]
             """,

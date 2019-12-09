@@ -8,20 +8,30 @@ public struct SigningRequest: Equatable, Hashable {
     /// The signing request version
     public static let version: UInt8 = 2
 
-    /// The magic `Name` used to resolve action and permission to signing user.
-    public static let placeholder: Name = "............1"
+    /// Special `Name` that is resolved to to signing actor (account name).
+    public static let actorPlaceholder: Name = "............1"
+
+    /// Special `Name` that is resolved to to signing permission name.
+    public static let permissionPlaceholder: Name = "............2"
 
     /// Placeholder permission level that resolve both actor and permission to signer.
-    public static let placeholderPermission = PermissionLevel(Self.placeholder, Self.placeholder)
+    public static let placeholderPermission = PermissionLevel(Self.actorPlaceholder, Self.permissionPlaceholder)
 
-    /// Recursively resolve any `Name` types found in value.
-    public static func resolvePlaceholders<T>(_ value: T, to name: Name) -> T {
+    /// Recursively resolve any `Name` placeholders types found in value.
+    public static func resolvePlaceholders<T>(_ value: T, using signer: PermissionLevel) -> T {
         var depth = 0
         func resolve(_ value: Any) -> Any {
             guard depth < 100 else { return value }
             switch value {
             case let n as Name:
-                return n == Self.placeholder ? name : n
+                switch n {
+                case Self.actorPlaceholder:
+                    return signer.actor
+                case Self.permissionPlaceholder:
+                    return signer.permission
+                default:
+                    return n
+                }
             case let array as [Any]:
                 depth += 1
                 return array.map(resolve)
@@ -85,9 +95,8 @@ public struct SigningRequest: Equatable, Hashable {
     /// - Parameter background: Whether the callback should be performed in the background.
     /// - Parameter info: Optional request headers.
     public init(chainId: ChainId, callback: String, identity: Name? = nil, permission: Name? = nil, background: Bool = true, info: [String: String] = [:]) {
-        let perm = PermissionLevel(identity ?? Self.placeholder, permission ?? Self.placeholder)
         self = SigningRequest(chainId,
-                              req: .identity(IdentityData(perm == Self.placeholderPermission ? nil : perm)),
+                              req: .identity(IdentityData(identity, permission)),
                               broadcast: false,
                               callback: callback,
                               background: background,
@@ -207,7 +216,7 @@ public struct SigningRequest: Equatable, Hashable {
     public var identity: Name? {
         switch self.data.req {
         case let .identity(id):
-            return id.permission?.actor == Self.placeholder ? nil : id.permission?.actor
+            return id.permission?.actor == Self.actorPlaceholder ? nil : id.permission?.actor
         default:
             return nil
         }
@@ -218,7 +227,7 @@ public struct SigningRequest: Equatable, Hashable {
     public var identityPermission: Name? {
         switch self.data.req {
         case let .identity(id):
-            return id.permission?.permission == Self.placeholder ? nil : id.permission?.permission
+            return id.permission?.permission == Self.permissionPlaceholder ? nil : id.permission?.permission
         default:
             return nil
         }
@@ -401,23 +410,27 @@ public struct SigningRequest: Equatable, Hashable {
     /// - Parameter abis: The ABI definitions needed to resolve the action data, see `requiredAbis`.
     /// - Parameter tapos: The TaPoS source (e.g. block header or get info rpc call) used if request does not explicitly specify them, see `requiresTapos`.
     /// - Returns: A resolved signing request ready to be signed and/or broadcast with a helper to resolve the callback if present.
-    public func resolve(using permission: PermissionLevel, abis: [Name: ABI] = [:], tapos: TaposSource? = nil) throws -> ResolvedSigningRequest {
+    public func resolve(using signer: PermissionLevel, abis: [Name: ABI] = [:], tapos: TaposSource? = nil) throws -> ResolvedSigningRequest {
         var tx = self.transaction
         tx.actions = try tx.actions.map { action in
             var action = action
             guard let abi = abis[action.account] ?? (action.account == 0 ? IdentityData.abi : nil) else {
                 throw Error.missingAbi(action.account)
             }
-            let object = Self.resolvePlaceholders(try action.data(as: String(action.name), using: abi), to: permission.actor)
+            let object = Self.resolvePlaceholders(try action.data(as: String(action.name), using: abi), using: signer)
             let encoder = ABIEncoder()
             action.data = try encoder.encode(object, asType: String(action.name), using: abi)
             action.authorization = action.authorization.map { auth in
                 var auth = auth
-                if auth.actor == Self.placeholder {
-                    auth.actor = permission.actor
+                if auth.actor == Self.actorPlaceholder {
+                    auth.actor = signer.actor
                 }
-                if auth.permission == Self.placeholder {
-                    auth.permission = permission.permission
+                if auth.permission == Self.permissionPlaceholder {
+                    auth.permission = signer.permission
+                }
+                // backwards compatibility, actor placeholder will also resolve to permission when used in auth
+                if auth.permission == Self.actorPlaceholder {
+                    auth.permission = signer.permission
                 }
                 return auth
             }
@@ -432,7 +445,7 @@ public struct SigningRequest: Equatable, Hashable {
             tx.refBlockPrefix = values.refBlockPrefix
             tx.expiration = values.expiration ?? TimePointSec(Date().addingTimeInterval(60))
         }
-        return ResolvedSigningRequest(self, permission, tx)
+        return ResolvedSigningRequest(self, signer, tx)
     }
 
     /// Encode request to `esr://` uri string.
@@ -730,8 +743,11 @@ private struct SigningRequestData: ABICodable, Hashable, Equatable {
 private struct IdentityData: ABICodable, Equatable, Hashable {
     public let permission: PermissionLevel?
 
-    init(_ signer: Name?, _ perm: Name?) {
-        let permission = PermissionLevel(signer ?? SigningRequest.placeholder, perm ?? SigningRequest.placeholder)
+    init(_ actor: Name?, _ permission: Name?) {
+        let permission = PermissionLevel(
+            actor ?? SigningRequest.actorPlaceholder,
+            permission ?? SigningRequest.permissionPlaceholder
+        )
         self = IdentityData(permission)
     }
 
@@ -746,7 +762,11 @@ private struct IdentityData: ABICodable, Equatable, Hashable {
 
     /// The mock action that is signed to prove identity.
     public var action: Action {
-        try! Action(account: 0, name: "identity", value: self)
+        if self.permission == nil {
+            return Action(account: 0, name: "identity", data: Data(hexEncoded: "0101000000000000000200000000000000"))
+        } else {
+            return try! Action(account: 0, name: "identity", value: self)
+        }
     }
 
     /// ABI definition for the mock identity contract.

@@ -8,7 +8,7 @@ class SigningRequestTests: XCTestCase {
             name: "transfer",
             authorization: [SigningRequest.placeholderPermission],
             value: Transfer(
-                from: SigningRequest.placeholder,
+                from: SigningRequest.actorPlaceholder,
                 to: "foo",
                 quantity: "1 PENG",
                 memo: "Thanks for the fish"
@@ -43,11 +43,28 @@ class SigningRequestTests: XCTestCase {
                 "ex": "1970-01-01T00:00:00",
                 "rbn": "0",
                 "rid": "0",
-                "req": "esr:gmNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwSybUVJSUGylr59akZhbkJOql5yfa19SYVtdXVJRW8sAAA",
+                "req": "esr:gmNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGDBBaROYAARoxML5Aa5-7kBKOCQjMS-7WCEtv0ihJCNVIS2zOINZNqOkpKDYSl8_tSIxtyAnVS85P9e-pMK2urqkoraWAQA",
                 "foo": "bar"
             }
             """.normalizedJSON
         )
+    }
+
+    func testResolve() {
+        let obj = [
+            "foo": SigningRequest.actorPlaceholder,
+            "bar": SigningRequest.permissionPlaceholder,
+            "baz": Name("somename"),
+        ]
+        let resolved = SigningRequest.resolvePlaceholders(obj, using: "theactor@theperm")
+        XCTAssertEqual(resolved, [
+            "foo": "theactor",
+            "bar": "theperm",
+            "baz": "somename",
+        ])
+        XCTAssertEqual(SigningRequest.actorPlaceholder, 1)
+        XCTAssertEqual(SigningRequest.permissionPlaceholder, 2)
+        XCTAssertEqual(SigningRequest.placeholderPermission, PermissionLevel(1, 2))
     }
 
     func testEncodeDecode() {
@@ -94,6 +111,7 @@ class SigningRequestTests: XCTestCase {
         let action = resolved.transaction.actions[0]
         XCTAssertEqual(action.account, 0)
         XCTAssertEqual(action.name, "identity")
+        XCTAssertEqual(try? ABIDecoder().decode(PermissionLevel?.self, from: action.data), "foo@id")
 
         XCTAssertEqual(try! req.encodeUri(), "esr://AgABAwACJWh0dHBzOi8vY2guYW5jaG9yLmxpbmsvMTIzNC00NTY3LTg5MDAA")
     }
