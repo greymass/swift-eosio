@@ -79,14 +79,15 @@ public struct SigningRequest: Equatable, Hashable {
 
     /// Create an identity request.
     /// - Parameter chainId: The chain id for which the request is valid.
-    /// - Parameter identity: The account name to request identity for, defaults to placeholder name, i.e. signer selects.
-    /// - Parameter identityKey: Optional request key wallet implementer can use to verify subsequent requests.
     /// - Parameter callback: Callback that wallet implementer should hit with the identity proof.
+    /// - Parameter identity: The account name to request identity confirmation for, if nil will create a "any id" request.
+    /// - Parameter permission: Optional account permission constrain identity request to.
     /// - Parameter background: Whether the callback should be performed in the background.
     /// - Parameter info: Optional request headers.
-    public init(chainId: ChainId, identity: Name = Self.placeholder, identityKey: PublicKey? = nil, callback: String, background: Bool = true, info: [String: String] = [:]) {
+    public init(chainId: ChainId, callback: String, identity: Name? = nil, permission: Name? = nil, background: Bool = true, info: [String: String] = [:]) {
+        let perm = PermissionLevel(identity ?? Self.placeholder, permission ?? Self.placeholder)
         self = SigningRequest(chainId,
-                              req: .identity(IdentityData(account: identity, requestKey: identityKey)),
+                              req: .identity(IdentityData(perm == Self.placeholderPermission ? nil : perm)),
                               broadcast: false,
                               callback: callback,
                               background: background,
@@ -206,17 +207,18 @@ public struct SigningRequest: Equatable, Hashable {
     public var identity: Name? {
         switch self.data.req {
         case let .identity(id):
-            return id.account == Self.placeholder ? nil : id.account
+            return id.permission?.actor == Self.placeholder ? nil : id.permission?.actor
         default:
             return nil
         }
     }
 
-    /// Present if the request is an identity request and specifies a request key.
-    public var identityKey: PublicKey? {
+    /// Present if the request is an identity request and requests a specific account permission.
+    /// - Note: This returns `nil` unless a specific identity with permission has been requested, use`isIdentity` to check id requests.
+    public var identityPermission: Name? {
         switch self.data.req {
         case let .identity(id):
-            return id.requestKey
+            return id.permission?.permission == Self.placeholder ? nil : id.permission?.permission
         default:
             return nil
         }
@@ -726,8 +728,21 @@ private struct SigningRequestData: ABICodable, Hashable, Equatable {
 }
 
 private struct IdentityData: ABICodable, Equatable, Hashable {
-    public let account: Name
-    public let requestKey: PublicKey?
+    public let permission: PermissionLevel?
+
+    init(_ signer: Name?, _ perm: Name?) {
+        let permission = PermissionLevel(signer ?? SigningRequest.placeholder, perm ?? SigningRequest.placeholder)
+        self = IdentityData(permission)
+    }
+
+    init(_ permission: PermissionLevel?) {
+        // placeholder permission is equivalent to null permission to save space for the most
+        if permission == SigningRequest.placeholderPermission {
+            self.permission = nil
+        } else {
+            self.permission = permission
+        }
+    }
 
     /// The mock action that is signed to prove identity.
     public var action: Action {
@@ -737,9 +752,12 @@ private struct IdentityData: ABICodable, Equatable, Hashable {
     /// ABI definition for the mock identity contract.
     public static let abi = ABI(
         structs: [
+            ["permission_level": [
+                ["actor", "name"],
+                ["permission", "name"],
+            ]],
             ["identity": [
-                ["account", "name"],
-                ["request_key", "public_key?"],
+                ["permission", "permission_level?"],
             ]],
         ],
         actions: ["identity"]

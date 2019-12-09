@@ -84,12 +84,10 @@ class SigningRequestTests: XCTestCase {
 
     func testIdentity() {
         let req = SigningRequest(chainId: ChainId(.eos),
-                                 identityKey: "EOS5ZNmwoFDBPVnL2CYgZRpHqFfaK2M9bCFJJ1SapR9X4KPMabYBK",
                                  callback: "https://ch.anchor.link/1234-4567-8900")
 
         XCTAssertEqual(req.isIdentity, true)
         XCTAssertEqual(req.identity, nil)
-        XCTAssertEqual(req.identityKey, "PUB_K1_5ZNmwoFDBPVnL2CYgZRpHqFfaK2M9bCFJJ1SapR9X4KPRdJ9eK")
 
         let resolved = try! req.resolve(using: "foo@id")
         XCTAssertEqual(resolved.transaction.header, TransactionHeader.zero)
@@ -97,7 +95,7 @@ class SigningRequestTests: XCTestCase {
         XCTAssertEqual(action.account, 0)
         XCTAssertEqual(action.name, "identity")
 
-        XCTAssertEqual(try! req.encodeUri(), "esr://gmNgZGZkgABGBqYI7x9Sxl36f-rbJt9s2lUzbYe3pdtE7WnPfxy7_pAph3k5k2pGSUlBsZW-fnKGXmJeckZ-kV5OZl62vqGRsYmuiamZua6FpYEBAwA")
+        XCTAssertEqual(try! req.encodeUri(), "esr://AgABAwACJWh0dHBzOi8vY2guYW5jaG9yLmxpbmsvMTIzNC00NTY3LTg5MDAA")
     }
 
     func testMetadata() throws {
@@ -109,7 +107,7 @@ class SigningRequestTests: XCTestCase {
         ])
         request.setSignature(try invitationKey.sign(request.digest), signer: "teamgreymass")
         let uri = try request.encodeUri()
-        XCTAssertEqual(uri, "esr://gmNgZmZkgAIm0eTEnJTEMit9_fSi1MrcxOJiveT8XGbWksySnFSuCF3fxGKFoMSyVI6c_OTEksz8PG53qDoFj0CWlMSSVGEjA0NLXUMjXSOTECNDKwMDIGrYODEuVq33FIO8ft7PzXd__rP6cYbzhjH7Yie2hryM-ZOtmZ4LBRYuO3nhpbYG_4_5MRZvSn7IhkhGcbE2xToeLLb994XFeVGtSUY7KwA")
+        XCTAssertEqual(uri, "esr://gmNgZmZgEk1OzElJLLPS108vSq3MTSwu1kvOz2VmLcksyUnlitD1TSxWCEosS-XIyU9OLMnMz-N2h6pT8AhkSUksSRU2MjC01DU00jUyCTEytDIwAKKGjRPjYtV6TzHIiwQGZR9eekvKxSfnYUd7lHLX9hrnS2FvygOyvz_8-NZNWVhfeGXW_ZfaK33nbV3k8jisnnmV8sYAj8bnWWe0LlU-vgYA")
         let decoded = try SigningRequest(uri)
         XCTAssertEqual(decoded.info, [
             "date": "2019-12-24T21:00:00",
