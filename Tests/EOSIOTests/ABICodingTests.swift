@@ -175,4 +175,30 @@ final class ABICodableTests: XCTestCase {
             "0101000000000000000100000000000000"
         )
     }
+
+    func testComplexAbi() {
+        let decentiumAbi = loadTestDataPair("decentiumorg.abi")
+
+        let abi1 = try! ABI(binary: decentiumAbi.bin)
+        let abi2 = try! ABI(json: decentiumAbi.json.utf8Data)
+
+        XCTAssertEqual(abi1, abi2)
+
+        let post = loadTestDataPair("decentium-post")
+
+        let decoded1 = try! ABIDecoder().decode("action_post", from: post.bin, using: abi1)
+        let decoded2 = try! JSONDecoder().decode("action_post", from: post.json.data(using: .utf8)!, using: abi2)
+
+        let json1 = try! JSONEncoder().encode(decoded1, asType: "action_post", using: abi1)
+        let json2 = try! JSONEncoder().encode(decoded2, asType: "action_post", using: abi2)
+
+        XCTAssertEqual(json1.utf8String.normalizedJSON, post.json.normalizedJSON)
+        XCTAssertEqual(json2.utf8String.normalizedJSON, post.json.normalizedJSON)
+
+        let bin1 = try! ABIEncoder().encode(decoded1, asType: "action_post", using: abi1)
+        let bin2 = try! ABIEncoder().encode(decoded2, asType: "action_post", using: abi2)
+
+        XCTAssertEqual(bin1, post.bin)
+        XCTAssertEqual(bin2, post.bin)
+    }
 }

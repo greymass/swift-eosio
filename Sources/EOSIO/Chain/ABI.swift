@@ -19,7 +19,7 @@ public struct ABI: Equatable, Hashable {
     /// Ricardian contracts.
     public var ricardianClauses: [Clause]
 
-    /// Create a new ABI specification.
+    /// Create ABI definition.
     public init(
         types: [TypeDef] = [],
         variants: [Variant] = [],
@@ -35,6 +35,19 @@ public struct ABI: Equatable, Hashable {
         self.actions = actions
         self.tables = tables
         self.ricardianClauses = ricardianClauses
+    }
+
+    /// Create ABI definition from a binary representation.
+    public init(binary data: Data) throws {
+        let decoder = ABIDecoder()
+        self = try decoder.decode(ABI.self, from: data)
+    }
+
+    /// Create ABI definition from a JSON representation.
+    public init(json data: Data) throws {
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        self = try decoder.decode(ABI.self, from: data)
     }
 
     public final class ResolvedType: CustomStringConvertible {
@@ -281,9 +294,9 @@ extension ABI: ABICodable {
         case structs
         case actions
         case tables
-        case ricardian_clauses
-        case error_messages
-        case abi_extensions
+        case ricardianClauses
+        case errorMessages
+        case abiExtensions
         case variants
     }
 
@@ -295,7 +308,7 @@ extension ABI: ABICodable {
         self.structs = try container.decodeIfPresent([ABI.Struct].self, forKey: .structs) ?? []
         self.actions = try container.decodeIfPresent([ABI.Action].self, forKey: .actions) ?? []
         self.tables = try container.decodeIfPresent([ABI.Table].self, forKey: .tables) ?? []
-        self.ricardianClauses = try container.decodeIfPresent([ABI.Clause].self, forKey: .ricardian_clauses) ?? []
+        self.ricardianClauses = try container.decodeIfPresent([ABI.Clause].self, forKey: .ricardianClauses) ?? []
         self.variants = try container.decodeIfPresent([ABI.Variant].self, forKey: .variants) ?? []
     }
 
@@ -323,9 +336,9 @@ extension ABI: ABICodable {
         try container.encode(self.structs, forKey: .structs)
         try container.encode(self.actions, forKey: .actions)
         try container.encode(self.tables, forKey: .tables)
-        try container.encode(self.ricardianClauses, forKey: .ricardian_clauses)
-        try container.encode([] as [Never], forKey: .error_messages)
-        try container.encode([] as [Never], forKey: .abi_extensions)
+        try container.encode(self.ricardianClauses, forKey: .ricardianClauses)
+        try container.encode([] as [Never], forKey: .errorMessages)
+        try container.encode([] as [Never], forKey: .abiExtensions)
         try container.encode(self.variants, forKey: .variants)
     }
 }

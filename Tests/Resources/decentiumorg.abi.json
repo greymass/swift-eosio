@@ -1,0 +1,833 @@
+{
+  "version": "eosio::abi/1.1",
+  "types": [{
+      "new_type_name": "blog_flags",
+      "type": "uint8"
+    },{
+      "new_type_name": "link_flags",
+      "type": "uint8"
+    },{
+      "new_type_name": "post_options",
+      "type": "uint8"
+    }
+  ],
+  "structs": [{
+      "name": "action_addcategory",
+      "base": "",
+      "fields": [{
+          "name": "category",
+          "type": "name"
+        }
+      ]
+    },{
+      "name": "action_addmoderator",
+      "base": "",
+      "fields": [{
+          "name": "account",
+          "type": "name"
+        }
+      ]
+    },{
+      "name": "action_createblog",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        }
+      ]
+    },{
+      "name": "action_delcategory",
+      "base": "",
+      "fields": [{
+          "name": "category",
+          "type": "name"
+        }
+      ]
+    },{
+      "name": "action_deleteblog",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        },{
+          "name": "max_itr",
+          "type": "uint32"
+        }
+      ]
+    },{
+      "name": "action_delmoderator",
+      "base": "",
+      "fields": [{
+          "name": "account",
+          "type": "name"
+        }
+      ]
+    },{
+      "name": "action_freezeblog",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        },{
+          "name": "reason",
+          "type": "string"
+        }
+      ]
+    },{
+      "name": "action_housekeeping",
+      "base": "",
+      "fields": [{
+          "name": "max_itr",
+          "type": "uint32"
+        }
+      ]
+    },{
+      "name": "action_pinpost",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        },{
+          "name": "slug",
+          "type": "name"
+        }
+      ]
+    },{
+      "name": "action_post",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        },{
+          "name": "title",
+          "type": "string"
+        },{
+          "name": "doc",
+          "type": "document"
+        },{
+          "name": "metadata",
+          "type": "metadata?"
+        }
+      ]
+    },{
+      "name": "action_postedit",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        },{
+          "name": "new_title",
+          "type": "string?"
+        },{
+          "name": "patch",
+          "type": "string?"
+        },{
+          "name": "new_metadata",
+          "type": "metadata?"
+        }
+      ]
+    },{
+      "name": "action_profile",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        },{
+          "name": "name",
+          "type": "string"
+        },{
+          "name": "bio",
+          "type": "string"
+        },{
+          "name": "image",
+          "type": "string?"
+        }
+      ]
+    },{
+      "name": "action_publish",
+      "base": "",
+      "fields": [{
+          "name": "permlink",
+          "type": "permlink"
+        },{
+          "name": "tx",
+          "type": "tx_ref"
+        },{
+          "name": "category",
+          "type": "name"
+        },{
+          "name": "options",
+          "type": "post_options"
+        },{
+          "name": "links",
+          "type": "permlink[]"
+        }
+      ]
+    },{
+      "name": "action_publishedit",
+      "base": "",
+      "fields": [{
+          "name": "permlink",
+          "type": "permlink"
+        },{
+          "name": "edit_tx",
+          "type": "tx_ref"
+        }
+      ]
+    },{
+      "name": "action_setlinkflags",
+      "base": "",
+      "fields": [{
+          "name": "link_id",
+          "type": "uint64"
+        },{
+          "name": "new_flags",
+          "type": "link_flags"
+        }
+      ]
+    },{
+      "name": "action_setprofile",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        },{
+          "name": "profile",
+          "type": "tx_ref"
+        }
+      ]
+    },{
+      "name": "action_unfreezeblog",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        }
+      ]
+    },{
+      "name": "action_unpinpost",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        },{
+          "name": "slug",
+          "type": "name"
+        }
+      ]
+    },{
+      "name": "action_unpublish",
+      "base": "",
+      "fields": [{
+          "name": "permlink",
+          "type": "permlink"
+        }
+      ]
+    },{
+      "name": "action_updatescore",
+      "base": "",
+      "fields": [{
+          "name": "post_permlink",
+          "type": "permlink"
+        }
+      ]
+    },{
+      "name": "blog_row",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        },{
+          "name": "flags",
+          "type": "blog_flags"
+        },{
+          "name": "pinned",
+          "type": "name[]"
+        },{
+          "name": "stats",
+          "type": "blog_stats"
+        },{
+          "name": "profile",
+          "type": "tx_ref?"
+        },{
+          "name": "extensions",
+          "type": "future_extensions[]"
+        }
+      ]
+    },{
+      "name": "blog_stats",
+      "base": "",
+      "fields": [{
+          "name": "total_posts",
+          "type": "uint32"
+        },{
+          "name": "endorsements_received",
+          "type": "reward_stat"
+        },{
+          "name": "endorsements_sent",
+          "type": "reward_stat"
+        },{
+          "name": "incoming_linkbacks",
+          "type": "reward_stat"
+        },{
+          "name": "outgoing_linkbacks",
+          "type": "reward_stat"
+        }
+      ]
+    },{
+      "name": "bold",
+      "base": "",
+      "fields": []
+    },{
+      "name": "category_stat",
+      "base": "",
+      "fields": [{
+          "name": "endorsements",
+          "type": "reward_stat"
+        },{
+          "name": "linkbacks",
+          "type": "reward_stat"
+        }
+      ]
+    },{
+      "name": "code",
+      "base": "",
+      "fields": []
+    },{
+      "name": "code_block",
+      "base": "",
+      "fields": [{
+          "name": "code",
+          "type": "string"
+        },{
+          "name": "lang",
+          "type": "string"
+        }
+      ]
+    },{
+      "name": "color",
+      "base": "",
+      "fields": [{
+          "name": "r",
+          "type": "uint8"
+        },{
+          "name": "g",
+          "type": "uint8"
+        },{
+          "name": "b",
+          "type": "uint8"
+        }
+      ]
+    },{
+      "name": "divider",
+      "base": "",
+      "fields": []
+    },{
+      "name": "document",
+      "base": "",
+      "fields": [{
+          "name": "content",
+          "type": "variant_block_nodes[]"
+        }
+      ]
+    },{
+      "name": "future_extensions",
+      "base": "",
+      "fields": []
+    },{
+      "name": "geometrize_triangles",
+      "base": "",
+      "fields": [{
+          "name": "base",
+          "type": "color"
+        },{
+          "name": "triangles",
+          "type": "triangle[]"
+        }
+      ]
+    },{
+      "name": "hard_break",
+      "base": "",
+      "fields": []
+    },{
+      "name": "heading",
+      "base": "",
+      "fields": [{
+          "name": "value",
+          "type": "string"
+        },{
+          "name": "level",
+          "type": "uint8"
+        }
+      ]
+    },{
+      "name": "image",
+      "base": "",
+      "fields": [{
+          "name": "src",
+          "type": "string"
+        },{
+          "name": "caption",
+          "type": "variant_inline_nodes[]"
+        },{
+          "name": "layout",
+          "type": "uint8"
+        }
+      ]
+    },{
+      "name": "image_info",
+      "base": "",
+      "fields": [{
+          "name": "width",
+          "type": "uint16"
+        },{
+          "name": "height",
+          "type": "uint16"
+        },{
+          "name": "placeholder",
+          "type": "variant_placeholder"
+        }
+      ]
+    },{
+      "name": "italic",
+      "base": "",
+      "fields": []
+    },{
+      "name": "link",
+      "base": "",
+      "fields": [{
+          "name": "href",
+          "type": "string"
+        },{
+          "name": "title",
+          "type": "string"
+        }
+      ]
+    },{
+      "name": "link_row",
+      "base": "",
+      "fields": [{
+          "name": "id",
+          "type": "uint64"
+        },{
+          "name": "from",
+          "type": "permlink"
+        },{
+          "name": "to",
+          "type": "permlink"
+        },{
+          "name": "flags",
+          "type": "link_flags"
+        },{
+          "name": "payment",
+          "type": "asset?"
+        }
+      ]
+    },{
+      "name": "linkref",
+      "base": "",
+      "fields": [{
+          "name": "to",
+          "type": "permlink"
+        }
+      ]
+    },{
+      "name": "list",
+      "base": "",
+      "fields": [{
+          "name": "type",
+          "type": "uint8"
+        },{
+          "name": "items",
+          "type": "list_item[]"
+        }
+      ]
+    },{
+      "name": "list_item",
+      "base": "",
+      "fields": [{
+          "name": "content",
+          "type": "variant_inline_nodes[]"
+        }
+      ]
+    },{
+      "name": "metadata",
+      "base": "",
+      "fields": [{
+          "name": "image",
+          "type": "string?"
+        },{
+          "name": "summary",
+          "type": "string?"
+        },{
+          "name": "image_info",
+          "type": "pair_string_image_info[]"
+        }
+      ]
+    },{
+      "name": "pair_name_category_stat",
+      "base": "",
+      "fields": [{
+          "name": "key",
+          "type": "name"
+        },{
+          "name": "value",
+          "type": "category_stat"
+        }
+      ]
+    },{
+      "name": "pair_string_image_info",
+      "base": "",
+      "fields": [{
+          "name": "key",
+          "type": "string"
+        },{
+          "name": "value",
+          "type": "image_info"
+        }
+      ]
+    },{
+      "name": "paragraph",
+      "base": "",
+      "fields": [{
+          "name": "content",
+          "type": "variant_inline_nodes[]"
+        }
+      ]
+    },{
+      "name": "permlink",
+      "base": "",
+      "fields": [{
+          "name": "author",
+          "type": "name"
+        },{
+          "name": "slug",
+          "type": "name"
+        }
+      ]
+    },{
+      "name": "post_ref",
+      "base": "",
+      "fields": [{
+          "name": "permlink",
+          "type": "permlink"
+        },{
+          "name": "timestamp",
+          "type": "time_point_sec"
+        },{
+          "name": "category",
+          "type": "name"
+        },{
+          "name": "options",
+          "type": "post_options"
+        },{
+          "name": "tx",
+          "type": "tx_ref"
+        },{
+          "name": "edit_tx",
+          "type": "tx_ref?"
+        },{
+          "name": "endorsements",
+          "type": "reward_stat?"
+        },{
+          "name": "extensions",
+          "type": "future_extensions[]"
+        }
+      ]
+    },{
+      "name": "post_row",
+      "base": "",
+      "fields": [{
+          "name": "ref",
+          "type": "post_ref"
+        },{
+          "name": "extensions",
+          "type": "future_extensions[]"
+        }
+      ]
+    },{
+      "name": "quote",
+      "base": "",
+      "fields": [{
+          "name": "content",
+          "type": "variant_inline_nodes[]"
+        }
+      ]
+    },{
+      "name": "reward_stat",
+      "base": "",
+      "fields": [{
+          "name": "count",
+          "type": "uint32"
+        },{
+          "name": "amount",
+          "type": "uint64"
+        }
+      ]
+    },{
+      "name": "state",
+      "base": "",
+      "fields": [{
+          "name": "moderators",
+          "type": "name[]"
+        },{
+          "name": "categories",
+          "type": "pair_name_category_stat[]"
+        }
+      ]
+    },{
+      "name": "strike",
+      "base": "",
+      "fields": []
+    },{
+      "name": "text",
+      "base": "",
+      "fields": [{
+          "name": "value",
+          "type": "string"
+        },{
+          "name": "marks",
+          "type": "variant_mark_nodes[]"
+        }
+      ]
+    },{
+      "name": "trending_row",
+      "base": "",
+      "fields": [{
+          "name": "id",
+          "type": "uint64"
+        },{
+          "name": "score",
+          "type": "uint64"
+        },{
+          "name": "ref",
+          "type": "post_ref"
+        },{
+          "name": "extensions",
+          "type": "future_extensions[]"
+        }
+      ]
+    },{
+      "name": "triangle",
+      "base": "",
+      "fields": [{
+          "name": "ax",
+          "type": "uint8"
+        },{
+          "name": "ay",
+          "type": "uint8"
+        },{
+          "name": "bx",
+          "type": "uint8"
+        },{
+          "name": "by",
+          "type": "uint8"
+        },{
+          "name": "cx",
+          "type": "uint8"
+        },{
+          "name": "cy",
+          "type": "uint8"
+        },{
+          "name": "color",
+          "type": "color"
+        }
+      ]
+    },{
+      "name": "tx_ref",
+      "base": "",
+      "fields": [{
+          "name": "block_num",
+          "type": "uint32"
+        },{
+          "name": "transaction_id",
+          "type": "checksum256"
+        }
+      ]
+    }
+  ],
+  "actions": [{
+      "name": "addcategory",
+      "type": "action_addcategory",
+      "ricardian_contract": ""
+    },{
+      "name": "addmoderator",
+      "type": "action_addmoderator",
+      "ricardian_contract": "The intent of this action is for the contract owner to add an account to the list of moderators."
+    },{
+      "name": "createblog",
+      "type": "action_createblog",
+      "ricardian_contract": "The intent of this action is to create a new blog record for the signing author. The signer agrees to the Terms of Service found in the \"Decentium Terms of Service (DToS)\" ricardian clause."
+    },{
+      "name": "delcategory",
+      "type": "action_delcategory",
+      "ricardian_contract": ""
+    },{
+      "name": "deleteblog",
+      "type": "action_deleteblog",
+      "ricardian_contract": ""
+    },{
+      "name": "delmoderator",
+      "type": "action_delmoderator",
+      "ricardian_contract": "The intent of this action is for the contract owner to remove an account from the list of moderators."
+    },{
+      "name": "freezeblog",
+      "type": "action_freezeblog",
+      "ricardian_contract": "The intent of this action is for a moderator to remove a blogs posts from the trending feeds as well as prevent further endorsements and linkbacks to that blog."
+    },{
+      "name": "housekeeping",
+      "type": "action_housekeeping",
+      "ricardian_contract": ""
+    },{
+      "name": "pinpost",
+      "type": "action_pinpost",
+      "ricardian_contract": ""
+    },{
+      "name": "post",
+      "type": "action_post",
+      "ricardian_contract": ""
+    },{
+      "name": "postedit",
+      "type": "action_postedit",
+      "ricardian_contract": ""
+    },{
+      "name": "profile",
+      "type": "action_profile",
+      "ricardian_contract": ""
+    },{
+      "name": "publish",
+      "type": "action_publish",
+      "ricardian_contract": ""
+    },{
+      "name": "publishedit",
+      "type": "action_publishedit",
+      "ricardian_contract": ""
+    },{
+      "name": "setlinkflags",
+      "type": "action_setlinkflags",
+      "ricardian_contract": ""
+    },{
+      "name": "setprofile",
+      "type": "action_setprofile",
+      "ricardian_contract": ""
+    },{
+      "name": "unfreezeblog",
+      "type": "action_unfreezeblog",
+      "ricardian_contract": "The intent of this action is for a moderator to restore a previously frozen blog."
+    },{
+      "name": "unpinpost",
+      "type": "action_unpinpost",
+      "ricardian_contract": ""
+    },{
+      "name": "unpublish",
+      "type": "action_unpublish",
+      "ricardian_contract": ""
+    },{
+      "name": "updatescore",
+      "type": "action_updatescore",
+      "ricardian_contract": ""
+    }
+  ],
+  "tables": [{
+      "name": "blogs",
+      "index_type": "i64",
+      "key_names": [
+        "author"
+      ],
+      "key_types": [
+        "name"
+      ],
+      "type": "blog_row"
+    },{
+      "name": "links",
+      "index_type": "i64",
+      "key_names": [
+        "id",
+        "from",
+        "to"
+      ],
+      "key_types": [
+        "uint64",
+        "uint128",
+        "uint128"
+      ],
+      "type": "link_row"
+    },{
+      "name": "posts",
+      "index_type": "i64",
+      "key_names": [
+        "slug",
+        "updated"
+      ],
+      "key_types": [
+        "name",
+        "uint64"
+      ],
+      "type": "post_row"
+    },{
+      "name": "state",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": [],
+      "type": "state"
+    },{
+      "name": "trending",
+      "index_type": "i64",
+      "key_names": [
+        "id",
+        "score",
+        "cscore",
+        "permlink"
+      ],
+      "key_types": [
+        "uint64",
+        "uint64",
+        "uint128",
+        "uint128"
+      ],
+      "type": "trending_row"
+    }
+  ],
+  "ricardian_clauses": [{
+      "id": "dtos",
+      "body": "# Decentium Terms of Service (DToS)\n\n## Summary\n\n * You own all the rights to for content published and you are responsible for it.\n * You acknowledge that content published can never be truly deleted only superficially hidden by user interfaces accessing the Decentium smart contract.\n * Don’t violate the intellectual property or personal privacy rights of others, don’t cause harm to others.\n * No children may use the service, minimum age 13.\n * Decentium reserves the right to freeze blogs that break this agreement, frozen blogs does not appear in trending feeds and can not receive linkbacks or endorsements.\n * We are not responsible for anything you do with our tools.\n * This a temporary agreement for the Decentium open beta that will be replaced as soon as possible.\n\n## Third Party Content\n\nWe may display third-party content, links, promotions, logos and other materials on our Website (collectively, the “Third-Party Content”) for your convenience only. We do not approve of, control, endorse or sponsor any third parties or Third-Party Content, and we make no representations or warranties of any kind regarding such Third-Party Content, including, without limitation, the accuracy, validity, legality, copyright compliance, or decency of such content. Your use of or interactions with any Third-Party Content, and any third party that provides Third-Party Content, are solely between you and such third parties and we are not responsible or liable in any manner for such use or interactions. We are not responsible for any of the content on third party sites linked to our Website nor can it be assumed that we have reviewed or approved of such sites or their content, nor do we warrant that the links to these sites work or are up to date.\n\n## User Content\n\nIf you post, upload, input, provide or submit your personal data to us, including without limitation, your name, email address, IP address, cryptocurrency address, text, code or other information and materials, sign up to our mailing list or create an account on our Website (collectively, your “User Content”), you must ensure that the User Content provided by you at that or at any other time is true, accurate, up to date and complete and that any User Content you post, upload, input, provide or submit to us or via our Website do not breach or infringe the intellectual property rights of any third party. We do not own, control or endorse any User Content that is transmitted, stored or processed via our Website or sent to us and we are not responsible or liable for any User Content. You are solely responsible and liable for all of your User Content and for your use of any interactive features, links or information or content on our Website, and you represent and warrant that (i) you own all intellectual property rights (or have obtained all necessary permissions) to provide your User Content and to grant the licenses in these terms; (ii) your User Content will not violate any agreements or confidentiality obligations; and (iii) your User Content will not violate, infringe or misappropriate any intellectual property right or other proprietary right, including the right of publicity or privacy, of any person or entity.\n\nYou are entirely responsible for maintaining the confidentiality of your User Content and any of your non-public information. Furthermore, you are entirely responsible for any and all activities that occur under your account (if any). You agree to notify us immediately of any unauthorized use of your User Content, account or any other breach of security. We will not be liable for any loss or damages that you may incur as a result of someone else using your User Content or account, either with or without your knowledge. However, you could be held liable for losses incurred by the Decentium Parties (as defined below) or another party due to someone else using your User Content or account. You may not use anyone else’s User Content or account at any time without the permission of such person or entity.\n\nBy posting, uploading, inputting, providing or submitting your User Content to us, you grant Decentium, its affiliates and any necessary sub-licensees a non-exclusive, worldwide, perpetual, right and permission to use, reproduce, copy, edit, modify, translate, reformat, create derivative works from, distribute, transmit, publicly perform and publicly display your User Content and sub-license such rights to others.\n\nAlthough we have no obligation to screen, edit or monitor User Content, we reserve the right, and have absolute discretion, to remove, screen or edit User Content. Furthermore, if we have reason to believe that there is likely to be a breach of security, breach or misuse of our Website or if you breach any of your obligations under these terms or the Privacy Policy, we may suspend your use of this Website at any time and for any reason.\n\nAny User Content submitted by you on this Website may be accessed by us globally.\n\n## Feedback\n\nIf you decide to submit questions, comments, suggestions, ideas, original or creative materials or other information to us (collectively, “Feedback”), you do so on your own accord and not based on any request or solicitation from us. Feedback does not include User Content. We reserve the right to use Feedback for any purpose at no charge and without compensation to you. Do not send us Feedback if you expect to be paid or want to continue to own or claim rights to your Feedback. The purpose of these terms is to avoid potential misunderstandings or disputes if Decentium’s products, services, business ideas or business strategies might seem similar to ideas submitted to us as Feedback. If you decide to send us Feedback, you acknowledge and understand that the Decentium Parties make no assurances that your Feedback will be treated as confidential or proprietary.\n\n## Intellectual Property\n\nDecentium and its licensors retain all right, title and interest in and to this Website and its products and services, including all copyrights, patents, trade secrets, trademarks, other intellectual property rights, trade names, logos, slogans, custom graphics, button icons, scripts, videos, text, images, software, code, files, content, information and other material available on our Website and nothing on this Website may be copied, imitated or used, in whole or in part, without our or the applicable licensor’s prior written permission. Decentium reserves all rights not expressly granted.\n\nAny unauthorised reproduction is prohibited.\n\nYou may only access, use and print the information and material on this Website for non-commercial or personal use provided that you are authorized to access such information or material and keep intact all copyright and proprietary notices.\n\nYou must not otherwise reproduce, adapt, store, transmit, distribute, print, display, commercialise, publish or create derivative works from any part of the content, format or design of this Website.\n\nIf you seek to reproduce or otherwise use the content on this Website in any way it is your responsibility to obtain approval from us for such use. Nothing in these terms will be construed as conferring any right or license to any patent, trademark, copyright or other proprietary rights of Decentium or any third party, whether by estoppel, implication or otherwise.\n\n## Acceptable Use Policy\n\nYou must only use the content or services provided through this Website for their stated purpose. You must not use this Website to:\n\n(a) publish, post, send, upload, submit, display or disseminate any information or material and/or otherwise make available or engage in any conduct that is unlawful, discriminatory, harassing, libellous, defamatory, abusive, threatening, harmful, offensive, obscene, tortious or otherwise objectionable;\n\n(b) display, upload or transmit material that encourages conduct that may constitute a criminal offence, result in civil liability or otherwise violate or breach any applicable laws, regulations or code of practice;\n\n(c) interfere or violate the legal rights (such as rights of privacy and publicity) of others or violate others use or enjoyment of this Website;\n\n(d) violate any applicable laws or regulations;\n\n(e) use this Website or links on this Website in any manner that could interfere with, disrupt, negatively affect or inhibit other users from using this Website or links on this Website or that could damage, disable, overburden or impair the functioning of this Website or our servers or any networks connected to any of our servers in any manner;\n\n(f) create a false identity for the purpose of misleading others or fraudulently or otherwise misrepresent yourself to be another person or a representative of another entity including, but not limited to, an authorized user of this Website or a Decentium representative, or fraudulently or otherwise misrepresent that you have an affiliation with a person, entity or group;\n\n(g) mislead or deceive us, our representatives and any third parties who may rely on the information provided by you, by providing inaccurate or false information, which includes omissions of information;\n\n(h) disguise the origin of any material transmitted through the services provided by this Website (whether by forging message/packet headers or otherwise manipulating normal identification information);\n\n(i) violate, infringe or misappropriate any intellectual or industrial property right of any person (such as copyright, trademarks, patents, or trade secrets, or other proprietary rights of any party) or commit a tort;\n\n(j) upload files that contain viruses, Trojan horses, worms, time bombs, cancelbots, corrupted files, or any other similar software or programs that may damage the operation of another’s computer or property;\n\n(k) send, upload, display or disseminate or otherwise make available material containing or associated with spam, junk mail, advertising for pyramid schemes, chain letters, virus warnings (without first confirming the authenticity of the warning), or any other form of unauthorised advertising or promotional material;\n\n(l) access any content, area or functionality of this Website that you are prohibited or restricted from accessing or attempt to bypass or circumvent measures employed to prevent or limit your access to any content, area or functionality of this Website;\n\n(m) obtain unauthorised access to or interfere with the performance of the servers which host this Website or provide the services on this Website or any servers on any associated networks or otherwise fail to comply with any policies or procedures relating to the use of those servers;\n\n(n) attempt to gain unauthorized access to any services or products, other accounts, computer systems, or networks connected to any of our servers through hacking, password mining, or any other means;\n\n(o) obtain or attempt to obtain any materials or information through any means not intentionally made available through this Website or its services;\n\n(p) harvest or otherwise collect, whether aggregated or otherwise, data about others including e-mail addresses and/or distribute or sell such data in any manner;\n\n(q) use any part of this Website other than for its intended purpose; or\n\n(r) use this Website to engage in or promote any activity that violates these terms.\n\n## Indemnification\n\nTo the fullest extent permitted by applicable law, you will indemnify, defend and hold harmless us and our respective past, present and future employees, officers, directors, contractors, consultants, equity holders, suppliers, vendors, service providers, parent companies, subsidiaries, affiliates, agents, representatives, predecessors, successors and assigns (collectively, the Decentium Parties”) from and against all claims, damages, liabilities, losses, costs and expenses (including attorneys’ fees) that arise from or relate to: (i) your access to or use of our Website, products or services; (ii) your User Content; (iii) any Feedback you provide; or (iv) your violation of these Terms.\n\nWe reserve the right to exercise sole control over the defence, at your expense, of any claim subject to indemnification pursuant to these terms.  This indemnity is in addition to, and not in lieu of, any other indemnities set forth in a written agreement between you and Decentium.\n\n## Disclaimer\n\nTHIS WEBSITE AND ALL INFORMATION, PRODUCTS AND SERVICES PROVIDED THROUGH THIS WEBSITE ARE PROVIDED “AS IS” AND ON AN “AS AVAILABLE” BASIS WITHOUT ANY REPRESENTATIONS, WARRANTIES, PROMISES OR GUARANTEES WHATSOEVER OF ANY KIND INCLUDING, WITHOUT LIMITATION, ANY REPRESENTATIONS, WARRANTIES, PROMISES OR GUARANTEES REGARDING THE ACCURACY, CURRENCY, COMPLETENESS, ADEQUACY, AVAILBILITY, SUITABLITY OR OPERATION OF THIS WEBSITE, ANY PRODUCTS OR SERVICES WE MAY PROVIDE THROUGH IT OR THE INFORMATION OR MATERIAL IT CONTAINS.\n\nEACH OF THE Decentium PARTIES DISCLAIM ALL REPRESENTATIONS AND WARRANTIES, WHETHER EXPRESS, IMPLIED OR STATUTORY, WITH REGARD TO THE FOREGOING, INCLUDING, WITHOUT LIMITATION: (A) ANY WARRANTY WITH RESPECT TO THE CONTENT, INFORMATION, DATA, SERVICES, AVAILABLITY, UNINTERRUPTED ACCESS, OR SERVICES OR PRODUCTS PROVIDED THROUGH OR IN CONNECTION WITH THIS WEBSITE; (B) ANY WARRANTIES THAT THIS WEBSITE OR THE SERVER THAT MAKES IT AVAILABLE ARE FREE OF VIRUSES, WORMS, TROJAN HORSES OR OTHER HARMFUL COMPONENTS; (C) ANY WARRANTIES THAT THIS WEBSITE, ITS CONTENT AND ANY SERVICES OR PRODUCTS PROVIDED THROUGH IT ARE ERROR-FREE OR THAT DEFECTS IN THIS WEBSITE, ITS CONTENT OR SUCH SERVICES OR PRODUCTS WILL BE CORRECTED; (D) ANY WARRANTIES OF TITLE OR IMPLIED WARRANTIES OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE; (E) ANY WARRANTIES THAT THIS WEBSITE WILL BE COMPATIBLE WITH YOUR COMPUTER OR OTHER ELECTRONIC EQUIPMENT; AND (F) ANY WARRANTIES OF NON-INFRINGEMENT. THE MATERIALS AND RELATED GRAPHICS PUBLISHED ON THIS WEBSITE COULD INCLUDE TECHNICAL INACCURACIES OR TYPOGRAPHICAL ERRORS. CHANGES ARE PERIODICALLY ADDED TO THE INFORMATION CONTAINED ON THIS WEBSITE. THE Decentium PARTIES MAY MAKE IMPROVEMENTS AND/OR CHANGES TO THE WEBSITE, ITS PRODUCTS, SERVICES AND/OR THE MATERIALS DESCRIBED ON THIS WEBSITE AT ANY TIME.\n\nIn addition, to the maximum extent permitted by law, none of the Decentium Parties shall be responsible or liable for:\n\n(a) any loss, liability, cost, expense or damage suffered or incurred arising out of or in connection with any access to or use of this Website or any of its content;\n\n(b) any reliance on, or decision made on the basis of, information or material shown on or omitted from this Website;\n\n(c) any representation or otherwise in respect of the existence or availability of any job, vacancy, assignment or other engagement or appointment advertised on this Website (if any) and any representation or otherwise that we have or will ask for a candidate’s information, will or have asked to interview or hire a candidate, or that any candidates will meet our needs;\n\n(d) any matter affecting this Website or any of its content caused by circumstances beyond our reasonable control;\n\n(e) the performance of this Website and any fault, delays, interruptions or lack of availability of this Website and any of the services or products provided through this Website, which may occur due to increased usage of this Website, intermittent failures of this Website or the need for repairs, maintenance or the introduction of new facilities, products or services; and\n\n(f) any information or material on any website operated by a third party which may be accessed from this Website.\n\nIN NO EVENT WILL THE Decentium PARTIES BE RESPONSIBLE OR LIABLE FOR ANY CLAIMS, DAMAGES, LIABILITIES, LOSSES, COSTS OR EXPENSES OF ANY KIND, WHETHER DIRECT OR INDIRECT, CONSEQUENTIAL, COMPENSATORY, INCIDENTAL, ACTUAL, EXEMPLARY, PUNITIVE OR SPECIAL (INCLUDING DAMAGES FOR LOSS OF BUSINESS, REVENUES, PROFITS, DATA, USE, GOODWILL OR OTHER INTANGIBLE LOSSES) REGARDLESS OF WHETHER THE Decentium PARTIES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES, LIABILITIES, LOSSES, COSTS OR EXPENSES, ARISING OUT OF OR IN CONNECTION WITH: (A) THE USE OR PERFORMANCE OF THIS WEBSITE; (B) ANY PROVISION OF OR FAILURE TO PROVIDE THIS WEBSITE OR ITS SERVICES (INCLUDING WITHOUT LIMITATION ANY LINKS ON OUR WEBSITE); (C) ANY INFORMATION AVAILABLE FROM THIS WEBSITE; (D) ANY CONDUCT OR CONTENT OF ANY THIRD PARTY; (E) UNAUTHORIZED ACCESS, USE OR ALTERATION OF THE TRANSMISSION OF DATA OR CONTENT TO OR FROM US; OR (F) THE FAILURE TO RECEIVE IN ANY WAY THE TRANSMISSION OF ANY DATA, CONTENT, FUNDS OR PROPERTY FROM YOU. IN NO CIRCUMSTANCES WILL THE AGGREGATE LIABILITY OF THE Decentium PARTIES ARISING UNDER THESE TERMS EXCEED $5.00 USD.\n\n## General\n\nThese terms are governed by the laws of Sweden. All claims arising out of or relating to these terms will be litigated exclusively in the courts of Sweden and we and you consent to personal jurisdiction in those courts.\n\nThese terms control the relationship between us and you. They do not create any third-party beneficiary rights.\n\nIf you do not comply with these terms, and we don’t take action right away, this doesn’t mean that we are giving up any rights that we may have (such as taking action in the future).\n\nIf it turns out that a particular term is not enforceable, the term will be modified such that it is enforceable and this will not affect any other terms contained herein."
+    }
+  ],
+  "error_messages": [],
+  "abi_extensions": [],
+  "variants": [{
+      "name": "variant_placeholder",
+      "types": [
+        "color",
+        "geometrize_triangles"
+      ]
+    },{
+      "name": "variant_mark_nodes",
+      "types": [
+        "link",
+        "bold",
+        "italic",
+        "code",
+        "strike"
+      ]
+    },{
+      "name": "variant_block_nodes",
+      "types": [
+        "paragraph",
+        "heading",
+        "image",
+        "linkref",
+        "quote",
+        "code_block",
+        "divider",
+        "list"
+      ]
+    },{
+      "name": "variant_inline_nodes",
+      "types": [
+        "text",
+        "hard_break"
+      ]
+    }
+  ]
+}

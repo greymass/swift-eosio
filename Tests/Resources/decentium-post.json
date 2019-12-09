@@ -1,0 +1,32 @@
+{
+    "title": "Hello World",
+    "author": "almstdigital",
+    "metadata": {
+        "image_info": [],
+        "image": null,
+        "summary": "Welcome to Decentium"
+    },
+    "doc": {
+        "content": [
+            [
+                "paragraph",
+                {
+                    "content": [
+                        [
+                            "text",
+                            {
+                                "marks": [
+                                    [
+                                        "italic",
+                                        {}
+                                    ]
+                                ],
+                                "value": "For Hanna Rey, may the world you grow up in be as bright as you."
+                            }
+                        ]
+                    ]
+                }
+            ]
+        ]
+    }
+}
