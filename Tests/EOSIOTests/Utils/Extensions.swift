@@ -17,6 +17,16 @@ extension StringProtocol where Self: RangeReplaceableCollection {
     }
 }
 
+extension Data {
+    var utf8String: String {
+        return String(bytes: self, encoding: .utf8)!
+    }
+
+    var normalizedJSON: Data {
+        return self.utf8String.normalizedJSON.utf8Data
+    }
+}
+
 extension String {
     var utf8Data: Data {
         return Data(self.utf8)
