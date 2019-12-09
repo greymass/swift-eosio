@@ -450,8 +450,7 @@ public struct SigningRequest: Equatable, Hashable {
         }
         var header: UInt8 = Self.version
         if compress {
-            header |= 1 << 7
-            data = try data.withUnsafeBytes { ptr in
+            let compressed = try data.withUnsafeBytes { ptr -> Data? in
                 var size = ptr.count
                 let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
                 defer { buffer.deallocate() }
@@ -462,9 +461,13 @@ public struct SigningRequest: Equatable, Hashable {
                     throw Error.encodingFailed("Compressed requests are not supported on your platform yet")
                 }
                 guard size != 0 else {
-                    throw Error.encodingFailed("Unknown compression error")
+                    return nil
                 }
                 return Data(bytes: buffer, count: size)
+            }
+            if let compressed = compressed {
+                header |= 1 << 7
+                data = compressed
             }
         }
         data.insert(header, at: 0)
