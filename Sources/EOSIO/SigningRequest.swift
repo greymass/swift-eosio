@@ -53,6 +53,8 @@ public struct SigningRequest: Equatable, Hashable {
         case encodingFailed(_ message: String, reason: Swift.Error? = nil)
         /// ABI definition missing when resolving request.
         case missingAbi(Name)
+        /// ABI did not specify the expected actions and types.
+        case invalidAbi(ABI)
         /// TaPoS source missing when resolving request.
         case missingTaposSource
     }
@@ -417,9 +419,12 @@ public struct SigningRequest: Equatable, Hashable {
             guard let abi = abis[action.account] ?? (action.account == 0 ? IdentityData.abi : nil) else {
                 throw Error.missingAbi(action.account)
             }
-            let object = Self.resolvePlaceholders(try action.data(as: String(action.name), using: abi), using: signer)
+            guard let abiAction = abi.getAction(action.name) else {
+                throw Error.invalidAbi(abi)
+            }
+            let object = Self.resolvePlaceholders(try action.data(using: abi), using: signer)
             let encoder = ABIEncoder()
-            action.data = try encoder.encode(object, asType: String(action.name), using: abi)
+            action.data = try encoder.encode(object, asType: abiAction.type, using: abi)
             action.authorization = action.authorization.map { auth in
                 var auth = auth
                 if auth.actor == Self.actorPlaceholder {

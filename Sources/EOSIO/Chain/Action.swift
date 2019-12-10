@@ -35,10 +35,16 @@ extension Action {
         return try ABIDecoder.decode(type, data: self.data)
     }
 
-    /// Decode action data using ABI defenition.
-    public func data(as type: String, using abi: ABI) throws -> [String: Any] {
+    /// Decode action data using ABI definition.
+    public func data(using abi: ABI) throws -> [String: Any] {
         let decoder = ABIDecoder()
-        let result = try decoder.decode(type, from: self.data, using: abi)
+        guard let abiAction = abi.getAction(self.name) else {
+            throw DecodingError.dataCorrupted(DecodingError.Context(
+                codingPath: decoder.codingPath,
+                debugDescription: "Action not present in given ABI"
+            ))
+        }
+        let result = try decoder.decode(abiAction.type, from: self.data, using: abi)
         guard let rv = result as? [String: Any] else {
             throw DecodingError.dataCorrupted(DecodingError.Context(
                 codingPath: decoder.codingPath,
