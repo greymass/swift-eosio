@@ -181,6 +181,10 @@ public struct ABI: Equatable, Hashable {
     public func getVariant(_ name: String) -> ABI.Variant? {
         return self.variants.first { $0.name == name }
     }
+
+    public func getAction(_ name: Name) -> ABI.Action? {
+        return self.actions.first { $0.name == name }
+    }
 }
 
 // MARK: ABI Defenition Types
