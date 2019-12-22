@@ -344,10 +344,10 @@ private func _encodeAnyBuiltIn(_ value: Any,
     case .int16: try encode(Int16.self, value)
     case .int32: try encode(Int32.self, value)
     case .int64: try encode(Int64.self, value)
-    case .uint8: try encode(Int8.self, value)
-    case .uint16: try encode(Int16.self, value)
-    case .uint32: try encode(Int32.self, value)
-    case .uint64: try encode(Int64.self, value)
+    case .uint8: try encode(UInt8.self, value)
+    case .uint16: try encode(UInt16.self, value)
+    case .uint32: try encode(UInt32.self, value)
+    case .uint64: try encode(UInt64.self, value)
     case .name: try encodeS(Name.self, value)
     case .asset: try encodeS(Asset.self, value)
     case .symbol: try encodeS(Asset.Symbol.self, value)
@@ -356,12 +356,12 @@ private func _encodeAnyBuiltIn(_ value: Any,
     }
 }
 
-private func _encodeValue<T: Encodable>(_ value: Any, _: T.Type, to encoder: Encoder) throws {
+private func _encodeValue<T: Encodable>(_ value: Any, _ builtinType: T.Type, to encoder: Encoder) throws {
     var container = encoder.singleValueContainer()
     guard let resolvedValue = value as? T else {
         throw EncodingError.invalidValue(value as Any, EncodingError.Context(
             codingPath: container.codingPath,
-            debugDescription: "Value not conforming to expected type"
+            debugDescription: "Value not conforming to expected type: \(builtinType)"
         ))
     }
     try container.encode(resolvedValue)
