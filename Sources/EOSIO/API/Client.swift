@@ -44,7 +44,7 @@ public struct ResponseError: Codable {
 let SWIFT_EOSIO_VERSION = "1.0.0"
 
 /// EOSIO API Client.
-public class Client {
+open class Client {
     /// The clients user-agent string.
     static let userAgent = "swift-eosio/\(SWIFT_EOSIO_VERSION) (+https://github.com/greymass/swift-eosio)"
 
