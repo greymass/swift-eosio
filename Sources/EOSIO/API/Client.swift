@@ -137,7 +137,7 @@ open class Client {
     /// Send a request.
     /// - Parameter request: The request to be sent.
     /// - Parameter completionHandler: Callback function, called with either a response or an error.
-    public func send<T: Request>(_ request: T, completionHandler: @escaping (Result<T.Response, Error>) -> Void) -> Void {
+    open func send<T: Request>(_ request: T, completionHandler: @escaping (Result<T.Response, Error>) -> Void) -> Void {
         let urlRequest: URLRequest
         do {
             urlRequest = try self.urlRequest(for: request)
@@ -156,7 +156,7 @@ open class Client {
     /// Blocking send.
     /// - Parameter request: The request to be sent.
     /// - Attention: This should never be called from the main thread.
-    public func sendSync<T: Request>(_ request: T) -> Result<T.Response, Error> {
+    open func sendSync<T: Request>(_ request: T) -> Result<T.Response, Error> {
         let semaphore = DispatchSemaphore(value: 0)
         var result: Result<T.Response, Error>?
         self.send(request) {
