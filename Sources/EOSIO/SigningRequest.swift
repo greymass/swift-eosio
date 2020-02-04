@@ -767,10 +767,15 @@ private struct IdentityData: ABICodable, Equatable, Hashable {
 
     /// The mock action that is signed to prove identity.
     public var action: Action {
-        if self.permission == nil {
-            return Action(account: 0, name: "identity", data: Data(hexEncoded: "0101000000000000000200000000000000"))
+        if let permission = self.permission {
+            return try! Action(account: 0, name: "identity", authorization: [permission], value: self)
         } else {
-            return try! Action(account: 0, name: "identity", value: self)
+            return Action(
+                account: 0,
+                name: "identity",
+                authorization: [SigningRequest.placeholderPermission],
+                data: Data(hexEncoded: "0101000000000000000200000000000000")
+            )
         }
     }
 
