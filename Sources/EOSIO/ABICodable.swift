@@ -193,9 +193,14 @@ public struct AnyABICodable: ABICodable {
     }
 
     public var value: Any
+    
+    private var abi: ABI?
+    private var type: String?
 
-    public init(_ value: Any) {
+    public init(_ value: Any, abi: ABI? = nil, type: String? = nil) {
         self.value = value
+        self.abi = abi
+        self.type = type
     }
 
     public init(from decoder: Decoder) throws {
@@ -204,8 +209,12 @@ public struct AnyABICodable: ABICodable {
     }
 
     public func encode(to encoder: Encoder) throws {
-        let def = try Self.getDefenitions(from: encoder.userInfo)
-        try _encodeAny(self.value, ofType: def.type, to: encoder, using: def.abi)
+        if let type = self.type, let abi = self.abi {
+            try _encodeAny(self.value, ofType: type, to: encoder, using: abi)
+        } else {
+            let def = try Self.getDefenitions(from: encoder.userInfo)
+            try _encodeAny(self.value, ofType: def.type, to: encoder, using: def.abi)
+        }
     }
 
     /// Get the ABI definitions and root type from given userInfo dict.

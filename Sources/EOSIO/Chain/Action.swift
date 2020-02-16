@@ -53,4 +53,11 @@ extension Action {
         }
         return rv
     }
+    
+    /// Re-encode action data to JSON using ABI definition.
+    public func jsonData(using abi: ABI) throws -> Data {
+        let data = try self.data(using: abi)
+        let encoder = Client.JSONEncoder()
+        return try encoder.encode(AnyABICodable(data, abi: abi, type: abi.getAction(self.name)?.type))
+    }
 }
