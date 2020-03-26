@@ -10,17 +10,20 @@ public struct Asset: Equatable, Hashable {
         case invalidAssetString(message: String)
     }
 
-    init(_ value: Double, _ symbol: Symbol) {
+    /// Create new asset with floating point value and symbol.
+    public init(_ value: Double, _ symbol: Symbol) {
         self.symbol = symbol
         self.units = symbol.convert(value)
     }
 
-    init(units: Int64, symbol: Symbol) {
+    /// Create new asset with symbol unit count and symbol.
+    public init(units: Int64, symbol: Symbol) {
         self.symbol = symbol
         self.units = units
     }
 
-    init(stringValue: String) throws {
+    /// Create new asset from string, e.g. `1.23 COIN`.
+    public init(stringValue: String) throws {
         let parts = stringValue.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ")
         if parts.count != 2 {
             throw Error.invalidAssetString(message: "Amount and symbol should be separated by a space")
