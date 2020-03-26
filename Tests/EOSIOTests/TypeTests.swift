@@ -188,4 +188,16 @@ final class TypeTests: XCTestCase {
         auth = Authority(key, delay: 60)
         XCTAssertTrue(auth.hasPermission(for: key))
     }
+
+    func testPublicKey() {
+        let key = PublicKey("PUB_K1_833UzE2PyXhvQMenoD2MESD8hVroRTHjBR58G94Hr6Uo3EQP1L")
+        // test legacy prefixes
+        let key1 = PublicKey("EOS833UzE2PyXhvQMenoD2MESD8hVroRTHjBR58G94Hr6Uo7aSPb2")
+        let key2 = PublicKey("FIO833UzE2PyXhvQMenoD2MESD8hVroRTHjBR58G94Hr6Uo7aSPb2")
+        let key3 = PublicKey("DUMBPREFIX833UzE2PyXhvQMenoD2MESD8hVroRTHjBR58G94Hr6Uo7aSPb2")
+        XCTAssertEqual(key, key1)
+        XCTAssertEqual(key, key2)
+        XCTAssertEqual(key, key3)
+        XCTAssertEqual(key2.legacyFormattedString("XXX"), "XXX833UzE2PyXhvQMenoD2MESD8hVroRTHjBR58G94Hr6Uo7aSPb2")
+    }
 }

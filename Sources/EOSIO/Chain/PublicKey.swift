@@ -37,19 +37,10 @@ public struct PublicKey: Equatable, Hashable {
 
     /// Create new PublicKey instance from a public key string.
     public init(stringValue: String) throws {
-        if stringValue.starts(with: "EOS") { // legacy K1 format
-            let keyStr = String(stringValue.suffix(from: stringValue.index(stringValue.startIndex, offsetBy: 3)))
-            guard let data = Data(base58CheckEncoded: keyStr, .ripemd160) else {
-                throw Error.parsingFailed("Unable to decode base58")
-            }
-            try self.init(fromK1Data: data)
-        } else { // new PUB_<type>_ format
+        if stringValue.starts(with: "PUB_") {
             let parts = stringValue.split(separator: "_")
             guard parts.count == 3 else {
-                throw Error.parsingFailed("Malformed signature string")
-            }
-            guard parts[0] == "PUB" else {
-                throw Error.parsingFailed("Expected PUB prefix")
+                throw Error.parsingFailed("Malformed key string")
             }
             let checksumData = parts[1].data(using: .utf8) ?? Data(repeating: 0, count: 4)
             guard let data = Data(base58CheckEncoded: String(parts[2]), .ripemd160Extra(checksumData)) else {
@@ -64,6 +55,15 @@ public struct PublicKey: Equatable, Hashable {
                 }
                 self.init(value: .unknown(name: String(parts[1]), data: data))
             }
+        } else { // legacy K1 format
+            guard stringValue.count >= 50 else {
+                throw Error.parsingFailed("Malformed key string")
+            }
+            let keyStr = String(stringValue.suffix(50))
+            guard let data = Data(base58CheckEncoded: keyStr, .ripemd160) else {
+                throw Error.parsingFailed("Unable to decode base58")
+            }
+            try self.init(fromK1Data: data)
         }
     }
 
@@ -94,15 +94,21 @@ public struct PublicKey: Equatable, Hashable {
         return "PUB_\(type)_\(encoded)"
     }
 
-    /// Legacy public key representation format, `EOS<base58key>`.
+    /// Format key to legacy public key string representation using given prefix, `<prefix><base58key>`.
     /// - Note: Returns `nil` for other key formats than `K1`.
-    public var legacyStringValue: String? {
+    public func legacyFormattedString(_ prefix: String = "EOS") -> String? {
         switch self.value {
         case let .k1(key):
-            return "EOS\(key.base58CheckEncodedString(.ripemd160)!)"
+            return "\(prefix)\(key.base58CheckEncodedString(.ripemd160)!)"
         default:
             return nil
         }
+    }
+
+    /// Legacy public key representation format, `EOS<base58key>`.
+    /// - Note: Returns `nil` for other key formats than `K1`.
+    public var legacyStringValue: String? {
+        return self.legacyFormattedString()
     }
 }
 
