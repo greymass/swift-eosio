@@ -112,8 +112,8 @@ public struct PrivateKey: Equatable, Hashable {
         switch self.value {
         case .k1:
             return "K1"
-        case let .unknown(info):
-            return info.name
+        case let .unknown(name, _):
+            return name
         }
     }
 
