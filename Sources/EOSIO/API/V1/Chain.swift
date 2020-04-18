@@ -49,7 +49,7 @@ public extension API.V1.Chain {
         public let requiredAuth: Authority
     }
 
-    struct AccountAuthorizer: Decodable {
+    struct AccountAuthorizer: Decodable, Equatable, Hashable {
         public let accountName: Name
         public let permissionName: Name
         public let authorizer: AuthorizerVariant
@@ -57,7 +57,7 @@ public extension API.V1.Chain {
         public let threshold: UInt64
     }
     
-    enum AuthorizerVariant: Decodable {
+    enum AuthorizerVariant: Decodable, Equatable, Hashable {
         case publicKey(PublicKey)
         case permissionLevel(PermissionLevel)
         
@@ -72,6 +72,24 @@ public extension API.V1.Chain {
                 return
             }
             throw DecodingError.typeMismatch(AuthorizerVariant.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for AuthorizerVariant"))
+        }
+
+        var authorizerKey: PublicKey {
+            switch self {
+            case .publicKey(let key):
+                return key
+            case .permissionLevel:
+                return PublicKey("")
+            }
+        }
+            
+        var authorizerPermission: PermissionLevel? {
+            switch self {
+            case .publicKey:
+                return nil
+            case .permissionLevel(let perm):
+                return perm
+            }
         }
 
         func encode(to encoder: Encoder) throws {

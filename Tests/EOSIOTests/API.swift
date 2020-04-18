@@ -116,7 +116,7 @@ final class APITests: XCTestCase {
         let res = try! client.sendSync(req).get()
         XCTAssertEqual(res.accounts.first?.accountName, "jestasmobile")
         XCTAssertEqual(res.accounts.first?.permissionName, "active")
-        XCTAssertEqual(res.accounts.first?.authorizer, pubkey)
+        XCTAssertEqual(res.accounts.first?.authorizer.authorizerKey, pubkey)
         XCTAssertEqual(res.accounts.first?.threshold, 1)
         XCTAssertEqual(res.accounts.first?.weight, 1)
     }
@@ -127,7 +127,7 @@ final class APITests: XCTestCase {
         let res = try! client.sendSync(req).get()
         XCTAssertEqual(res.accounts.first?.accountName, "eosio.assert")
         XCTAssertEqual(res.accounts.first?.permissionName, "active")
-        XCTAssertEqual(res.accounts.first?.authorizer, PermissionLevel("eosio", "active"))
+        XCTAssertEqual(res.accounts.first?.authorizer.authorizerPermission, PermissionLevel("eosio", "active"))
         XCTAssertEqual(res.accounts.first?.threshold, 1)
         XCTAssertEqual(res.accounts.first?.weight, 1)
     }
