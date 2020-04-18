@@ -26,7 +26,7 @@ let mockSession = MockSession(
     resourcePath.appendingPathComponent("API", isDirectory: true),
     mode: env["MOCK_RECORD"] != nil ? .record : .replay
 )
-let nodeAddress = URL(string: "https://jungle.greymass.com")! // only used when recording
+let nodeAddress = URL(string: "http://jungle.eosn.io")! // only used when recording
 let client = Client(address: nodeAddress, session: mockSession)
 
 final class APITests: XCTestCase {
