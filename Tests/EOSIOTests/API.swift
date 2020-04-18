@@ -110,6 +110,29 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.voterInfo?.producers.count, 0)
     }
 
+    func testGetAccountsByAuthorizersUsingKey() {
+        let pubkey = PublicKey("EOS8X5SC2m6Q1iBpvP91mLBNpEu9LYuynC44os35n5RKaAVt9n7Ji")
+        let req = API.V1.Chain.GetAccountsByAuthorizers([pubkey])
+        let res = try! client.sendSync(req).get()
+        XCTAssertEqual(res.accounts.first?.accountName, "jestasmobile")
+        XCTAssertEqual(res.accounts.first?.permissionName, "active")
+        XCTAssertEqual(res.accounts.first?.authorizer, pubkey)
+        XCTAssertEqual(res.accounts.first?.threshold, 1)
+        XCTAssertEqual(res.accounts.first?.weight, 1)
+    }
+
+    func testGetAccountsByAuthorizersUsingAccount() {
+        let account = Name("eosio")
+        let req = API.V1.Chain.GetAccountsByAuthorizers([account])
+        let res = try! client.sendSync(req).get()
+        XCTAssertEqual(res.accounts.first?.accountName, "eosio.assert")
+        XCTAssertEqual(res.accounts.first?.permissionName, "active")
+        XCTAssertEqual(res.accounts.first?.authorizer, PermissionLevel("eosio", "active"))
+        XCTAssertEqual(res.accounts.first?.threshold, 1)
+        XCTAssertEqual(res.accounts.first?.weight, 1)
+    }
+
+    
     func testErrorMessage() {
         let key = PrivateKey("5J2DVkkD59X146qkrBTjGykUA634pFkdU7gSA7Y3bcDbthCt9md")
 

@@ -49,6 +49,42 @@ public extension API.V1.Chain {
         public let requiredAuth: Authority
     }
 
+    struct AccountAuthorizer: Decodable {
+        public let accountName: Name
+        public let permissionName: Name
+        public let authorizer: AuthorizerVariant
+        public let weight: UInt64
+        public let threshold: UInt64
+    }
+    
+    enum AuthorizerVariant: Decodable {
+        case publicKey(PublicKey)
+        case permissionLevel(PermissionLevel)
+        
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            if let x = try? container.decode(PublicKey.self) {
+                self = .publicKey(x)
+                return
+            }
+            if let x = try? container.decode(PermissionLevel.self) {
+                self = .permissionLevel(x)
+                return
+            }
+            throw DecodingError.typeMismatch(AuthorizerVariant.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for AuthorizerVariant"))
+        }
+
+        func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            switch self {
+            case .publicKey(let x):
+                try container.encode(x)
+            case .permissionLevel(let x):
+                try container.encode(x)
+            }
+        }
+    }
+
     /// Various details about the blockchain.
     struct GetInfo: Request {
         public static let path = "/v1/chain/get_info"
@@ -304,6 +340,26 @@ public extension API.V1.Chain {
 
         public init(_ accountName: Name) {
             self.accountName = accountName
+        }
+    }
+
+    /// Get list of accounts controlled by given public key or authority.
+    struct GetAccountsByAuthorizers: Request {
+        public static let path = "/v1/chain/get_accounts_by_authorizers"
+        public struct Response: Decodable {
+            /// Account names controlled by key or authority.
+            public let accounts: [AccountAuthorizer]
+        }
+
+        public var accounts: [Name]?
+        public var keys: [PublicKey]?
+
+        public init(_ keys: [PublicKey]) {
+            self.keys = keys
+        }
+        
+        public init(_ accounts: [Name]) {
+            self.accounts = accounts
         }
     }
 }
