@@ -159,7 +159,7 @@ public struct SigningRequest: Equatable, Hashable {
     public init(_ data: Data) throws {
         var data = data
         guard let header = data.popFirst() else {
-            throw Error.decodingFailed("Signature header missing")
+            throw Error.decodingFailed("Request header missing")
         }
         let version = header & ~(1 << 7)
         guard version == Self.version else {
@@ -453,11 +453,9 @@ public struct SigningRequest: Equatable, Hashable {
         return ResolvedSigningRequest(self, signer, tx)
     }
 
-    /// Encode request to `esr://` uri string.
+    /// Encode request to binary format.
     /// - Parameter compress: Whether to compress the request, recommended.
-    /// - Parameter slashes: Whether to add two slashes after the protocol, recommended as the resulting uri string will not be clickable in many places otherwise.
-    ///                      Can be turned off if uri will be used in a QR code or encoded in a NFC tag to save two bytes.
-    public func encodeUri(compress: Bool = true, slashes: Bool = true) throws -> String {
+    public func encode(compress: Bool = true) throws -> Data {
         let encoder = ABIEncoder()
         var data: Data
         do {
@@ -491,6 +489,15 @@ public struct SigningRequest: Equatable, Hashable {
             }
         }
         data.insert(header, at: 0)
+        return data
+    }
+
+    /// Encode request to `esr://` uri string.
+    /// - Parameter compress: Whether to compress the request, recommended.
+    /// - Parameter slashes: Whether to add two slashes after the protocol, recommended as the resulting uri string will not be clickable in many places otherwise.
+    ///                      Can be turned off if uri will be used in a QR code or encoded in a NFC tag to save two bytes.
+    public func encodeUri(compress: Bool = true, slashes: Bool = true) throws -> String {
+        let data = try self.encode(compress: compress)
         var scheme = "esr:"
         if slashes {
             scheme += "//"

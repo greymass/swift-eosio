@@ -68,6 +68,7 @@ class SigningRequestTests: XCTestCase {
     }
 
     func testEncodeDecode() {
+        let data: Data = "826360646058d664c2fcca20948181215cd7e6ec5946a01018c068131803023462e1fc00573f7720251c929198975dac90965fa4509291aa9096599cc1ccc00000"
         let compressed = "esr://gmNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGMBoExgDAjRi4fwAVz93ICUckpGYl12skJZfpFCSkaqQllmcwczAAAA"
         let uncompressed = "esr://AgABAACmgjQD6jBVAAAAVy08zc0BAQAAAAAAAAABAAAAAAAAADQBAAAAAAAAAAAAAAAAAChdAQAAAAAAAAAAUEVORwAAABNUaGFua3MgZm9yIHRoZSBmaXNoAwAA"
         let req1 = try! SigningRequest(compressed)
@@ -78,6 +79,13 @@ class SigningRequestTests: XCTestCase {
         XCTAssertThrowsError(try SigningRequest("esr:gWeeeeeeeeee"))
         XCTAssertThrowsError(try SigningRequest("esr://AQBAAAAAAAAABAAAAAAAAA"))
         XCTAssertThrowsError(try SigningRequest(""))
+        XCTAssertEqual(try! req1.encode(compress: true), data)
+        var badData = data
+        badData[0] = 0x1
+        XCTAssertThrowsError(try SigningRequest(badData))
+        badData = data
+        badData[data.count - 2] = 0x80
+        XCTAssertThrowsError(try SigningRequest(badData))
     }
 
     func testCreateSigned() {
