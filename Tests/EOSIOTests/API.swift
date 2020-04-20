@@ -26,7 +26,7 @@ let mockSession = MockSession(
     resourcePath.appendingPathComponent("API", isDirectory: true),
     mode: env["MOCK_RECORD"] != nil ? .record : .replay
 )
-let nodeAddress = URL(string: "http://jungle.eosn.io")! // only used when recording
+let nodeAddress = URL(string: "https://jungle.greymass.com")! // only used when recording
 let client = Client(address: nodeAddress, session: mockSession)
 
 final class APITests: XCTestCase {
@@ -112,27 +112,25 @@ final class APITests: XCTestCase {
 
     func testGetAccountsByAuthorizersUsingKey() {
         let pubkey = PublicKey("EOS8X5SC2m6Q1iBpvP91mLBNpEu9LYuynC44os35n5RKaAVt9n7Ji")
-        let req = API.V1.Chain.GetAccountsByAuthorizers([pubkey])
+        let req = API.V1.Chain.GetAccountsByAuthorizers(keys: [pubkey])
         let res = try! client.sendSync(req).get()
         XCTAssertEqual(res.accounts.first?.accountName, "jestasmobile")
         XCTAssertEqual(res.accounts.first?.permissionName, "active")
-        XCTAssertEqual(res.accounts.first?.authorizer.authorizerKey, pubkey)
+        XCTAssertEqual(res.accounts.first?.authorizer, .publicKey(pubkey))
         XCTAssertEqual(res.accounts.first?.threshold, 1)
         XCTAssertEqual(res.accounts.first?.weight, 1)
     }
 
     func testGetAccountsByAuthorizersUsingAccount() {
-        let account = Name("eosio")
-        let req = API.V1.Chain.GetAccountsByAuthorizers([account])
+        let req = API.V1.Chain.GetAccountsByAuthorizers(accounts: ["eosio"])
         let res = try! client.sendSync(req).get()
         XCTAssertEqual(res.accounts.first?.accountName, "eosio.assert")
         XCTAssertEqual(res.accounts.first?.permissionName, "active")
-        XCTAssertEqual(res.accounts.first?.authorizer.authorizerPermission, PermissionLevel("eosio", "active"))
+        XCTAssertEqual(res.accounts.first?.authorizer, .permissionLevel("eosio@active"))
         XCTAssertEqual(res.accounts.first?.threshold, 1)
         XCTAssertEqual(res.accounts.first?.weight, 1)
     }
 
-    
     func testErrorMessage() {
         let key = PrivateKey("5J2DVkkD59X146qkrBTjGykUA634pFkdU7gSA7Y3bcDbthCt9md")
 
