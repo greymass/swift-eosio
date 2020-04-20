@@ -306,4 +306,72 @@ public extension API.V1.Chain {
             self.accountName = accountName
         }
     }
+
+    /// Get list of accounts controlled by given public key or authority.
+    /// - Attention: Experimental endpoint, see <https://github.com/EOSIO/eos/pull/8899>
+    struct GetAccountsByAuthorizers: Request {
+        public static let path = "/v1/chain/get_accounts_by_authorizers"
+
+        /// Account auth response type, used by the `GetAccountsByAuthorizers` api.
+        public struct AccountAuthorizer: Decodable, Equatable, Hashable {
+            public enum Authorizer: Decodable, Equatable, Hashable {
+                case publicKey(PublicKey)
+                case permissionLevel(PermissionLevel)
+
+                public init(from decoder: Decoder) throws {
+                    let container = try decoder.singleValueContainer()
+                    if let x = try? container.decode(PublicKey.self) {
+                        self = .publicKey(x)
+                        return
+                    }
+                    if let x = try? container.decode(PermissionLevel.self) {
+                        self = .permissionLevel(x)
+                        return
+                    }
+                    throw DecodingError.typeMismatch(Authorizer.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for AuthorizerVariant"))
+                }
+            }
+
+            public let accountName: Name
+            public let permissionName: Name
+            public let authorizer: Authorizer
+            public let weight: Weight
+            public let threshold: UInt32
+        }
+
+        public enum AccountOrPermission: Encodable {
+            case account(Name)
+            case permission(PermissionLevel)
+
+            public func encode(to encoder: Encoder) throws {
+                var container = encoder.singleValueContainer()
+                switch self {
+                case let .account(name):
+                    try container.encode(name)
+                case let .permission(permissionLevel):
+                    try container.encode(permissionLevel)
+                }
+            }
+        }
+
+        public struct Response: Decodable {
+            /// Account names controlled by key or authority.
+            public let accounts: [AccountAuthorizer]
+        }
+
+        public var accounts: [AccountOrPermission]?
+        public var keys: [PublicKey]?
+
+        public init(keys: [PublicKey]) {
+            self.keys = keys
+        }
+
+        public init(accounts: [Name]) {
+            self.accounts = accounts.map { .account($0) }
+        }
+
+        public init(permissions: [PermissionLevel]) {
+            self.accounts = permissions.map { .permission($0) }
+        }
+    }
 }
