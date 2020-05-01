@@ -237,15 +237,25 @@ public struct SigningRequest: Equatable, Hashable {
 
     /// Chain ID this request is valid for.
     public var chainId: ChainId {
-        self.data.chainId.value
+        get { self.data.chainId.value }
+        set { self.data.chainId = SigningRequestData.ChainIdVariant(newValue) }
     }
 
     /// Whether the request should be broadcast after being signed.
+    /// - Note: This always returns `false` for an identity request.
     public var broadcast: Bool {
-        if self.isIdentity {
-            return false
+        get {
+            if self.isIdentity {
+                return false
+            }
+            return self.data.flags.contains(.broadcast)
         }
-        return self.data.flags.contains(.broadcast)
+        set {
+            guard !self.isIdentity else {
+                return
+            }
+            self.data.flags.insert(.broadcast)
+        }
     }
 
     /// Request metadata.
