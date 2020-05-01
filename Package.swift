@@ -8,16 +8,15 @@ let package = Package(
         .library(name: "EOSIO", targets: ["EOSIO"]),
     ],
     dependencies: [
-        // .package(url: "https://github.com/attaswift/BigInt.git", from: "5.0.0"),
         .package(url: "https://github.com/greymass/secp256k1.git", .branch("master")),
     ],
     targets: [
         .target(
             name: "EOSIO",
-            dependencies: ["secp256k1", "crypto"]
+            dependencies: ["secp256k1", "CCrypto"]
         ),
         .target(
-            name: "crypto"
+            name: "CCrypto"
         ),
         .testTarget(
             name: "EOSIOTests",

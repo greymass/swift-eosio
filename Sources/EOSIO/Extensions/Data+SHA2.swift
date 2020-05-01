@@ -1,7 +1,7 @@
 /// SHA2 hash extension for the Data type.
 /// - Author: Johan Nordberg <code@johan-nordberg.com>
 
-import crypto
+import CCrypto
 import Foundation
 
 public extension Data {

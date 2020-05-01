@@ -1,7 +1,7 @@
 /// Swift wrapper for libsecp256k1.
 /// - Author: Johan Nordberg <code@johan-nordberg.com>
 
-import crypto
+import CCrypto
 import Foundation
 import secp256k1
 

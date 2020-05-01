@@ -690,7 +690,7 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
 
 // MARK: Data types
 
-private struct SigningRequestData: ABICodable, Hashable, Equatable {
+fileprivate struct SigningRequestData: ABICodable, Hashable, Equatable {
     /// Chain ID variant, either a chain name alias or full chainid checksum.
     enum ChainIdVariant: Equatable, Hashable {
         case alias(UInt8)
