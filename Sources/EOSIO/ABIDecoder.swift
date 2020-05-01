@@ -130,10 +130,10 @@ private extension ABIDecoder {
             throw Error.prematureEndOfData
         }
 
-        self.data.withUnsafeBytes({
+        self.data.withUnsafeBytes {
             let from = $0.baseAddress! + cursor
             memcpy(into, from, byteCount)
-        })
+        }
 
         self.cursor += byteCount
     }

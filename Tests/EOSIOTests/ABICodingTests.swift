@@ -200,7 +200,7 @@ final class ABICodableTests: XCTestCase {
 
         XCTAssertEqual(bin1, post.bin)
         XCTAssertEqual(bin2, post.bin)
-        
+
         let action = Action(account: "decentiumorg", name: "post", data: bin1)
         let jsonData = try! action.jsonData(using: abi1)
         XCTAssertEqual(jsonData.utf8String.normalizedJSON, post.json.normalizedJSON)

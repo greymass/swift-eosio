@@ -193,7 +193,7 @@ public struct AnyABICodable: ABICodable {
     }
 
     public var value: Any
-    
+
     private var abi: ABI?
     private var type: String?
 
