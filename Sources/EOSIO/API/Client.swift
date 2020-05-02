@@ -1,6 +1,10 @@
 
 import Foundation
 
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
+
 /// A EOSIO (nodeos) API request, encoded and sent as the request JSON body.
 public protocol Request: Encodable {
     /// The response type, must be decodable.

@@ -1,6 +1,10 @@
 @testable import EOSIO
 import Foundation
 
+#if canImport(FoundationNetworking)
+    import FoundationNetworking
+#endif
+
 struct MockSession: SessionAdapter {
     fileprivate let queue = DispatchQueue(label: "MockSession")
 

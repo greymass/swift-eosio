@@ -169,24 +169,27 @@ public struct SigningRequest: Equatable, Hashable {
             throw Error.decodingFailed("Unsupported version")
         }
         if (header & 1 << 7) != 0 {
-            data = try data.withUnsafeBytes { ptr in
-                guard !ptr.isEmpty else {
-                    throw Error.decodingFailed("No data to decompress")
+            #if canImport(Compression)
+                data = try data.withUnsafeBytes { ptr in
+                    guard !ptr.isEmpty else {
+                        throw Error.decodingFailed("No data to decompress")
+                    }
+                    var size = 5_000_000
+                    let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+                    defer { buffer.deallocate() }
+                    if #available(iOS 9.0, OSX 10.11, *) {
+                        size = compression_decode_buffer(buffer, size, ptr.bufPtr, ptr.count, nil, COMPRESSION_ZLIB)
+                    } else {
+                        throw Error.decodingFailed("Compressed requests are not supported on your platform")
+                    }
+                    guard size != 5_000_000 else {
+                        throw Error.decodingFailed("Payload too large")
+                    }
+                    return Data(bytes: buffer, count: size)
                 }
-                var size = 5_000_000
-                let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
-                defer { buffer.deallocate() }
-                if #available(iOS 9.0, OSX 10.11, *) {
-                    size = compression_decode_buffer(buffer, size, ptr.bufPtr, ptr.count, nil, COMPRESSION_ZLIB)
-                } else {
-                    // TODO: compression fallback for linux
-                    throw Error.decodingFailed("Compressed requests are not supported on your platform yet")
-                }
-                guard size != 5_000_000 else {
-                    throw Error.decodingFailed("Payload too large")
-                }
-                return Data(bytes: buffer, count: size)
-            }
+            #else
+                throw Error.decodingFailed("Compressed requests are not supported on your platform")
+            #endif
         }
         let decoder = ABIDecoder()
         do {
@@ -481,25 +484,28 @@ public struct SigningRequest: Equatable, Hashable {
         }
         var header: UInt8 = Self.version
         if compress {
-            let compressed = try data.withUnsafeBytes { ptr -> Data? in
-                var size = ptr.count
-                let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
-                defer { buffer.deallocate() }
-                if #available(iOS 9.0, OSX 10.11, *) {
-                    size = compression_encode_buffer(buffer, size, ptr.bufPtr, ptr.count, nil, COMPRESSION_ZLIB)
-                } else {
-                    // TODO: compression fallback for linux
-                    throw Error.encodingFailed("Compressed requests are not supported on your platform yet")
+            #if canImport(Compression)
+                let compressed = try data.withUnsafeBytes { ptr -> Data? in
+                    var size = ptr.count
+                    let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
+                    defer { buffer.deallocate() }
+                    if #available(iOS 9.0, OSX 10.11, *) {
+                        size = compression_encode_buffer(buffer, size, ptr.bufPtr, ptr.count, nil, COMPRESSION_ZLIB)
+                    } else {
+                        throw Error.encodingFailed("Compressed requests are not supported on your platform")
+                    }
+                    guard size != 0 else {
+                        return nil
+                    }
+                    return Data(bytes: buffer, count: size)
                 }
-                guard size != 0 else {
-                    return nil
+                if let compressed = compressed {
+                    header |= 1 << 7
+                    data = compressed
                 }
-                return Data(bytes: buffer, count: size)
-            }
-            if let compressed = compressed {
-                header |= 1 << 7
-                data = compressed
-            }
+            #else
+                throw Error.encodingFailed("Compressed requests are not supported on your platform")
+            #endif
         }
         data.insert(header, at: 0)
         return data

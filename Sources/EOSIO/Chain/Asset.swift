@@ -1,6 +1,7 @@
 /// EOSIO asset type
 /// - Author: Johan Nordberg <code@johan-nordberg.com>
 
+import CoreFoundation
 import Foundation
 
 /// The EOSIO asset type.

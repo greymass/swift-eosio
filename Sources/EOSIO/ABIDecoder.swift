@@ -1,4 +1,5 @@
 
+import CoreFoundation
 import Foundation
 
 /// A protocol for types which can be decoded from binary ABI format.

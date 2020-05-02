@@ -38,12 +38,12 @@ extension String {
         let obj = try! JSONSerialization.jsonObject(with: self.data(using: .utf8)!, options: [.allowFragments])
         let opts: JSONSerialization.WritingOptions
         #if os(Linux)
-            opts = [.prettyPrinted, .sortedKeys, .fragmentsAllowed]
+            opts = [.prettyPrinted, .sortedKeys]
         #else
             if #available(macOS 10.13, *) {
-                opts = [.prettyPrinted, .sortedKeys, .fragmentsAllowed]
+                opts = [.prettyPrinted, .sortedKeys]
             } else {
-                opts = [.prettyPrinted, .fragmentsAllowed]
+                opts = [.prettyPrinted]
             }
         #endif
         let data = try! JSONSerialization.data(withJSONObject: obj, options: opts)
