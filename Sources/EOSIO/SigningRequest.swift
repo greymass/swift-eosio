@@ -1,8 +1,11 @@
 /// EEP-7 signing request type
 /// - Author: Johan Nordberg <code@johan-nordberg.com>
 
-import Compression
 import Foundation
+
+#if canImport(Compression)
+    import Compression
+#endif
 
 public struct SigningRequest: Equatable, Hashable {
     /// The signing request version
