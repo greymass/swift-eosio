@@ -1,17 +1,15 @@
 EOSIO for Swift
 ===============
 
-Library for swiftly working with EOSIO blockchains.
+Library for swiftly working with EOSIO blockchains on MacOS, Linux and iOS.
 
-Still early beta, current status:
-
- - [x] Strongly typed EOSIO ABI encoding and decoding using Swift's `Codable` protocol.
- - [x] Untyped EOSIO ABI encoding using EOSIO ABI definitions.
- - [x] EEP-7 Signing Requests.
- - [ ] HTTP API Client.
- - [ ] Crypto primitives.
- - [ ] Signature provider.
-
+Features:
+ - Strongly typed EOSIO ABI encoding and decoding using Swift's `Codable` protocol
+ - Untyped EOSIO ABI coding using EOSIO ABI definitions (JSON & binary)
+ - Extendable HTTP API Client
+ - All EOSIO primitive types implemented in Swift with ergonomic interfaces (Asset, Name, PublicKey etc.)
+ - Fast and battle-hardened ECDSA via libsecp256k1
+ - Signing requests (ESR/EEP-7)
 
 Installation
 ------------
