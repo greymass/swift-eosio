@@ -1,0 +1,1829 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SigningRequest Structure Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Struct/SigningRequest" class="dashAnchor"></a>
+    <a title="SigningRequest Structure Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">EOSIO Docs</a></p>
+        <p class="header-right"><a href="https://github.com/greymass/swift-eosio"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">EOSIO Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        SigningRequest Structure Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ABIDecoder.html">ABIDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ABIDecoder/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ABIEncoder.html">ABIEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/ABIEncoder/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Client.html">Client</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Client/Error.html">– Error</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/ChainName.html">ChainName</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/BlockId.html">BlockId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/ChainId.html">ChainId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/CodingUserInfoKey.html">CodingUserInfoKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data/Base58CheckType.html">– Base58CheckType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Data/HexEncodingOptions.html">– HexEncodingOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/FixedWidthInteger.html">FixedWidthInteger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:s5Int16V">Int16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:s5Int32V">Int32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:s5Int64V">Int64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:s4Int8V">Int8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/JSONDecoder.html">JSONDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/JSONEncoder.html">JSONEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Never.html">Never</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/SigningRequestData">SigningRequestData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:s6UInt16V">UInt16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:s6UInt32V">UInt32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:s6UInt64V">UInt64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/s:s5UInt8V">UInt8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UnicodeScalar.html">UnicodeScalar</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/ABIDecodable.html">ABIDecodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ABIEncodable.html">ABIEncodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/AnyABIDecoder.html">AnyABIDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/AnyABIEncoder.html">AnyABIEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Request.html">Request</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/TaposSource.html">TaposSource</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/ABI.html">ABI</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ABI/ResolvedType.html">– ResolvedType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ABI/TypeDef.html">– TypeDef</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ABI/Field.html">– Field</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ABI/Struct.html">– Struct</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ABI/Action.html">– Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ABI/Table.html">– Table</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ABI/Clause.html">– Clause</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ABI/Variant.html">– Variant</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/API.html">API</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/API/V1.html">– V1</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AccountResourceLimit.html">AccountResourceLimit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Action.html">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/AnyABICodable.html">AnyABICodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Asset.html">Asset</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Asset/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Asset/Symbol.html">– Symbol</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Authority.html">Authority</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/BinaryExtension.html">BinaryExtension</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Blob.html">Blob</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Checksum256.html">Checksum256</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Float64.html">Float64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/KeyWeight.html">KeyWeight</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Name.html">Name</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PackedTransaction.html">PackedTransaction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PackedTransaction/Compression.html">– Compression</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PackedTransaction/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PermissionLevel.html">PermissionLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PermissionLevelWeight.html">PermissionLevelWeight</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PrivateKey.html">PrivateKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PrivateKey/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PublicKey.html">PublicKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/PublicKey/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ResolvedSigningRequest.html">ResolvedSigningRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ResolvedSigningRequest/Callback.html">– Callback</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ResponseError.html">ResponseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ResponseError/Detail.html">– Detail</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ResponseError/Info.html">– Info</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Signature.html">Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Signature/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SignedTransaction.html">SignedTransaction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SigningRequest.html">SigningRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/SigningRequest/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TimePoint.html">TimePoint</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TimePointSec.html">TimePointSec</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/Transaction.html">Transaction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TransactionExtension.html">TransactionExtension</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/TransactionHeader.html">TransactionHeader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/WaitWeight.html">WaitWeight</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:5EOSIO10ABICodablea">ABICodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:5EOSIO11AccountNamea">AccountName</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:5EOSIO7BlockIda">BlockId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:5EOSIO8BlockNuma">BlockNum</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:5EOSIO5Bytesa">Bytes</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:5EOSIO7ChainIda">ChainId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:5EOSIO6Digesta">Digest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:5EOSIO5Sharea">Share</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:5EOSIO13TransactionIda">TransactionId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:5EOSIO6Weighta">Weight</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>SigningRequest</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">SigningRequest</span> <span class="p">:</span> <span class="kt">Equatable</span><span class="p">,</span> <span class="kt">Hashable</span></code></pre>
+
+                </div>
+              </div>
+            
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7versions5UInt8VvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/version" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7versions5UInt8VvpZ">version</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The signing request version</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">version</span><span class="p">:</span> <span class="kt">UInt8</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV16actorPlaceholderAA4NameVvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/actorPlaceholder" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV16actorPlaceholderAA4NameVvpZ">actorPlaceholder</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Special <code><a href="../Structs/Name.html">Name</a></code> that is resolved to to signing actor (account name).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">actorPlaceholder</span><span class="p">:</span> <span class="kt"><a href="../Structs/Name.html">Name</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV21permissionPlaceholderAA4NameVvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/permissionPlaceholder" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV21permissionPlaceholderAA4NameVvpZ">permissionPlaceholder</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Special <code><a href="../Structs/Name.html">Name</a></code> that is resolved to to signing permission name.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">permissionPlaceholder</span><span class="p">:</span> <span class="kt"><a href="../Structs/Name.html">Name</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV21placeholderPermissionAA0E5LevelVvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/placeholderPermission" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV21placeholderPermissionAA0E5LevelVvpZ">placeholderPermission</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Placeholder permission level that resolve both actor and permission to signer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">placeholderPermission</span><span class="p">:</span> <span class="kt"><a href="../Structs/PermissionLevel.html">PermissionLevel</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV19resolvePlaceholders_5usingxx_AA15PermissionLevelVtlFZ"></a>
+                    <a name="//apple_ref/swift/Method/resolvePlaceholders(_:using:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV19resolvePlaceholders_5usingxx_AA15PermissionLevelVtlFZ">resolvePlaceholders(_:<wbr>using:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Recursively resolve any <code><a href="../Structs/Name.html">Name</a></code> placeholders types found in value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="n">resolvePlaceholders</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">using</span> <span class="nv">signer</span><span class="p">:</span> <span class="kt"><a href="../Structs/PermissionLevel.html">PermissionLevel</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV5ErrorO"></a>
+                    <a name="//apple_ref/swift/Enum/Error" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV5ErrorO">Error</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>All errors <code><a href="../Structs/SigningRequest.html">SigningRequest</a></code> can throw.</p>
+
+                        <a href="../Structs/SigningRequest/Error.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">Error</span> <span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7chainId7actions9broadcast8callback10background4infoAcA11Checksum256V_SayAA6ActionVGSbSSSgSbSDyS2SGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(chainId:actions:broadcast:callback:background:info:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7chainId7actions9broadcast8callback10background4infoAcA11Checksum256V_SayAA6ActionVGSbSSSgSbSDyS2SGtcfc">init(chainId:<wbr>actions:<wbr>broadcast:<wbr>callback:<wbr>background:<wbr>info:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a signing request with action(s).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">chainId</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:5EOSIO7ChainIda">ChainId</a></span><span class="p">,</span> <span class="nv">actions</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/Action.html">Action</a></span><span class="p">],</span> <span class="nv">broadcast</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">callback</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">info</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>chainId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The chain id for which the request is valid.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>actions</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The EOSIO actions to request a signature for.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>broadcast</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether the signer should broadcast the transaction after signing.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>callback</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback url signer should hit after signing and/or broadcasting.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>background</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether the callback should be performed in the background.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>info</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional request headers.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7chainId11transaction9broadcast8callback10background4infoAcA11Checksum256V_AA11TransactionVSbSSSgSbSDyS2SGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(chainId:transaction:broadcast:callback:background:info:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7chainId11transaction9broadcast8callback10background4infoAcA11Checksum256V_AA11TransactionVSbSSSgSbSDyS2SGtcfc">init(chainId:<wbr>transaction:<wbr>broadcast:<wbr>callback:<wbr>background:<wbr>info:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a signing request with a transaction.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">chainId</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:5EOSIO7ChainIda">ChainId</a></span><span class="p">,</span> <span class="nv">transaction</span><span class="p">:</span> <span class="kt"><a href="../Structs/Transaction.html">Transaction</a></span><span class="p">,</span> <span class="nv">broadcast</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">callback</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">info</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>chainId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The chain id for which the request is valid.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>transaction</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The transaction to request a signature for.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>broadcast</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether the signer should broadcast the transaction after signing.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>callback</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback url signer should hit after signing and/or broadcasting.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>background</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether the callback should be performed in the background.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>info</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional request headers.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7chainId8callback8identity10permission10background4infoAcA11Checksum256V_SSAA4NameVSgANSbSDyS2SGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(chainId:callback:identity:permission:background:info:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7chainId8callback8identity10permission10background4infoAcA11Checksum256V_SSAA4NameVSgANSbSDyS2SGtcfc">init(chainId:<wbr>callback:<wbr>identity:<wbr>permission:<wbr>background:<wbr>info:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create an identity request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">chainId</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:5EOSIO7ChainIda">ChainId</a></span><span class="p">,</span> <span class="nv">callback</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">identity</span><span class="p">:</span> <span class="kt"><a href="../Structs/Name.html">Name</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">permission</span><span class="p">:</span> <span class="kt"><a href="../Structs/Name.html">Name</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">info</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="o">=</span> <span class="p">[:])</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>chainId</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The chain id for which the request is valid.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>callback</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Callback that wallet implementer should hit with the identity proof.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>identity</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The account name to request identity confirmation for, if nil will create a &ldquo;any id&rdquo; request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>permission</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional account permission constrain identity request to.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>background</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether the callback should be performed in the background.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>info</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Optional request headers.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestVyACSSKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestVyACSSKcfc">init(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Decode a signing request from a string.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">string</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestVyAC10Foundation4DataVKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestVyAC10Foundation4DataVKcfc">init(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Decode a signing request from binary format.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    The first byte is the header, rest is the abi-encoded signing request data.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV11hasCallbackSbvp"></a>
+                    <a name="//apple_ref/swift/Property/hasCallback" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV11hasCallbackSbvp">hasCallback</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether the request has a callback.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">hasCallback</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV10isIdentitySbvp"></a>
+                    <a name="//apple_ref/swift/Property/isIdentity" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV10isIdentitySbvp">isIdentity</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether the request is an identity request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isIdentity</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV8identityAA4NameVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/identity" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV8identityAA4NameVSgvp">identity</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Present if the request is an identity request and requests a specific account.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    This returns <code>nil</code> unless a specific identity has been requested, use<code><a href="../Structs/SigningRequest.html#/s:5EOSIO14SigningRequestV10isIdentitySbvp">isIdentity</a></code> to check id requests.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">identity</span><span class="p">:</span> <span class="kt"><a href="../Structs/Name.html">Name</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV18identityPermissionAA4NameVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/identityPermission" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV18identityPermissionAA4NameVSgvp">identityPermission</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Present if the request is an identity request and requests a specific account permission.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    This returns <code>nil</code> unless a specific identity with permission has been requested, use<code><a href="../Structs/SigningRequest.html#/s:5EOSIO14SigningRequestV10isIdentitySbvp">isIdentity</a></code> to check id requests.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">identityPermission</span><span class="p">:</span> <span class="kt"><a href="../Structs/Name.html">Name</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7chainIdAA11Checksum256Vvp"></a>
+                    <a name="//apple_ref/swift/Property/chainId" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7chainIdAA11Checksum256Vvp">chainId</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Chain ID this request is valid for.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">chainId</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:5EOSIO7ChainIda">ChainId</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV9broadcastSbvp"></a>
+                    <a name="//apple_ref/swift/Property/broadcast" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV9broadcastSbvp">broadcast</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether the request should be broadcast after being signed.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    This always returns <code>false</code> for an identity request.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">broadcast</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV4infoSDyS2SGvp"></a>
+                    <a name="//apple_ref/swift/Property/info" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV4infoSDyS2SGvp">info</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Request metadata.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Keys that does not encode as utf-8 will be omitted, see <code><a href="../Structs/SigningRequest.html#/s:5EOSIO14SigningRequestV7rawInfoSDySS10Foundation4DataVGvp">rawInfo</a></code>.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">info</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">String</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7rawInfoSDySS10Foundation4DataVGvp"></a>
+                    <a name="//apple_ref/swift/Property/rawInfo" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7rawInfoSDySS10Foundation4DataVGvp">rawInfo</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Raw request metadata.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">rawInfo</span><span class="p">:</span> <span class="p">[</span><span class="kt">String</span> <span class="p">:</span> <span class="kt">Data</span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7actionsSayAA6ActionVGvp"></a>
+                    <a name="//apple_ref/swift/Property/actions" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7actionsSayAA6ActionVGvp">actions</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>All (unresolved) actions this request contains.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">actions</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/Action.html">Action</a></span><span class="p">]</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV11transactionAA11TransactionVvp"></a>
+                    <a name="//apple_ref/swift/Property/transaction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV11transactionAA11TransactionVvp">transaction</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The unresolved transaction.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">transaction</span><span class="p">:</span> <span class="kt"><a href="../Structs/Transaction.html">Transaction</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV12requiredAbisShyAA4NameVGvp"></a>
+                    <a name="//apple_ref/swift/Property/requiredAbis" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV12requiredAbisShyAA4NameVGvp">requiredAbis</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>ABIs required to resolve this request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">requiredAbis</span><span class="p">:</span> <span class="kt">Set</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/Name.html">Name</a></span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV13requiresTaposSbvp"></a>
+                    <a name="//apple_ref/swift/Property/requiresTapos" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV13requiresTaposSbvp">requiresTapos</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether TaPoS values are required to resolve this request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">requiresTapos</span><span class="p">:</span> <span class="kt">Bool</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV9signatureAA9SignatureVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/signature" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV9signatureAA9SignatureVSgvp">signature</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Request signature.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">signature</span><span class="p">:</span> <span class="kt"><a href="../Structs/Signature.html">Signature</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV6signerAA4NameVSgvp"></a>
+                    <a name="//apple_ref/swift/Property/signer" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV6signerAA4NameVSgvp">signer</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Account that signed the request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">signer</span><span class="p">:</span> <span class="kt"><a href="../Structs/Name.html">Name</a></span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV6digestAA11Checksum256Vvp"></a>
+                    <a name="//apple_ref/swift/Property/digest" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV6digestAA11Checksum256Vvp">digest</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Signing digest.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">digest</span><span class="p">:</span> <span class="kt"><a href="../Structs/Checksum256.html">Checksum256</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV12setSignature_6signeryAA0E0V_AA4NameVtF"></a>
+                    <a name="//apple_ref/swift/Method/setSignature(_:signer:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV12setSignature_6signeryAA0E0V_AA4NameVtF">setSignature(_:<wbr>signer:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Set the request signature and signer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">setSignature</span><span class="p">(</span><span class="n">_</span> <span class="nv">signature</span><span class="p">:</span> <span class="kt"><a href="../Structs/Signature.html">Signature</a></span><span class="p">,</span> <span class="nv">signer</span><span class="p">:</span> <span class="kt"><a href="../Structs/Name.html">Name</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV15removeSignatureyyF"></a>
+                    <a name="//apple_ref/swift/Method/removeSignature()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV15removeSignatureyyF">removeSignature()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes the request signature and signer.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">removeSignature</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV11setCallback_10backgroundySS_SbtF"></a>
+                    <a name="//apple_ref/swift/Method/setCallback(_:background:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV11setCallback_10backgroundySS_SbtF">setCallback(_:<wbr>background:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets the request callback.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">setCallback</span><span class="p">(</span><span class="n">_</span> <span class="nv">url</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">background</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV14removeCallbackyyF"></a>
+                    <a name="//apple_ref/swift/Method/removeCallback()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV14removeCallbackyyF">removeCallback()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Removes the request callback.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">removeCallback</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7setInfo_4dataySS_10Foundation4DataVtF"></a>
+                    <a name="//apple_ref/swift/Method/setInfo(_:data:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7setInfo_4dataySS_10Foundation4DataVtF">setInfo(_:<wbr>data:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Set metadata key to data value.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">setInfo</span><span class="p">(</span><span class="n">_</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">data</span><span class="p">:</span> <span class="kt">Data</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7setInfo_6stringySS_SStF"></a>
+                    <a name="//apple_ref/swift/Method/setInfo(_:string:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7setInfo_6stringySS_SStF">setInfo(_:<wbr>string:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Set metadata key to string value.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Key will be unset if string fails to encode to UTF-8.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">setInfo</span><span class="p">(</span><span class="n">_</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">string</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7setInfo_5valueySS_xtAA12ABIEncodableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/setInfo(_:value:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7setInfo_5valueySS_xtAA12ABIEncodableRzlF">setInfo(_:<wbr>value:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Set metadata key to any <code><a href="../Protocols/ABIEncodable.html">ABIEncodable</a></code> value.</p>
+<div class="aside aside-note">
+    <p class="aside-title">Note</p>
+    Key will be unset if value fails do encode.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">mutating</span> <span class="kd">func</span> <span class="n">setInfo</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">T</span><span class="p">)</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ABIEncodable.html">ABIEncodable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV10removeInfoyySSSgF"></a>
+                    <a name="//apple_ref/swift/Method/removeInfo(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV10removeInfoyySSSgF">removeInfo(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Remove metadata value for key, or all values if key is <code>nil</code>.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">removeInfo</span><span class="p">(</span><span class="n">_</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7getInfoy10Foundation4DataVSgSSF"></a>
+                    <a name="//apple_ref/swift/Method/getInfo(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7getInfoy10Foundation4DataVSgSSF">getInfo(_:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get data for info key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getInfo</span><span class="p">(</span><span class="n">_</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Data</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7getInfo_2asSSSgSS_SSmtF"></a>
+                    <a name="//apple_ref/swift/Method/getInfo(_:as:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7getInfo_2asSSSgSS_SSmtF">getInfo(_:<wbr>as:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get string for info key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">getInfo</span><span class="p">(</span><span class="n">_</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="k">as</span> <span class="nv">_</span><span class="p">:</span> <span class="kt">String</span><span class="o">.</span><span class="k">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7getInfo_2asxSgSS_xmtAA12ABIDecodableRzlF"></a>
+                    <a name="//apple_ref/swift/Method/getInfo(_:as:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7getInfo_2asxSgSS_xmtAA12ABIDecodableRzlF">getInfo(_:<wbr>as:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Get <code><a href="../Protocols/ABIDecodable.html">ABIDecodable</a></code> for info key.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">getInfo</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">key</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="k">as</span> <span class="nv">_</span><span class="p">:</span> <span class="kt">T</span><span class="o">.</span><span class="k">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">?</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/ABIDecodable.html">ABIDecodable</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV7resolve5using4abis5taposAA08ResolvedbC0VAA15PermissionLevelV_SDyAA4NameVAA3ABIVGAA11TaposSource_pSgtKF"></a>
+                    <a name="//apple_ref/swift/Method/resolve(using:abis:tapos:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV7resolve5using4abis5taposAA08ResolvedbC0VAA15PermissionLevelV_SDyAA4NameVAA3ABIVGAA11TaposSource_pSgtKF">resolve(using:<wbr>abis:<wbr>tapos:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Resolve the signing request.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">resolve</span><span class="p">(</span><span class="n">using</span> <span class="nv">signer</span><span class="p">:</span> <span class="kt"><a href="../Structs/PermissionLevel.html">PermissionLevel</a></span><span class="p">,</span> <span class="nv">abis</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Structs/Name.html">Name</a></span> <span class="p">:</span> <span class="kt"><a href="../Structs/ABI.html">ABI</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[:],</span> <span class="nv">tapos</span><span class="p">:</span> <span class="kt"><a href="../Protocols/TaposSource.html">TaposSource</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ResolvedSigningRequest.html">ResolvedSigningRequest</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>permission</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The permission level, aka signer, to use when resolving the request.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>abis</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The ABI definitions needed to resolve the action data, see <code><a href="../Structs/SigningRequest.html#/s:5EOSIO14SigningRequestV12requiredAbisShyAA4NameVGvp">requiredAbis</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>tapos</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The TaPoS source (e.g. block header or get info rpc call) used if request does not explicitly specify them, see <code><a href="../Structs/SigningRequest.html#/s:5EOSIO14SigningRequestV13requiresTaposSbvp">requiresTapos</a></code>.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A resolved signing request ready to be signed and/or broadcast with a helper to resolve the callback if present.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV6encode8compress10Foundation4DataVSb_tKF"></a>
+                    <a name="//apple_ref/swift/Method/encode(compress:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV6encode8compress10Foundation4DataVSb_tKF">encode(compress:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Encode request to binary format.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">encode</span><span class="p">(</span><span class="nv">compress</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">Data</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>compress</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether to compress the request, recommended.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO14SigningRequestV9encodeUri8compress7slashesSSSb_SbtKF"></a>
+                    <a name="//apple_ref/swift/Method/encodeUri(compress:slashes:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO14SigningRequestV9encodeUri8compress7slashesSSSb_SbtKF">encodeUri(compress:<wbr>slashes:<wbr>)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Encode request to <code>esr://</code> uri string.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">encodeUri</span><span class="p">(</span><span class="nv">compress</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span> <span class="nv">slashes</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="k">throws</span> <span class="o">-&gt;</span> <span class="kt">String</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>compress</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether to compress the request, recommended.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>slashes</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Whether to add two slashes after the protocol, recommended as the resulting uri string will not be clickable in many places otherwise.
+                 Can be turned off if uri will be used in a QR code or encoded in a NFC tag to save two bytes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://greymass.com" target="_blank" rel="external">Greymass</a>. All rights reserved. (Last updated: 2020-05-01)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

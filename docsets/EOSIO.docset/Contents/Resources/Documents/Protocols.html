@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Protocols  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Section/Protocols" class="dashAnchor"></a>
+    <a title="Protocols  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">EOSIO Docs</a></p>
+        <p class="header-right"><a href="https://github.com/greymass/swift-eosio"><img src="img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">EOSIO Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Protocols  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/ABIDecoder.html">ABIDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ABIDecoder/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ABIEncoder.html">ABIEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/ABIEncoder/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Client.html">Client</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Client/Error.html">– Error</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/ChainName.html">ChainName</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/Array.html">Array</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/BlockId.html">BlockId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Bool.html">Bool</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/ChainId.html">ChainId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/CodingUserInfoKey.html">CodingUserInfoKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Data.html">Data</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Data/Base58CheckType.html">– Base58CheckType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Data/HexEncodingOptions.html">– HexEncodingOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/FixedWidthInteger.html">FixedWidthInteger</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:s5Int16V">Int16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:s5Int32V">Int32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:s5Int64V">Int64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:s4Int8V">Int8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/JSONDecoder.html">JSONDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/JSONEncoder.html">JSONEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Never.html">Never</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Optional.html">Optional</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/SigningRequestData">SigningRequestData</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/String.html">String</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:s6UInt16V">UInt16</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:s6UInt32V">UInt32</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:s6UInt64V">UInt64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions.html#/s:s5UInt8V">UInt8</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/UnicodeScalar.html">UnicodeScalar</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/ABIDecodable.html">ABIDecodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ABIEncodable.html">ABIEncodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/AnyABIDecoder.html">AnyABIDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/AnyABIEncoder.html">AnyABIEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Request.html">Request</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/TaposSource.html">TaposSource</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/ABI.html">ABI</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ABI/ResolvedType.html">– ResolvedType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ABI/TypeDef.html">– TypeDef</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ABI/Field.html">– Field</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ABI/Struct.html">– Struct</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ABI/Action.html">– Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ABI/Table.html">– Table</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ABI/Clause.html">– Clause</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ABI/Variant.html">– Variant</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/API.html">API</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/API/V1.html">– V1</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/AccountResourceLimit.html">AccountResourceLimit</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Action.html">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/AnyABICodable.html">AnyABICodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Asset.html">Asset</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Asset/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Asset/Symbol.html">– Symbol</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Authority.html">Authority</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/BinaryExtension.html">BinaryExtension</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Blob.html">Blob</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Checksum256.html">Checksum256</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Float64.html">Float64</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/KeyWeight.html">KeyWeight</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Name.html">Name</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PackedTransaction.html">PackedTransaction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PackedTransaction/Compression.html">– Compression</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PackedTransaction/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PermissionLevel.html">PermissionLevel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PermissionLevelWeight.html">PermissionLevelWeight</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PrivateKey.html">PrivateKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PrivateKey/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PublicKey.html">PublicKey</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PublicKey/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ResolvedSigningRequest.html">ResolvedSigningRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ResolvedSigningRequest/Callback.html">– Callback</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ResponseError.html">ResponseError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ResponseError/Detail.html">– Detail</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ResponseError/Info.html">– Info</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Signature.html">Signature</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Signature/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SignedTransaction.html">SignedTransaction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SigningRequest.html">SigningRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/SigningRequest/Error.html">– Error</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TimePoint.html">TimePoint</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TimePointSec.html">TimePointSec</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Transaction.html">Transaction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TransactionExtension.html">TransactionExtension</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/TransactionHeader.html">TransactionHeader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/WaitWeight.html">WaitWeight</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:5EOSIO10ABICodablea">ABICodable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:5EOSIO11AccountNamea">AccountName</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:5EOSIO7BlockIda">BlockId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:5EOSIO8BlockNuma">BlockNum</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:5EOSIO5Bytesa">Bytes</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:5EOSIO7ChainIda">ChainId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:5EOSIO6Digesta">Digest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:5EOSIO5Sharea">Share</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:5EOSIO13TransactionIda">TransactionId</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:5EOSIO6Weighta">Weight</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Protocols</h1>
+            <p>The following protocols are available globally.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Dynamic%20ABI%20Coding"></a>
+                <a name="//apple_ref/swift/Section/Dynamic ABI Coding" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Dynamic%20ABI%20Coding"></a>
+                  <h3 class="section-name"><p>Dynamic ABI Coding</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO13AnyABIEncoderP"></a>
+                    <a name="//apple_ref/swift/Protocol/AnyABIEncoder" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO13AnyABIEncoderP">AnyABIEncoder</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                        <a href="Protocols/AnyABIEncoder.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AnyABIEncoder</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO13AnyABIDecoderP"></a>
+                    <a name="//apple_ref/swift/Protocol/AnyABIDecoder" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO13AnyABIDecoderP">AnyABIDecoder</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        
+                        <a href="Protocols/AnyABIDecoder.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AnyABIDecoder</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO12ABIDecodableP"></a>
+                    <a name="//apple_ref/swift/Protocol/ABIDecodable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO12ABIDecodableP">ABIDecodable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A protocol for types which can be decoded from binary ABI format.</p>
+
+                        <a href="Protocols/ABIDecodable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ABIDecodable</span> <span class="p">:</span> <span class="kt">Decodable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO12ABIEncodableP"></a>
+                    <a name="//apple_ref/swift/Protocol/ABIEncodable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO12ABIEncodableP">ABIEncodable</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A type that can be encoded into EOSIO ABI binary format.</p>
+
+                        <a href="Protocols/ABIEncodable.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ABIEncodable</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO7RequestP"></a>
+                    <a name="//apple_ref/swift/Protocol/Request" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO7RequestP">Request</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A EOSIO (nodeos) API request, encoded and sent as the request JSON body.</p>
+
+                        <a href="Protocols/Request.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Request</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Helpers"></a>
+                <a name="//apple_ref/swift/Section/Helpers" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Helpers"></a>
+                  <h3 class="section-name"><p>Helpers</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:5EOSIO11TaposSourceP"></a>
+                    <a name="//apple_ref/swift/Protocol/TaposSource" class="dashAnchor"></a>
+                    <a class="token" href="#/s:5EOSIO11TaposSourceP">TaposSource</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Type that provides Transaction as Proof of Stake (TaPoS) values.</p>
+
+                        <a href="Protocols/TaposSource.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">TaposSource</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="https://greymass.com" target="_blank" rel="external">Greymass</a>. All rights reserved. (Last updated: 2020-05-01)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.3</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

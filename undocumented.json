@@ -1,0 +1,2721 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 13,
+      "symbol": "String.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 32,
+      "symbol": "FixedWidthInteger.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 38,
+      "symbol": "FixedWidthInteger.abiEncode(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 55,
+      "symbol": "Bool.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 75,
+      "symbol": "Optional.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 96,
+      "symbol": "Data.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 117,
+      "symbol": "Array.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 129,
+      "symbol": "BinaryExtension.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 131,
+      "symbol": "BinaryExtension.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 140,
+      "symbol": "BinaryExtension.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 195,
+      "symbol": "AnyABICodable.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 200,
+      "symbol": "AnyABICodable.init(_:abi:type:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 506,
+      "symbol": "AnyABIEncoder",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 507,
+      "symbol": "AnyABIEncoder.encode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 508,
+      "symbol": "AnyABIEncoder.encode(_:asType:using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 512,
+      "symbol": "JSONEncoder.encode(_:asType:using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 520,
+      "symbol": "ABIEncoder.encode(_:asType:using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 527,
+      "symbol": "AnyABIDecoder",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 528,
+      "symbol": "AnyABIDecoder.decode(_:from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 529,
+      "symbol": "AnyABIDecoder.decode(_:from:using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 533,
+      "symbol": "JSONDecoder.decode(_:from:using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABICodable.swift",
+      "line": 542,
+      "symbol": "ABIDecoder.decode(_:from:using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIDecoder.swift",
+      "line": 6,
+      "symbol": "ABIDecodable.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIDecoder.swift",
+      "line": 12,
+      "symbol": "ABIDecodable.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIDecoder.swift",
+      "line": 25,
+      "symbol": "ABIDecoder.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIDecoder.swift",
+      "line": 28,
+      "symbol": "ABIDecoder.decode(_:from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIDecoder.swift",
+      "line": 38,
+      "symbol": "ABIDecoder.decode(_:data:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIDecoder.swift",
+      "line": 70,
+      "symbol": "ABIDecoder.Error.unknownVariant(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIDecoder.swift",
+      "line": 76,
+      "symbol": "ABIDecoder.decode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIDecoder.swift",
+      "line": 84,
+      "symbol": "ABIDecoder.decode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIDecoder.swift",
+      "line": 90,
+      "symbol": "ABIDecoder.decode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIDecoder.swift",
+      "line": 96,
+      "symbol": "ABIDecoder.decode(_:byteCount:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIDecoder.swift",
+      "line": 104,
+      "symbol": "ABIDecoder.decode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIEncoder.swift",
+      "line": 28,
+      "symbol": "ABIEncoder.Error.typeNotFoundInABI(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIEncoder.swift",
+      "line": 47,
+      "symbol": "ABIEncoder.encode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIEncoder.swift",
+      "line": 53,
+      "symbol": "ABIEncoder.encode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIEncoder.swift",
+      "line": 57,
+      "symbol": "ABIEncoder.encode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIEncoder.swift",
+      "line": 61,
+      "symbol": "ABIEncoder.encode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIEncoder.swift",
+      "line": 65,
+      "symbol": "ABIEncoder.encode(contentsOf:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIEncoder.swift",
+      "line": 69,
+      "symbol": "ABIEncoder.encode(contentsOf:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/ABIEncoder.swift",
+      "line": 73,
+      "symbol": "ABIEncoder.encode(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/Client.swift",
+      "line": 14,
+      "symbol": "ResponseError.Detail",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/Client.swift",
+      "line": 15,
+      "symbol": "ResponseError.Detail.message",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/Client.swift",
+      "line": 16,
+      "symbol": "ResponseError.Detail.file",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/Client.swift",
+      "line": 17,
+      "symbol": "ResponseError.Detail.lineNumber",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/Client.swift",
+      "line": 18,
+      "symbol": "ResponseError.Detail.method",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/Client.swift",
+      "line": 21,
+      "symbol": "ResponseError.Info",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/Client.swift",
+      "line": 22,
+      "symbol": "ResponseError.Info.code",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/Client.swift",
+      "line": 23,
+      "symbol": "ResponseError.Info.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/Client.swift",
+      "line": 24,
+      "symbol": "ResponseError.Info.what",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/Client.swift",
+      "line": 25,
+      "symbol": "ResponseError.Info.details",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/Client.swift",
+      "line": 35,
+      "symbol": "ResponseError.errorDescription",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 11,
+      "symbol": "API.V1.Chain.UserResources.owner",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 12,
+      "symbol": "API.V1.Chain.UserResources.netWeight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 13,
+      "symbol": "API.V1.Chain.UserResources.cpuWeight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 14,
+      "symbol": "API.V1.Chain.UserResources.ramBytes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 19,
+      "symbol": "API.V1.Chain.DelegatedBandwidth.from",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 20,
+      "symbol": "API.V1.Chain.DelegatedBandwidth.to",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 21,
+      "symbol": "API.V1.Chain.DelegatedBandwidth.netWeight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 22,
+      "symbol": "API.V1.Chain.DelegatedBandwidth.cpuWeight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 27,
+      "symbol": "API.V1.Chain.RefundRequest.owner",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 28,
+      "symbol": "API.V1.Chain.RefundRequest.requestTime",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 29,
+      "symbol": "API.V1.Chain.RefundRequest.netAmount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 30,
+      "symbol": "API.V1.Chain.RefundRequest.cpuAmount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 35,
+      "symbol": "API.V1.Chain.VoterInfo.owner",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 36,
+      "symbol": "API.V1.Chain.VoterInfo.proxy",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 37,
+      "symbol": "API.V1.Chain.VoterInfo.producers",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 38,
+      "symbol": "API.V1.Chain.VoterInfo.staked",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 39,
+      "symbol": "API.V1.Chain.VoterInfo.lastVoteWeight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 40,
+      "symbol": "API.V1.Chain.VoterInfo.proxiedVoteWeight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 41,
+      "symbol": "API.V1.Chain.VoterInfo.isProxy",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 47,
+      "symbol": "API.V1.Chain.Permission.permName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 48,
+      "symbol": "API.V1.Chain.Permission.parent",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 49,
+      "symbol": "API.V1.Chain.Permission.requiredAuth",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 97,
+      "symbol": "API.V1.Chain.GetInfo.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 100,
+      "symbol": "API.V1.Chain.GetRawAbi",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 103,
+      "symbol": "API.V1.Chain.GetRawAbi.Response.accountName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 104,
+      "symbol": "API.V1.Chain.GetRawAbi.Response.codeHash",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 105,
+      "symbol": "API.V1.Chain.GetRawAbi.Response.abiHash",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 106,
+      "symbol": "API.V1.Chain.GetRawAbi.Response.abi",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 107,
+      "symbol": "API.V1.Chain.GetRawAbi.Response.decodedAbi",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 115,
+      "symbol": "API.V1.Chain.GetRawAbi.accountName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 117,
+      "symbol": "API.V1.Chain.GetRawAbi.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 122,
+      "symbol": "API.V1.Chain.GetRawCodeAndAbi",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 125,
+      "symbol": "API.V1.Chain.GetRawCodeAndAbi.Response.accountName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 126,
+      "symbol": "API.V1.Chain.GetRawCodeAndAbi.Response.wasm",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 127,
+      "symbol": "API.V1.Chain.GetRawCodeAndAbi.Response.abi",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 128,
+      "symbol": "API.V1.Chain.GetRawCodeAndAbi.Response.decodedAbi",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 133,
+      "symbol": "API.V1.Chain.GetRawCodeAndAbi.accountName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 135,
+      "symbol": "API.V1.Chain.GetRawCodeAndAbi.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 145,
+      "symbol": "API.V1.Chain.GetCode.Response.accountName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 146,
+      "symbol": "API.V1.Chain.GetCode.Response.wast",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 147,
+      "symbol": "API.V1.Chain.GetCode.Response.wasm",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 148,
+      "symbol": "API.V1.Chain.GetCode.Response.codeHash",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 149,
+      "symbol": "API.V1.Chain.GetCode.Response.abi",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 152,
+      "symbol": "API.V1.Chain.GetCode.accountName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 153,
+      "symbol": "API.V1.Chain.GetCode.codeAsWasm",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 155,
+      "symbol": "API.V1.Chain.GetCode.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 170,
+      "symbol": "API.V1.Chain.GetTableRows.Response.rows",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 171,
+      "symbol": "API.V1.Chain.GetTableRows.Response.more",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 191,
+      "symbol": "API.V1.Chain.GetTableRows.IndexPosition",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 192,
+      "symbol": "API.V1.Chain.GetTableRows.IndexPosition.eighth",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 192,
+      "symbol": "API.V1.Chain.GetTableRows.IndexPosition.fifth",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 192,
+      "symbol": "API.V1.Chain.GetTableRows.IndexPosition.fourth",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 192,
+      "symbol": "API.V1.Chain.GetTableRows.IndexPosition.ninth",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 192,
+      "symbol": "API.V1.Chain.GetTableRows.IndexPosition.primary",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 192,
+      "symbol": "API.V1.Chain.GetTableRows.IndexPosition.secondary",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 192,
+      "symbol": "API.V1.Chain.GetTableRows.IndexPosition.seventh",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 192,
+      "symbol": "API.V1.Chain.GetTableRows.IndexPosition.sixth",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 192,
+      "symbol": "API.V1.Chain.GetTableRows.IndexPosition.tenth",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 192,
+      "symbol": "API.V1.Chain.GetTableRows.IndexPosition.tertiary",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 195,
+      "symbol": "API.V1.Chain.GetTableRows.KeyType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 196,
+      "symbol": "API.V1.Chain.GetTableRows.KeyType.float128",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 196,
+      "symbol": "API.V1.Chain.GetTableRows.KeyType.float64",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 196,
+      "symbol": "API.V1.Chain.GetTableRows.KeyType.i128",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 196,
+      "symbol": "API.V1.Chain.GetTableRows.KeyType.i256",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 196,
+      "symbol": "API.V1.Chain.GetTableRows.KeyType.i64",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 196,
+      "symbol": "API.V1.Chain.GetTableRows.KeyType.name",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 196,
+      "symbol": "API.V1.Chain.GetTableRows.KeyType.ripemd160",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 196,
+      "symbol": "API.V1.Chain.GetTableRows.KeyType.sha256",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 251,
+      "symbol": "API.V1.Chain.PushTransaction.Response.TransactionTrace",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 253,
+      "symbol": "API.V1.Chain.PushTransaction.Response.TransactionTrace.blockNum",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 254,
+      "symbol": "API.V1.Chain.PushTransaction.Response.TransactionTrace.producerBlockId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 257,
+      "symbol": "API.V1.Chain.PushTransaction.Response.transactionId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 258,
+      "symbol": "API.V1.Chain.PushTransaction.Response.processed",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 261,
+      "symbol": "API.V1.Chain.PushTransaction.signedTransaction",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 263,
+      "symbol": "API.V1.Chain.PushTransaction.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 277,
+      "symbol": "API.V1.Chain.GetAccount.Response.accountName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 278,
+      "symbol": "API.V1.Chain.GetAccount.Response.headBlockNum",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 279,
+      "symbol": "API.V1.Chain.GetAccount.Response.headBlockTime",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 280,
+      "symbol": "API.V1.Chain.GetAccount.Response.privileged",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 281,
+      "symbol": "API.V1.Chain.GetAccount.Response.lastCodeUpdate",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 282,
+      "symbol": "API.V1.Chain.GetAccount.Response.created",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 283,
+      "symbol": "API.V1.Chain.GetAccount.Response.coreLiquidBalance",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 284,
+      "symbol": "API.V1.Chain.GetAccount.Response.ramQuota",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 285,
+      "symbol": "API.V1.Chain.GetAccount.Response.netWeight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 286,
+      "symbol": "API.V1.Chain.GetAccount.Response.cpuWeight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 287,
+      "symbol": "API.V1.Chain.GetAccount.Response.netLimit",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 288,
+      "symbol": "API.V1.Chain.GetAccount.Response.cpuLimit",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 289,
+      "symbol": "API.V1.Chain.GetAccount.Response.ramUsage",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 290,
+      "symbol": "API.V1.Chain.GetAccount.Response.permissions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 296,
+      "symbol": "API.V1.Chain.GetAccount.Response.totalResources",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 297,
+      "symbol": "API.V1.Chain.GetAccount.Response.selfDelegatedBandwidth",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 298,
+      "symbol": "API.V1.Chain.GetAccount.Response.refundRequest",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 299,
+      "symbol": "API.V1.Chain.GetAccount.Response.voterInfo",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 302,
+      "symbol": "API.V1.Chain.GetAccount.accountName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 303,
+      "symbol": "API.V1.Chain.GetAccount.expectedCoreSymbol",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 305,
+      "symbol": "API.V1.Chain.GetAccount.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 317,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.AccountAuthorizer.Authorizer",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 318,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.AccountAuthorizer.Authorizer.publicKey(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 319,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.AccountAuthorizer.Authorizer.permissionLevel(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 335,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.AccountAuthorizer.accountName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 336,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.AccountAuthorizer.permissionName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 337,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.AccountAuthorizer.authorizer",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 338,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.AccountAuthorizer.weight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 339,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.AccountAuthorizer.threshold",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 342,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.AccountOrPermission",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 343,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.AccountOrPermission.account(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 344,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.AccountOrPermission.permission(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 362,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.accounts",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 363,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.keys",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 365,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.init(keys:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 369,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.init(accounts:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/Chain.swift",
+      "line": 373,
+      "symbol": "API.V1.Chain.GetAccountsByAuthorizers.init(permissions:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/History.swift",
+      "line": 17,
+      "symbol": "API.V1.History.GetKeyAccounts.publicKey",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/API/V1/History.swift",
+      "line": 19,
+      "symbol": "API.V1.History.GetKeyAccounts.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 53,
+      "symbol": "ABI.ResolvedType",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 54,
+      "symbol": "ABI.ResolvedType.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 55,
+      "symbol": "ABI.ResolvedType.flags",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 57,
+      "symbol": "ABI.ResolvedType.parent",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 58,
+      "symbol": "ABI.ResolvedType.builtIn",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 59,
+      "symbol": "ABI.ResolvedType.variant",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 60,
+      "symbol": "ABI.ResolvedType.fields",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 61,
+      "symbol": "ABI.ResolvedType.other",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 63,
+      "symbol": "ABI.ResolvedType.BuiltIn",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 64,
+      "symbol": "ABI.ResolvedType.BuiltIn.asset",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 65,
+      "symbol": "ABI.ResolvedType.BuiltIn.symbol",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 66,
+      "symbol": "ABI.ResolvedType.BuiltIn.name",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 67,
+      "symbol": "ABI.ResolvedType.BuiltIn.uint8",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 68,
+      "symbol": "ABI.ResolvedType.BuiltIn.uint16",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 69,
+      "symbol": "ABI.ResolvedType.BuiltIn.uint32",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 70,
+      "symbol": "ABI.ResolvedType.BuiltIn.uint64",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 71,
+      "symbol": "ABI.ResolvedType.BuiltIn.int8",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 72,
+      "symbol": "ABI.ResolvedType.BuiltIn.int16",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 73,
+      "symbol": "ABI.ResolvedType.BuiltIn.int32",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 74,
+      "symbol": "ABI.ResolvedType.BuiltIn.int64",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 75,
+      "symbol": "ABI.ResolvedType.BuiltIn.string",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 76,
+      "symbol": "ABI.ResolvedType.BuiltIn.checksum256",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 77,
+      "symbol": "ABI.ResolvedType.BuiltIn.public_key",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 80,
+      "symbol": "ABI.ResolvedType.Flags",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 83,
+      "symbol": "ABI.ResolvedType.Flags.optional",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 84,
+      "symbol": "ABI.ResolvedType.Flags.array",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 85,
+      "symbol": "ABI.ResolvedType.Flags.binaryExt",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 114,
+      "symbol": "ABI.resolveType(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 161,
+      "symbol": "ABI.resolveStruct(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 177,
+      "symbol": "ABI.getStruct(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 181,
+      "symbol": "ABI.getVariant(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 185,
+      "symbol": "ABI.getAction(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 193,
+      "symbol": "ABI.TypeDef",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 194,
+      "symbol": "ABI.TypeDef.newTypeName",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 195,
+      "symbol": "ABI.TypeDef.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 197,
+      "symbol": "ABI.TypeDef.init(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 203,
+      "symbol": "ABI.Field",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 204,
+      "symbol": "ABI.Field.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 205,
+      "symbol": "ABI.Field.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 207,
+      "symbol": "ABI.Field.init(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 213,
+      "symbol": "ABI.Struct",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 214,
+      "symbol": "ABI.Struct.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 215,
+      "symbol": "ABI.Struct.base",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 216,
+      "symbol": "ABI.Struct.fields",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 218,
+      "symbol": "ABI.Struct.init(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 224,
+      "symbol": "ABI.Struct.init(_:_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 231,
+      "symbol": "ABI.Action",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 232,
+      "symbol": "ABI.Action.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 233,
+      "symbol": "ABI.Action.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 234,
+      "symbol": "ABI.Action.ricardianContract",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 236,
+      "symbol": "ABI.Action.init(_:ricardian:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 242,
+      "symbol": "ABI.Action.init(_:_:ricardian:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 249,
+      "symbol": "ABI.Table",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 250,
+      "symbol": "ABI.Table.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 251,
+      "symbol": "ABI.Table.indexType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 252,
+      "symbol": "ABI.Table.keyNames",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 253,
+      "symbol": "ABI.Table.keyTypes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 254,
+      "symbol": "ABI.Table.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 256,
+      "symbol": "ABI.Table.init(_:_:_:_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 265,
+      "symbol": "ABI.Clause",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 266,
+      "symbol": "ABI.Clause.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 267,
+      "symbol": "ABI.Clause.body",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 269,
+      "symbol": "ABI.Clause.init(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 275,
+      "symbol": "ABI.Variant",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 276,
+      "symbol": "ABI.Variant.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 277,
+      "symbol": "ABI.Variant.types",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 279,
+      "symbol": "ABI.Variant.init(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 319,
+      "symbol": "ABI.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 352,
+      "symbol": "ABI.TypeDef",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 365,
+      "symbol": "ABI.Action",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 371,
+      "symbol": "ABI.Action",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 388,
+      "symbol": "ABI.Field",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/ABI.swift",
+      "line": 401,
+      "symbol": "ABI.Struct",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Action.swift",
+      "line": 17,
+      "symbol": "Action.init(account:name:authorization:data:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Action.swift",
+      "line": 24,
+      "symbol": "Action.init(account:name:authorization:value:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 10,
+      "symbol": "Asset.Error.invalidAssetString(message:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 83,
+      "symbol": "Asset.Symbol.maxPrecision",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 84,
+      "symbol": "Asset.Symbol.validNameCharacters",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 88,
+      "symbol": "Asset.Symbol.Error.invalidSymbolName(message:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 89,
+      "symbol": "Asset.Symbol.Error.invalidSymbolPrecision(message:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 90,
+      "symbol": "Asset.Symbol.Error.invalidSymbolString(message:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 199,
+      "symbol": "Asset.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 222,
+      "symbol": "Asset.Symbol.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 305,
+      "symbol": "Asset.+=(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 310,
+      "symbol": "Asset.-=(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 315,
+      "symbol": "Asset.*=(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 320,
+      "symbol": "Asset./=(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 325,
+      "symbol": "Asset.+(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 330,
+      "symbol": "Asset.-(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 335,
+      "symbol": "Asset.*(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 340,
+      "symbol": "Asset./(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 345,
+      "symbol": "Asset.+=(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 349,
+      "symbol": "Asset.-=(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 353,
+      "symbol": "Asset.*=(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 357,
+      "symbol": "Asset./=(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 361,
+      "symbol": "Asset.+(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 365,
+      "symbol": "Asset.-(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 369,
+      "symbol": "Asset.*(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Asset.swift",
+      "line": 373,
+      "symbol": "Asset./(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Checksum256.swift",
+      "line": 57,
+      "symbol": "Checksum256.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Name.swift",
+      "line": 55,
+      "symbol": "Name.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/PrivateKey.swift",
+      "line": 16,
+      "symbol": "PrivateKey.Error.parsingFailed(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/PrivateKey.swift",
+      "line": 17,
+      "symbol": "PrivateKey.Error.invalidK1(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/PrivateKey.swift",
+      "line": 18,
+      "symbol": "PrivateKey.Error.unknownKeyType",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/PrivateKey.swift",
+      "line": 176,
+      "symbol": "PrivateKey.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/PublicKey.swift",
+      "line": 16,
+      "symbol": "PublicKey.Error.parsingFailed(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/PublicKey.swift",
+      "line": 17,
+      "symbol": "PublicKey.Error.invalidK1(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/PublicKey.swift",
+      "line": 18,
+      "symbol": "PublicKey.Error.unknownSignatureType",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/PublicKey.swift",
+      "line": 123,
+      "symbol": "PublicKey.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 16,
+      "symbol": "Signature.Error.parsingFailed(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 17,
+      "symbol": "Signature.Error.invalidK1(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 18,
+      "symbol": "Signature.Error.unknownSignatureType",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 29,
+      "symbol": "Signature.init(fromK1Data:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 36,
+      "symbol": "Signature.init(fromK1:recovery:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 40,
+      "symbol": "Signature.init(stringValue:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 63,
+      "symbol": "Signature.verify(_:using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 72,
+      "symbol": "Signature.verify(_:using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 76,
+      "symbol": "Signature.recoverPublicKey(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 88,
+      "symbol": "Signature.recoverPublicKey(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 92,
+      "symbol": "Signature.signatureType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 101,
+      "symbol": "Signature.signatureData",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 110,
+      "symbol": "Signature.stringValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Signature.swift",
+      "line": 125,
+      "symbol": "Signature.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Time.swift",
+      "line": 140,
+      "symbol": "TimePoint.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Time.swift",
+      "line": 166,
+      "symbol": "TimePointSec.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 6,
+      "symbol": "TransactionExtension",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 7,
+      "symbol": "TransactionExtension.type",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 8,
+      "symbol": "TransactionExtension.data",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 11,
+      "symbol": "TransactionHeader",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 44,
+      "symbol": "Transaction",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 54,
+      "symbol": "Transaction.init(_:actions:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 59,
+      "symbol": "Transaction.subscript(dynamicMember:)",
+      "symbol_kind": "source.lang.swift.decl.function.subscript",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 66,
+      "symbol": "SignedTransaction",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 74,
+      "symbol": "SignedTransaction.init(_:signatures:contextFreeData:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 80,
+      "symbol": "SignedTransaction.subscript(dynamicMember:)",
+      "symbol_kind": "source.lang.swift.decl.function.subscript",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 86,
+      "symbol": "PackedTransaction",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 87,
+      "symbol": "PackedTransaction.Compression",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 88,
+      "symbol": "PackedTransaction.Compression.none",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 89,
+      "symbol": "PackedTransaction.Compression.gzip",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 92,
+      "symbol": "PackedTransaction.Error",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 93,
+      "symbol": "PackedTransaction.Error.unsupportedCompression(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 96,
+      "symbol": "PackedTransaction.signatures",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 97,
+      "symbol": "PackedTransaction.compression",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 98,
+      "symbol": "PackedTransaction.packedContextFreeData",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 99,
+      "symbol": "PackedTransaction.packedTrx",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 101,
+      "symbol": "PackedTransaction.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 109,
+      "symbol": "PackedTransaction.unpack()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 124,
+      "symbol": "Transaction",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 125,
+      "symbol": "Transaction.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 133,
+      "symbol": "Transaction.digest(using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 158,
+      "symbol": "Transaction",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 176,
+      "symbol": "SignedTransaction",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Transaction.swift",
+      "line": 829,
+      "symbol": "TransactionHeader",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 8,
+      "symbol": "ChainId",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 9,
+      "symbol": "BlockId",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 11,
+      "symbol": "BlockId",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 27,
+      "symbol": "TransactionId",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 28,
+      "symbol": "Digest",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 29,
+      "symbol": "Weight",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 30,
+      "symbol": "BlockNum",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 31,
+      "symbol": "Share",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 32,
+      "symbol": "Bytes",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 34,
+      "symbol": "AccountName",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 38,
+      "symbol": "Blob.bytes",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 51,
+      "symbol": "Blob.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 61,
+      "symbol": "Blob.abiEncode(to:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 75,
+      "symbol": "AccountResourceLimit",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 84,
+      "symbol": "PermissionLevelWeight",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 85,
+      "symbol": "PermissionLevelWeight.permission",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 86,
+      "symbol": "PermissionLevelWeight.weight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 88,
+      "symbol": "PermissionLevelWeight.init(_:weight:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 94,
+      "symbol": "KeyWeight",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 95,
+      "symbol": "KeyWeight.key",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 96,
+      "symbol": "KeyWeight.weight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 98,
+      "symbol": "KeyWeight.init(_:weight:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 104,
+      "symbol": "WaitWeight",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 105,
+      "symbol": "WaitWeight.waitSec",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 106,
+      "symbol": "WaitWeight.weight",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 108,
+      "symbol": "WaitWeight.init(_:weight:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 114,
+      "symbol": "Authority",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 115,
+      "symbol": "Authority.threshold",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 116,
+      "symbol": "Authority.keys",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 117,
+      "symbol": "Authority.accounts",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 118,
+      "symbol": "Authority.waits",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 130,
+      "symbol": "Authority",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 155,
+      "symbol": "Float64.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 169,
+      "symbol": "Float64.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 185,
+      "symbol": "PermissionLevel",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 186,
+      "symbol": "PermissionLevel.actor",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 187,
+      "symbol": "PermissionLevel.permission",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 189,
+      "symbol": "PermissionLevel.init(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 195,
+      "symbol": "PermissionLevel",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Chain/Types.swift",
+      "line": 901,
+      "symbol": "ChainId",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Extensions/Data+Base64u.swift",
+      "line": 7,
+      "symbol": "Data.init(base64uEncoded:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Extensions/Data+Base64u.swift",
+      "line": 19,
+      "symbol": "Data.base64uEncodedString()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Extensions/Data+HexEncoding.swift",
+      "line": 7,
+      "symbol": "Data.init(hexEncoded:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Extensions/Data+HexEncoding.swift",
+      "line": 22,
+      "symbol": "Data.HexEncodingOptions",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Extensions/Data+HexEncoding.swift",
+      "line": 24,
+      "symbol": "Data.HexEncodingOptions.upperCase",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Extensions/Data+HexEncoding.swift",
+      "line": 30,
+      "symbol": "Data.hexEncodedString(options:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Extensions/Data+HexEncoding.swift",
+      "line": 43,
+      "symbol": "UnicodeScalar.hexNibble",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Extensions/Data+RIPEMD160.swift",
+      "line": 8,
+      "symbol": "Data.ripemd160Digest",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Extensions/Data+Random.swift",
+      "line": 7,
+      "symbol": "Data.random(_:using:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/Extensions/Data+Random.swift",
+      "line": 15,
+      "symbol": "Data.random(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 7,
+      "symbol": "SigningRequest",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 521,
+      "symbol": "ResolvedSigningRequest",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 522,
+      "symbol": "ResolvedSigningRequest.Callback",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 664,
+      "symbol": "ResolvedSigningRequest.signer",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 665,
+      "symbol": "ResolvedSigningRequest.transaction",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 839,
+      "symbol": "ChainName.unknown",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 840,
+      "symbol": "ChainName.eos",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 841,
+      "symbol": "ChainName.telos",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 842,
+      "symbol": "ChainName.jungle",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 843,
+      "symbol": "ChainName.kylin",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 844,
+      "symbol": "ChainName.worbli",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 845,
+      "symbol": "ChainName.bos",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 846,
+      "symbol": "ChainName.meetone",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 847,
+      "symbol": "ChainName.insights",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 848,
+      "symbol": "ChainName.beos",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 902,
+      "symbol": "ChainId.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 906,
+      "symbol": "ChainId.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 944,
+      "symbol": "SigningRequestData.ChainIdVariant.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/jnordberg/Development/swift-eosio/Sources/EOSIO/SigningRequest.swift",
+      "line": 998,
+      "symbol": "SigningRequestData.RequestVariant.init(fromAbi:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/jnordberg/Development/swift-eosio"
+}
