@@ -115,6 +115,7 @@ final class TypeTests: XCTestCase {
         XCTAssertThrowsError(try Asset.Symbol(stringValue: "-1,NEGS"))
         XCTAssertThrowsError(try Asset.Symbol(stringValue: "boops"))
         XCTAssertNil(Asset.Symbol("invalid string" as String))
+        AssertABICodable([Asset.Symbol("4,BAR")], "[\"4,BAR\"]", "010442415200000000")
     }
 
     func testTransaction() {

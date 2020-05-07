@@ -100,7 +100,7 @@ extension Asset {
         public init(rawSymbol: UInt64) throws {
             self.rawValue = rawSymbol
             if self.precision > Self.maxPrecision {
-                throw Error.invalidSymbolPrecision(message: "Must \(Self.maxPrecision) or less")
+                throw Error.invalidSymbolPrecision(message: "Must be \(Self.maxPrecision) or less")
             }
             let name = self.name
             if name.isEmpty {
@@ -216,7 +216,7 @@ extension Asset: ABICodable {
 
 extension Asset.Symbol: ABICodable {
     public init(from decoder: Decoder) throws {
-        var container = try decoder.unkeyedContainer()
+        var container = try decoder.singleValueContainer()
         try self.init(stringValue: try container.decode(String.self))
     }
 
