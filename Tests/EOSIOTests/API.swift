@@ -168,4 +168,19 @@ final class APITests: XCTestCase {
             XCTAssertEqual(error.localizedDescription, "Missing required authority: missing authority of eosio")
         }
     }
+
+    func testHyperionApis() throws {
+        let hyperClient = Client(
+            address: URL(string: "https://proton.cryptolions.io")!,
+            session: mockSession
+        )
+
+        var req = API.V2.Hyperion.GetCreatedAccounts("eosio")
+        req.limit = 1
+
+        let res = try hyperClient.sendSync(req).get()
+        XCTAssertEqual(res.accounts.count, 1)
+        XCTAssertEqual(res.accounts.first?.name, "fees.newdex")
+        XCTAssertEqual(res.accounts.first?.timestamp, "2020-04-22T17:03:33.500")
+    }
 }

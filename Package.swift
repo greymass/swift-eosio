@@ -9,11 +9,12 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/greymass/secp256k1.git", .branch("master")),
+        .package(url: "https://github.com/jnordberg/swift-query-string-coder.git", .branch("master")),
     ],
     targets: [
         .target(
             name: "EOSIO",
-            dependencies: ["secp256k1", "CCrypto"]
+            dependencies: ["secp256k1", "CCrypto", "QueryStringCoder"]
         ),
         .target(
             name: "CCrypto"
