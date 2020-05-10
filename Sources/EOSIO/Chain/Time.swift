@@ -44,12 +44,12 @@ public struct TimePoint: RawRepresentable, Equatable, Hashable {
 
     /// Date representation.
     public var date: Date {
-        return Date(timeIntervalSince1970: TimeInterval(self.rawValue / 1_000_000))
+        return Date(timeIntervalSince1970: TimeInterval(self.rawValue) / 1_000_000)
     }
 
     /// ISO 8601-ish formatted string.
     public var stringValue: String {
-        return TimePointSec.dateFormatter.string(from: self.date)
+        return TimePoint.dateFormatter.string(from: self.date)
     }
 
     /// Adds a time interval to this time point.
