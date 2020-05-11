@@ -855,6 +855,9 @@ public enum ChainName: UInt8, CaseIterable, CustomStringConvertible {
     case meetone = 7
     case insights = 8
     case beos = 9
+    case wax = 10
+    case proton = 11
+    case fio = 12
 
     public var description: String {
         switch self {
@@ -878,6 +881,12 @@ public enum ChainName: UInt8, CaseIterable, CustomStringConvertible {
             return "Insights Network"
         case .beos:
             return "BEOS"
+        case .wax:
+            return "WAX"
+        case .proton:
+            return "Proton"
+        case .fio:
+            return "FIO"
         }
     }
 
@@ -903,6 +912,12 @@ public enum ChainName: UInt8, CaseIterable, CustomStringConvertible {
             return "b042025541e25a472bffde2d62edd457b7e70cee943412b1ea0f044f88591664"
         case .beos:
             return "b912d19a6abd2b1b05611ae5be473355d64d95aeff0c09bedc8c166cd6468fe4"
+        case .wax:
+            return "1064487b3cd1a897ce03ae5b6a865651747e2e152090f99c1d19d44e01aea5a4"
+        case .proton:
+            return "384da888112027f0321850a169f737c33e53b388aad48b5adace4bab97f437e0"
+        case .fio:
+            return "21dcae42c0182200e93f954a074011f9048a7624c6fe81d3c9541a614a88bd1c"
         }
     }
 }
