@@ -22,7 +22,7 @@ struct BlogRow: ABICodable {
 }
 
 let env = ProcessInfo.processInfo.environment
-let mockSession = MockSession(
+var mockSession = MockSession(
     resourcePath.appendingPathComponent("API", isDirectory: true),
     mode: env["MOCK_RECORD"] != nil ? .record : .replay
 )
@@ -169,7 +169,7 @@ final class APITests: XCTestCase {
         }
     }
 
-    func testHyperionApis() throws {
+    func testHyperionGetCreatedAccounts() throws {
         let hyperClient = Client(
             address: URL(string: "https://proton.cryptolions.io")!,
             session: mockSession
@@ -183,4 +183,67 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.accounts.first?.name, "fees.newdex")
         XCTAssertEqual(res.accounts.first?.timestamp, "2020-04-22T17:03:33.500")
     }
+    
+    func testHyperionGetKeyAccounts() throws {
+        let hyperClient = Client(
+            address: URL(string: "https://proton.cryptolions.io")!,
+            session: mockSession
+        )
+
+        let req = API.V2.Hyperion.GetKeyAccounts("EOS5ajfDQ3KBv25BBbBBVtBCmXngaz3XWdtAxjQdkU4NHADjKbJTX")
+        let res = try hyperClient.sendSync(req).get()
+        XCTAssertEqual(res.accountNames.count, 1)
+        XCTAssertEqual(res.accountNames.first?.stringValue, "protonwallet")
+    }
+    
+    func testHyperionGetTokens() throws {
+        let hyperClient = Client(
+            address: URL(string: "https://proton.cryptolions.io")!,
+            session: mockSession
+        )
+
+        var req = API.V2.Hyperion.GetTokens(Name("protonwallet"))
+        req.limit = 1
+        
+        let res = try hyperClient.sendSync(req).get()
+        XCTAssertEqual(res.tokens.count, 1)
+        XCTAssertEqual(res.tokens.first?.symbol, "XPR")
+        XCTAssertEqual(res.tokens.first?.precision, 4)
+        XCTAssertEqual(res.tokens.first?.amount, 0.113)
+        XCTAssertEqual(res.tokens.first?.contract, Name("eosio.token"))
+    }
+    
+    func testHyperionGetActions() throws {
+        let hyperClient = Client(
+            address: URL(string: "https://proton.cryptolions.io")!,
+            session: mockSession
+        )
+
+        var req = API.V2.Hyperion.GetActions(Name("protonwallet"))
+        req.limit = 1
+        
+        let res = try hyperClient.sendSync(req).get()
+        XCTAssertEqual(res.actions.count, 1)
+        XCTAssertEqual(res.actions.first?.timestamp, TimePoint(rawValue: 1587575409000000))
+        XCTAssertEqual(res.actions.first?.blockNum, BlockNum(1210))
+        XCTAssertEqual(res.actions.first?.trxId, TransactionId(stringLiteral: "a99bc1809fe3a43e838344620498b61d15de87ac93addf71408dea4a6be9b95d"))
+        XCTAssertEqual(res.actions.first?.act.account, Name("eosio"))
+        XCTAssertEqual(res.actions.first?.act.name, Name("updateauth"))
+        XCTAssertEqual(res.actions.first?.act.authorization.first, PermissionLevel(Name("protonwallet"), Name("owner")))
+        XCTAssertEqual(res.actions.first?.act.data.permission, Name("owner"))
+        XCTAssertEqual(res.actions.first?.act.data.auth.threshold, 1)
+        XCTAssertEqual(res.actions.first?.act.data.account, Name("protonwallet"))
+        XCTAssertEqual(res.actions.first?.act.data.parent, Name(""))
+        XCTAssertEqual(res.actions.first?.notified.first, Name("eosio"))
+        XCTAssertEqual(res.actions.first?.cpuUsageUs, 191)
+        XCTAssertEqual(res.actions.first?.netUsageWords, 18)
+        XCTAssertEqual(res.actions.first?.accountRamDeltas.first?.account, Name("protonwallet"))
+        XCTAssertEqual(res.actions.first?.accountRamDeltas.first?.delta, -18)
+        XCTAssertEqual(res.actions.first?.globalSequence, 157588)
+        XCTAssertEqual(res.actions.first?.receiver, Name("eosio"))
+        XCTAssertEqual(res.actions.first?.producer, Name("protonabp"))
+        XCTAssertEqual(res.actions.first?.actionOrdinal, 1)
+        XCTAssertEqual(res.actions.first?.creatorActionOrdinal, 0)
+    }
+
 }
