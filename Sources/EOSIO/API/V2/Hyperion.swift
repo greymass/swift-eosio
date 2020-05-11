@@ -11,13 +11,13 @@ public extension API.V2.Hyperion {
         public static let method = "GET"
 
         public struct CreatedAccount: Decodable {
-            let name: Name
-            let timestamp: TimePoint
-            let trxId: TransactionId
+            public let name: Name
+            public let timestamp: TimePoint
+            public let trxId: TransactionId
         }
 
         public struct Response: Decodable {
-            let accounts: [CreatedAccount]
+            public let accounts: [CreatedAccount]
         }
 
         /// Creator account to lookup.
@@ -54,14 +54,14 @@ public extension API.V2.Hyperion {
         public static let method = "GET"
 
         public struct Token: Decodable {
-            let symbol: String
-            let precision: UInt
-            let amount: Double
-            let contract: Name
+            public let symbol: String
+            public let precision: UInt
+            public let amount: Double
+            public let contract: Name
         }
 
         public struct Response: Decodable {
-            let tokens: [Token]
+            public let tokens: [Token]
         }
 
         /// Creator account to lookup.
