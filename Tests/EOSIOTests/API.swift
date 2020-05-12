@@ -213,13 +213,66 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.tokens.first?.contract, Name("eosio.token"))
     }
     
-    func testHyperionGetActions() throws {
+    func testHyperionGetTransferActions() throws {
+        let hyperClient = Client(
+            address: URL(string: "https://proton.cryptolions.io")!,
+            session: mockSession
+        )
+        
+        /// Transfer action struct used in GetActions
+        struct TransferActionData: ABIDecodable {
+            let from: Name
+            let to: Name
+            let amount: Double
+            let symbol: String
+            let memo: String
+            let quantity: Asset
+        }
+
+        var req = API.V2.Hyperion.GetActions<TransferActionData>(Name("protonwallet"))
+        req.filter = "eosio.token:transfer"
+        req.transferSymbol = "XPR"
+        req.limit = 1
+        
+        let res = try hyperClient.sendSync(req).get()
+        XCTAssertEqual(res.actions.count, 1)
+        XCTAssertEqual(res.actions.first?.timestamp, TimePoint(rawValue: 1587575238000000))
+        XCTAssertEqual(res.actions.first?.blockNum, BlockNum(868))
+        XCTAssertEqual(res.actions.first?.trxId, TransactionId(stringLiteral: "9a36577425f7a91ccde75c68a541922877ca2ce206f7c8094247efaf953044a6"))
+        XCTAssertEqual(res.actions.first?.act.account, Name("eosio.token"))
+        XCTAssertEqual(res.actions.first?.act.name, Name("transfer"))
+        XCTAssertEqual(res.actions.first?.act.authorization.first, PermissionLevel(Name("adrop.proton"), Name("active")))
+        XCTAssertEqual(res.actions.first?.notified.first, Name("eosio.token"))
+        XCTAssertEqual(res.actions.first?.cpuUsageUs, 301)
+        XCTAssertEqual(res.actions.first?.netUsageWords, 18)
+        XCTAssertEqual(res.actions.first?.globalSequence, 112766)
+        XCTAssertEqual(res.actions.first?.producer, Name("protonabp"))
+        XCTAssertEqual(res.actions.first?.actionOrdinal, 1)
+        XCTAssertEqual(res.actions.first?.creatorActionOrdinal, 0)
+        
+    }
+    
+    func testHyperionGetUpdateAuthActions() throws {
+
         let hyperClient = Client(
             address: URL(string: "https://proton.cryptolions.io")!,
             session: mockSession
         )
 
-        var req = API.V2.Hyperion.GetActions(Name("protonwallet"))
+        struct UpdateAuthAuthority: Decodable {
+            let threshold: UInt8
+            let accounts: [PermissionLevelWeight]
+        }
+        
+        /// Transfer action struct used in GetActions
+        struct UpdateAuthActionData: ABIDecodable {
+            let permission: Name
+            let parent: Name
+            let auth: UpdateAuthAuthority
+        }
+
+        var req = API.V2.Hyperion.GetActions<UpdateAuthActionData>(Name("protonwallet"))
+        req.filter = "eosio:updateauth"
         req.limit = 1
         
         let res = try hyperClient.sendSync(req).get()
@@ -230,20 +283,23 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.actions.first?.act.account, Name("eosio"))
         XCTAssertEqual(res.actions.first?.act.name, Name("updateauth"))
         XCTAssertEqual(res.actions.first?.act.authorization.first, PermissionLevel(Name("protonwallet"), Name("owner")))
-        XCTAssertEqual(res.actions.first?.act.data.permission, Name("owner"))
-        XCTAssertEqual(res.actions.first?.act.data.auth.threshold, 1)
-        XCTAssertEqual(res.actions.first?.act.data.account, Name("protonwallet"))
-        XCTAssertEqual(res.actions.first?.act.data.parent, Name(""))
         XCTAssertEqual(res.actions.first?.notified.first, Name("eosio"))
         XCTAssertEqual(res.actions.first?.cpuUsageUs, 191)
         XCTAssertEqual(res.actions.first?.netUsageWords, 18)
-        XCTAssertEqual(res.actions.first?.accountRamDeltas.first?.account, Name("protonwallet"))
-        XCTAssertEqual(res.actions.first?.accountRamDeltas.first?.delta, -18)
         XCTAssertEqual(res.actions.first?.globalSequence, 157588)
-        XCTAssertEqual(res.actions.first?.receiver, Name("eosio"))
         XCTAssertEqual(res.actions.first?.producer, Name("protonabp"))
         XCTAssertEqual(res.actions.first?.actionOrdinal, 1)
         XCTAssertEqual(res.actions.first?.creatorActionOrdinal, 0)
+        
+        XCTAssertEqual(res.actions.first?.accountRamDeltas?.first?.account, Name("protonwallet"))
+        XCTAssertEqual(res.actions.first?.accountRamDeltas?.first?.delta, -18)
+        
+        XCTAssertEqual(res.actions.first?.act.data.permission, Name("owner"))
+        XCTAssertEqual(res.actions.first?.act.data.parent, Name(""))
+        XCTAssertEqual(res.actions.first?.act.data.auth.threshold, 1)
+        XCTAssertEqual(res.actions.first?.act.data.auth.accounts.count, 1)
+        XCTAssertEqual(res.actions.first?.act.data.auth.accounts.first?.permission, PermissionLevel(Name("admin.proton"), Name("partners")))
+        
     }
 
 }

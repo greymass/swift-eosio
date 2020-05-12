@@ -1,3 +1,4 @@
+import Foundation
 
 public extension API.V2 {
     /// Hyperion APIs.
@@ -42,6 +43,10 @@ public extension API.V2.Hyperion {
         }
 
         public var publicKey: PublicKey
+        
+        public enum CodingKeys: String, CodingKey {
+            case publicKey = "public_key"
+        }
 
         public init(_ publicKey: PublicKey) {
             self.publicKey = publicKey
@@ -76,10 +81,11 @@ public extension API.V2.Hyperion {
         }
     }
     
-    /// Get actions based on notified account. this endpoint also accepts generic filters based on indexed fields (e.g. act.authorization.actor=eosio or act.name=delegatebw), if included they will be combined with a AND operator
-    struct GetActions: Request {
-        public static let path = "/v2/history/get_actions"
-        public static let method = "GET"
+    /// Get actions based on notified account.
+    struct GetActions<T: ABIDecodable>: Request {
+        
+        public static var path: String { "/v2/history/get_actions" }
+        public static var method: String { "GET" }
         
         public enum SortDirection: String, Encodable {
             case desc = "desc"
@@ -90,24 +96,12 @@ public extension API.V2.Hyperion {
             public let account: Name
             public let delta: Int64
         }
-        
-        public struct Authority: Decodable {
-            public let threshold: UInt32
-            public let accounts: [PermissionLevelWeight] = []
-        }
-        
-        public struct Data: Decodable {
-            public let permission: Name
-            public let parent: Name
-            public let auth: Authority
-            public let account: Name
-        }
-        
+
         public struct Action: Decodable {
             public let account: Name
             public let name: Name
             public let authorization: [PermissionLevel]
-            public let data: Data
+            public let data: T
         }
 
         public struct Transaction: Decodable {
@@ -116,11 +110,10 @@ public extension API.V2.Hyperion {
             public let trxId: TransactionId
             public let act: Action
             public let notified: [Name]
-            public let cpuUsageUs: UInt8
-            public let netUsageWords: UInt
-            public let accountRamDeltas: [RamDelta]
-            public let globalSequence: UInt64
-            public let receiver: Name
+            public let cpuUsageUs: UInt?
+            public let netUsageWords: UInt?
+            public let globalSequence: UInt64?
+            public let accountRamDeltas: [RamDelta]?
             public let producer: Name
             public let actionOrdinal: UInt32
             public let creatorActionOrdinal: UInt32
@@ -146,15 +139,100 @@ public extension API.V2.Hyperion {
         public var after: String?
         /// Filter before specified date (ISO8601)
         public var before: String?
-        /// Simplified output mode
-        public var simple: Bool?
-        /// Exclude large binary data
-        public var noBinary: Bool?
-        /// Perform reversibility check
-        public var checkLib: Bool?
+        
+        /// Filter transfer.from ANDED together with other like query params
+        public var transferFrom: Name?
+        /// Filter transfer.to ANDED together with other like query params
+        public var transferTo: Name?
+        /// Filter transfer.amount ANDED together with other like query params
+        public var transferAmount: Double?
+        /// Filter transfer.symbol ANDED together with other like query params
+        public var transferSymbol: String?
+        /// Filter transfer.memo ANDED together with other like query params
+        public var transferMemo: String?
+        
+        /// Filter unstaketorex.owner ANDED together with other like query params
+        public var unstaketorexOwner: Name?
+        /// Filter unstaketorex.receiver ANDED together with other like query params
+        public var unstaketorexReceiver: Name?
+        /// Filter unstaketorex.amount ANDED together with other like query params
+        public var unstaketorexAmount: Double?
+
+        /// Filter buyrex.from ANDED together with other like query params
+        public var buyrexFrom: Name?
+        /// Filter buyrex.amount ANDED together with other like query params
+        public var buyrexAmount: Double?
+        
+        /// Filter buyrambytes.payer ANDED together with other like query params
+        public var buyrambytesPayer: Name?
+        /// Filter unstaketorex.receiver ANDED together with other like query params
+        public var buyrambytesReceiver: Name?
+        /// Filter unstaketorex.bytes ANDED together with other like query params
+        public var buyrambytesBytes: Int64?
+        
+        /// Filter delegatebw.from ANDED together with other like query params
+        public var delegatebwFrom: Name?
+        /// Filter delegatebw.receiver ANDED together with other like query params
+        public var delegatebwReceiver: Name?
+        /// Filter delegatebw.stake_cpu_quantity ANDED together with other like query params
+        public var delegatebwStakeCpuQuantity: Double?
+        /// Filter delegatebw.stake_net_quantity ANDED together with other like query params
+        public var delegatebwStakeNetQuantity: Double?
+        /// Filter delegatebw.transfer ANDED together with other like query params
+        public var delegatebwTransfer: Bool?
+        /// Filter delegate.amount ANDED together with other like query params
+        public var delegatebwAmount: Double?
+        
+        /// Filter undelegatebw.from ANDED together with other like query params
+        public var undelegatebwFrom: Name?
+        /// Filter undelegatebw.receiver ANDED together with other like query params
+        public var undelegatebwReceiver: Name?
+        /// Filter undelegatebw.unstake_cpu_quantity ANDED together with other like query params
+        public var undelegatebwUnStakeCpuQuantity: Double?
+        /// Filter undelegatebw.unstake_net_quantity ANDED together with other like query params
+        public var undelegatebwUnStakeNetQuantity: Double?
+        /// Filter undelegatebw.amount ANDED together with other like query params
+        public var undelegatebwAmount: Double?
+        
+        public enum CodingKeys: String, CodingKey {
+            case transferFrom = "transfer.from"
+            case transferTo = "transfer.to"
+            case transferAmount = "transfer.amount"
+            case transferSymbol = "transfer.symbol"
+            case transferMemo = "transfer.memo"
+            case unstaketorexOwner = "unstaketorex.owner"
+            case unstaketorexReceiver = "unstaketorex.receiver"
+            case unstaketorexAmount = "unstaketorex.amount"
+            case buyrexFrom = "buyrex.from"
+            case buyrexAmount = "buyrex.amount"
+            case buyrambytesPayer = "buyrambytes.payer"
+            case buyrambytesReceiver = "buyrambytes.receiver"
+            case buyrambytesBytes = "buyrambytes.bytes"
+            case delegatebwFrom = "delegatebw.from"
+            case delegatebwReceiver = "delegatebw.receiver"
+            case delegatebwStakeCpuQuantity = "delegatebw.stake_cpu_quantity"
+            case delegatebwStakeNetQuantity = "delegatebw.stake_net_quantity"
+            case delegatebwTransfer = "delegatebw.transfer"
+            case delegatebwAmount = "delegatebw.amount"
+            case undelegatebwFrom = "undelegate.from"
+            case undelegatebwReceiver = "undelegate.receiver"
+            case undelegatebwUnStakeCpuQuantity = "undelegate.unstake_cpu_quantity"
+            case undelegatebwUnStakeNetQuantity = "undelegate.unstake_net_quantity"
+            case undelegatebwAmount = "undelegate.amount"
+            case account
+            case limit
+            case skip
+            case track
+            case filter
+            case sort
+            case after
+            case before
+        }
         
         public init(_ account: Name? = nil) {
             self.account = account
         }
+
     }
+
 }
