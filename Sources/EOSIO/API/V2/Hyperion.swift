@@ -312,5 +312,7 @@ public extension API.V2.Hyperion {
             self.permission = permission
         }
     }
+    
+    // TODO: get_account, get_abi_snapshot, get_deltas, get_transaction, health, get_proposals, get_voters
 
 }

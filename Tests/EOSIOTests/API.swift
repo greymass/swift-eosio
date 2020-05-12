@@ -219,7 +219,6 @@ final class APITests: XCTestCase {
             session: mockSession
         )
         
-        /// Transfer action struct used in GetActions
         struct TransferActionData: ABIDecodable {
             let from: Name
             let to: Name
@@ -249,7 +248,6 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.actions.first?.producer, Name("protonabp"))
         XCTAssertEqual(res.actions.first?.actionOrdinal, 1)
         XCTAssertEqual(res.actions.first?.creatorActionOrdinal, 0)
-        
     }
     
     func testHyperionGetUpdateAuthActions() throws {
@@ -264,7 +262,6 @@ final class APITests: XCTestCase {
             let accounts: [PermissionLevelWeight]
         }
         
-        /// Transfer action struct used in GetActions
         struct UpdateAuthActionData: ABIDecodable {
             let permission: Name
             let parent: Name
@@ -290,16 +287,13 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.actions.first?.producer, Name("protonabp"))
         XCTAssertEqual(res.actions.first?.actionOrdinal, 1)
         XCTAssertEqual(res.actions.first?.creatorActionOrdinal, 0)
-        
         XCTAssertEqual(res.actions.first?.accountRamDeltas?.first?.account, Name("protonwallet"))
         XCTAssertEqual(res.actions.first?.accountRamDeltas?.first?.delta, -18)
-        
         XCTAssertEqual(res.actions.first?.act.data.permission, Name("owner"))
         XCTAssertEqual(res.actions.first?.act.data.parent, Name(""))
         XCTAssertEqual(res.actions.first?.act.data.auth.threshold, 1)
         XCTAssertEqual(res.actions.first?.act.data.auth.accounts.count, 1)
         XCTAssertEqual(res.actions.first?.act.data.auth.accounts.first?.permission, PermissionLevel(Name("admin.proton"), Name("partners")))
-        
     }
     
     func testHyperionGetCreator() throws {

@@ -14,7 +14,7 @@ struct MockSession: SessionAdapter {
     }
 
     let storageDir: URL
-    var mode: Mode
+    let mode: Mode
 
     init(_ storageDir: URL, mode: Mode = .replay) {
         precondition(storageDir.isFileURL, "invalid url")
