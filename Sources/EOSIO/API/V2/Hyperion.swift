@@ -31,6 +31,12 @@ public extension API.V2.Hyperion {
         public init(_ account: Name) {
             self.account = account
         }
+        
+        public init(_ account: Name, limit: UInt? = nil, skip: UInt? = nil) {
+            self.account = account
+            self.limit = limit
+            self.skip = skip
+        }
     }
     
     /// Get accounts by public key.
@@ -75,9 +81,15 @@ public extension API.V2.Hyperion {
         public var limit: UInt?
         /// Number of results to skip.
         public var skip: UInt?
-
+        
         public init(_ account: Name) {
             self.account = account
+        }
+
+        public init(_ account: Name, limit: UInt? = nil, skip: UInt? = nil) {
+            self.account = account
+            self.limit = limit
+            self.skip = skip
         }
     }
     
@@ -229,8 +241,17 @@ public extension API.V2.Hyperion {
             case before
         }
         
-        public init(_ account: Name? = nil) {
+        public init(_ account: Name? = nil, limit: UInt? = nil, skip: UInt? = nil,
+                    track: String? = nil, filter: String? = nil, sort: SortDirection? = nil,
+                    after: String? = nil, before: String? = nil) {
             self.account = account
+            self.limit = limit
+            self.skip = skip
+            self.track = track
+            self.filter = filter
+            self.sort = sort
+            self.after = after
+            self.before = before
         }
 
     }
@@ -253,6 +274,42 @@ public extension API.V2.Hyperion {
 
         public init(_ account: Name) {
             self.account = account
+        }
+    }
+    
+    /// Get Permission Links
+    struct GetLinks: Request {
+        public static let path = "/v2/state/get_links"
+        public static let method = "GET"
+
+        public struct Link: Decodable {
+            public let blockNum: BlockNum
+            public let timestamp: TimePoint
+            public let account: Name
+            public let permission: Name
+            public let code: Name
+            public let action: Name
+        }
+        
+        public struct Response: Decodable {
+            public let links: [Link]
+        }
+        
+        /// Account name
+        public var account: Name?
+        /// Contract name
+        public var code: Name?
+        /// Action name
+        public var action: Name?
+        /// Permission name
+        public var permission: Name?
+
+        public init(_ account: Name? = nil, code: Name? = nil, action: Name? = nil,
+                    permission: Name? = nil) {
+            self.account = account
+            self.code = code
+            self.action = action
+            self.permission = permission
         }
     }
 

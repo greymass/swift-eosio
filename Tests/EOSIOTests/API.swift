@@ -317,5 +317,24 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.blockNum, BlockNum(22))
         XCTAssertEqual(res.trxId, TransactionId(stringLiteral: "533e3ff46a99369e83cae68b2d09dc899b2d68bb0b8fa0affb40e02ee135fb29"))
     }
+    
+    func testHyperionGetLinks() throws {
+        let hyperClient = Client(
+            address: URL(string: "https://proton.cryptolions.io")!,
+            session: mockSession
+        )
+
+        let req = API.V2.Hyperion.GetLinks(Name("teamgreymass"), code: Name("cfund.proton"),
+                                           action: Name("claimreward"), permission: Name("claim"))
+        
+        let res = try hyperClient.sendSync(req).get()
+        XCTAssertEqual(res.links.count, 1)
+        XCTAssertEqual(res.links.first?.blockNum, BlockNum(350559))
+        XCTAssertEqual(res.links.first?.timestamp, TimePoint(rawValue: 1587750083500000))
+        XCTAssertEqual(res.links.first?.account, Name("teamgreymass"))
+        XCTAssertEqual(res.links.first?.permission, Name("claim"))
+        XCTAssertEqual(res.links.first?.code, Name("cfund.proton"))
+        XCTAssertEqual(res.links.first?.action, Name("claimreward"))
+    }
 
 }
