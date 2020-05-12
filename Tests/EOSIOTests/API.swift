@@ -301,5 +301,21 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.actions.first?.act.data.auth.accounts.first?.permission, PermissionLevel(Name("admin.proton"), Name("partners")))
         
     }
+    
+    func testHyperionGetCreator() throws {
+        let hyperClient = Client(
+            address: URL(string: "https://proton.cryptolions.io")!,
+            session: mockSession
+        )
+
+        let req = API.V2.Hyperion.GetCreator(Name("protonwallet"))
+        
+        let res = try hyperClient.sendSync(req).get()
+        XCTAssertEqual(res.account, Name("protonwallet"))
+        XCTAssertEqual(res.creator, Name("wlcm.proton"))
+        XCTAssertEqual(res.timestamp, TimePoint(rawValue: 1587574815000000))
+        XCTAssertEqual(res.blockNum, BlockNum(22))
+        XCTAssertEqual(res.trxId, TransactionId(stringLiteral: "533e3ff46a99369e83cae68b2d09dc899b2d68bb0b8fa0affb40e02ee135fb29"))
+    }
 
 }

@@ -234,5 +234,26 @@ public extension API.V2.Hyperion {
         }
 
     }
+    
+    /// Get Creator
+    struct GetCreator: Request {
+        public static let path = "/v2/history/get_creator"
+        public static let method = "GET"
+
+        public struct Response: Decodable {
+            public let account: Name
+            public let creator: Name
+            public let timestamp: TimePoint
+            public let blockNum: BlockNum
+            public let trxId: TransactionId
+        }
+
+        /// Creator account to lookup.
+        public var account: Name
+
+        public init(_ account: Name) {
+            self.account = account
+        }
+    }
 
 }
