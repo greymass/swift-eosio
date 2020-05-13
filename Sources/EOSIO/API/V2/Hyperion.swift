@@ -1,7 +1,7 @@
 import Foundation
 
 public extension API.V2 {
-    /// Hyperion APIs.
+    /// Hyperion APIs, 3.0.0
     struct Hyperion { private init() {} }
 }
 
