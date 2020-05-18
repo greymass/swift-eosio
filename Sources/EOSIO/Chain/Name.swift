@@ -31,7 +31,7 @@ public struct Name: RawRepresentable, Equatable, Hashable {
     /// String representation of this name.
     public var stringValue: String {
         if self.rawValue == 0 {
-            return "............."
+            return ""
         }
         var str = String()
         var tmp = self.rawValue
@@ -41,6 +41,16 @@ public struct Name: RawRepresentable, Equatable, Hashable {
             tmp >>= (i == 0 ? 4 : 5)
         }
         return String(str.drop { $0 == "." }.reversed())
+    }
+
+    /// Whether this name is a valid account name.
+    /// - Note: This check mirrors only the EOSIO chain library's `newaccount` check.
+    ///         Individual chains may have additional constraints deployed in the system contract.
+    public var isValidAccountName: Bool {
+        let nameStr = self.stringValue
+        if nameStr.isEmpty { return false }
+        if nameStr.count > 12 { return false }
+        return true
     }
 }
 

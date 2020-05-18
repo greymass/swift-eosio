@@ -44,12 +44,18 @@ func AssertABICodable<T: ABICodable & Equatable>(_ value: T,
 
 final class TypeTests: XCTestCase {
     func testName() {
-        XCTAssertEqual(Name(0).stringValue, ".............")
+        XCTAssertEqual(Name(0).stringValue, "")
+        XCTAssertEqual("............." as Name, "")
         XCTAssertEqual(Name("foobar").stringValue, "foobar")
         XCTAssertEqual(Name("............1").rawValue, 1)
         XCTAssertEqual(Name("foo" as String), "foo")
         XCTAssertEqual(("foo" as Name).description, "foo")
         XCTAssertEqual(Name("❄︎flake"), ".flake")
+        print(Name(0).stringValue)
+        XCTAssert(Name(0).isValidAccountName == false)
+        XCTAssert(Name(1).isValidAccountName == false)
+        XCTAssert(Name("foobar").isValidAccountName == true)
+        XCTAssert(Name("block.two").isValidAccountName == true)
     }
 
     func testAsset() {
