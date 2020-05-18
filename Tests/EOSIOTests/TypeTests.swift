@@ -191,6 +191,7 @@ final class TypeTests: XCTestCase {
         XCTAssertTrue(auth.hasPermission(for: key))
         auth.threshold += 1
         XCTAssertFalse(auth.hasPermission(for: key))
+        XCTAssertTrue(auth.hasPermission(for: key, includePartial: true))
         XCTAssertFalse(auth.hasPermission(for: "EOS7uXbReU79nJNTSrTUVje8u5BDzxsQW9kNCvgiW3pctT1GcboKj"))
         auth = Authority(key, delay: 60)
         XCTAssertTrue(auth.hasPermission(for: key))

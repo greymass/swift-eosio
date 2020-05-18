@@ -136,11 +136,12 @@ extension Authority {
     }
 
     /// Check if given public key has permission in this authority,
+    /// - Parameter includePartial: Whether to consider auths where the key is included but can't be reached alone (e.g. multisig).
     /// - Attention: Does not take indirect permissions for the key via account weights into account.
-    public func hasPermission(for publicKey: PublicKey) -> Bool {
+    public func hasPermission(for publicKey: PublicKey, includePartial: Bool = false) -> Bool {
         let keyTreshhold = self.threshold - self.waitThreshold
         for val in self.keys {
-            if val.key == publicKey, val.weight >= keyTreshhold {
+            if val.key == publicKey, includePartial || val.weight >= keyTreshhold {
                 return true
             }
         }
