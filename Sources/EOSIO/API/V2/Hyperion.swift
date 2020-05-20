@@ -109,18 +109,18 @@ public extension API.V2.Hyperion {
             public let delta: Int64
         }
 
-        public struct Action: Decodable {
+        public struct ResponseAction: Decodable {
             public let account: Name
             public let name: Name
             public let authorization: [PermissionLevel]
             public let data: T
         }
 
-        public struct Transaction: Decodable {
+        public struct ActionReceipt: Decodable {
             public let timestamp: TimePoint
             public let blockNum: BlockNum
             public let trxId: TransactionId
-            public let act: Action
+            public let act: ResponseAction
             public let notified: [Name]
             public let cpuUsageUs: UInt?
             public let netUsageWords: UInt?
@@ -132,7 +132,7 @@ public extension API.V2.Hyperion {
         }
 
         public struct Response: Decodable {
-            public let actions: [Transaction]
+            public let actions: [ActionReceipt]
         }
 
         /// Creator account to lookup.
