@@ -18,7 +18,7 @@ struct MockSession: SessionAdapter {
 
     init(_ storageDir: URL, mode: Mode = .replay) {
         precondition(storageDir.isFileURL, "invalid url")
-        if #available(OSX 10.11, *) {
+        if #available(OSX 10.11, iOS 9, *) {
             precondition(storageDir.hasDirectoryPath, "invalid url")
         }
         if mode == .record {

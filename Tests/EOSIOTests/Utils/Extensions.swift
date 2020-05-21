@@ -40,7 +40,7 @@ extension String {
         #if os(Linux)
             opts = [.prettyPrinted, .sortedKeys]
         #else
-            if #available(macOS 10.13, *) {
+            if #available(macOS 10.13, iOS 11, *) {
                 opts = [.prettyPrinted, .sortedKeys]
             } else {
                 opts = [.prettyPrinted]

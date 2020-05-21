@@ -32,7 +32,6 @@ public extension Request {
         } else if T.method == "GET" {
             let encoder = QueryStringEncoder()
             encoder.outputFormatting = .sortedKeys
-            encoder.keyEncodingStrategy = .convertToSnakeCase
             var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
             components?.query = try encoder.encode(request)
             urlRequest.url = components?.url
