@@ -18,7 +18,7 @@ struct MockSession: SessionAdapter {
 
     init(_ storageDir: URL, mode: Mode = .replay) {
         precondition(storageDir.isFileURL, "invalid url")
-        if #available(OSX 10.11, *) {
+        if #available(OSX 10.11, iOS 9, *) {
             precondition(storageDir.hasDirectoryPath, "invalid url")
         }
         if mode == .record {
@@ -29,8 +29,15 @@ struct MockSession: SessionAdapter {
     }
 
     func fileUrl(for request: URLRequest) -> URL {
-        guard let body = request.httpBody, let url = request.url else {
+        guard let url = request.url else {
             preconditionFailure("invalid http request")
+        }
+        let body: Data
+        if request.httpMethod == "GET" {
+            let query = URLComponents(url: url, resolvingAgainstBaseURL: true)?.query ?? ""
+            body = query.utf8Data
+        } else {
+            body = request.httpBody ?? Data()
         }
         let name = url.relativePath.dropFirst().replacingOccurrences(of: "/", with: "_")
         let digest = body.sha256Digest.hexEncodedString()

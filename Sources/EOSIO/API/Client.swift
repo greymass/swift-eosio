@@ -1,5 +1,6 @@
 
 import Foundation
+import QueryStringCoder
 
 #if canImport(FoundationNetworking)
     import FoundationNetworking
@@ -11,6 +12,32 @@ public protocol Request: Encodable {
     associatedtype Response: Decodable
     /// The request path, e.g. `/v1/chain/get_info`
     static var path: String { get }
+    /// The request method, e.g. `POST`
+    static var method: String { get }
+    /// Request factory, called with the instance to be sent.
+    static func urlRequest<T: Request>(for request: T, using client: Client) throws -> URLRequest
+}
+
+public extension Request {
+    static var method: String { "POST" }
+    static func urlRequest<T: Request>(for request: T, using client: Client) throws -> URLRequest {
+        let url = client.address.appendingPathComponent(T.path)
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = T.method
+        urlRequest.setValue(Client.userAgent, forHTTPHeaderField: "User-Agent")
+        if T.method == "POST" {
+            let encoder = Client.JSONEncoder()
+            urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            urlRequest.httpBody = try encoder.encode(request)
+        } else if T.method == "GET" {
+            let encoder = QueryStringEncoder()
+            encoder.outputFormatting = .sortedKeys
+            var components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            components?.query = try encoder.encode(request)
+            urlRequest.url = components?.url
+        }
+        return urlRequest
+    }
 }
 
 /// Type representing a nodeos response error.
@@ -97,18 +124,6 @@ open class Client {
         self.session = session
     }
 
-    /// Return a URLRequest with a JSON request payload for given Request.
-    internal func urlRequest<T: Request>(for request: T) throws -> URLRequest {
-        let encoder = Client.JSONEncoder()
-        let url = self.address.appendingPathComponent(T.path)
-        var urlRequest = URLRequest(url: url)
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        urlRequest.setValue(Self.userAgent, forHTTPHeaderField: "User-Agent")
-        urlRequest.httpMethod = "POST"
-        urlRequest.httpBody = try encoder.encode(request)
-        return urlRequest
-    }
-
     /// Resolve a URLSession dataTask to a `Response`.
     internal func resolveResponse<T: Request>(for _: T, data: Data?, response: URLResponse?) -> Result<T.Response, Error> {
         guard let response = response else {
@@ -144,7 +159,7 @@ open class Client {
     open func send<T: Request>(_ request: T, completionHandler: @escaping (Result<T.Response, Error>) -> Void) -> Void {
         let urlRequest: URLRequest
         do {
-            urlRequest = try self.urlRequest(for: request)
+            urlRequest = try T.urlRequest(for: request, using: self)
         } catch {
             return completionHandler(Result.failure(Error.codingError(message: "Unable to encode payload", error: error)))
         }

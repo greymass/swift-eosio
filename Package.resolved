@@ -9,6 +9,15 @@
           "revision": "b057a66055f6c9b616f7fab0b7694c81e23da902",
           "version": null
         }
+      },
+      {
+        "package": "QueryStringCoder",
+        "repositoryURL": "https://github.com/jnordberg/swift-query-string-coder.git",
+        "state": {
+          "branch": "master",
+          "revision": "874a4e31d7c77f3fec56f893229f416e7604da4d",
+          "version": null
+        }
       }
     ]
   },
