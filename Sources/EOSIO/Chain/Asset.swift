@@ -216,7 +216,7 @@ extension Asset: ABICodable {
 
 extension Asset.Symbol: ABICodable {
     public init(from decoder: Decoder) throws {
-        var container = try decoder.singleValueContainer()
+        let container = try decoder.singleValueContainer()
         try self.init(stringValue: try container.decode(String.self))
     }
 
