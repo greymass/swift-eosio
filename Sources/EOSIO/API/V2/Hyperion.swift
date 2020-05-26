@@ -31,14 +31,14 @@ public extension API.V2.Hyperion {
         public init(_ account: Name) {
             self.account = account
         }
-        
+
         public init(_ account: Name, limit: UInt? = nil, skip: UInt? = nil) {
             self.account = account
             self.limit = limit
             self.skip = skip
         }
     }
-    
+
     /// Get accounts by public key.
     struct GetKeyAccounts: Request {
         public static let path = "/v2/state/get_key_accounts"
@@ -49,7 +49,7 @@ public extension API.V2.Hyperion {
         }
 
         public var publicKey: PublicKey
-        
+
         public enum CodingKeys: String, CodingKey {
             case publicKey = "public_key"
         }
@@ -58,7 +58,7 @@ public extension API.V2.Hyperion {
             self.publicKey = publicKey
         }
     }
-    
+
     /// Get tokens held by account
     struct GetTokens: Request {
         public static let path = "/v2/state/get_tokens"
@@ -81,7 +81,7 @@ public extension API.V2.Hyperion {
         public var limit: UInt?
         /// Number of results to skip.
         public var skip: UInt?
-        
+
         public init(_ account: Name) {
             self.account = account
         }
@@ -92,18 +92,17 @@ public extension API.V2.Hyperion {
             self.skip = skip
         }
     }
-    
+
     /// Get actions based on notified account.
     struct GetActions<T: ABIDecodable>: Request {
-        
         public static var path: String { "/v2/history/get_actions" }
         public static var method: String { "GET" }
-        
+
         public enum SortDirection: String, Encodable {
-            case desc = "desc"
-            case asc = "asc"
+            case desc
+            case asc
         }
-        
+
         public struct RamDelta: Decodable {
             public let account: Name
             public let delta: Int64
@@ -151,7 +150,7 @@ public extension API.V2.Hyperion {
         public var after: String?
         /// Filter before specified date (ISO8601)
         public var before: String?
-        
+
         /// Filter transfer.from ANDED together with other like query params
         public var transferFrom: Name?
         /// Filter transfer.to ANDED together with other like query params
@@ -162,7 +161,7 @@ public extension API.V2.Hyperion {
         public var transferSymbol: String?
         /// Filter transfer.memo ANDED together with other like query params
         public var transferMemo: String?
-        
+
         /// Filter unstaketorex.owner ANDED together with other like query params
         public var unstaketorexOwner: Name?
         /// Filter unstaketorex.receiver ANDED together with other like query params
@@ -174,14 +173,14 @@ public extension API.V2.Hyperion {
         public var buyrexFrom: Name?
         /// Filter buyrex.amount ANDED together with other like query params
         public var buyrexAmount: Double?
-        
+
         /// Filter buyrambytes.payer ANDED together with other like query params
         public var buyrambytesPayer: Name?
         /// Filter unstaketorex.receiver ANDED together with other like query params
         public var buyrambytesReceiver: Name?
         /// Filter unstaketorex.bytes ANDED together with other like query params
         public var buyrambytesBytes: Int64?
-        
+
         /// Filter delegatebw.from ANDED together with other like query params
         public var delegatebwFrom: Name?
         /// Filter delegatebw.receiver ANDED together with other like query params
@@ -194,7 +193,7 @@ public extension API.V2.Hyperion {
         public var delegatebwTransfer: Bool?
         /// Filter delegate.amount ANDED together with other like query params
         public var delegatebwAmount: Double?
-        
+
         /// Filter undelegatebw.from ANDED together with other like query params
         public var undelegatebwFrom: Name?
         /// Filter undelegatebw.receiver ANDED together with other like query params
@@ -205,7 +204,7 @@ public extension API.V2.Hyperion {
         public var undelegatebwUnStakeNetQuantity: Double?
         /// Filter undelegatebw.amount ANDED together with other like query params
         public var undelegatebwAmount: Double?
-        
+
         public enum CodingKeys: String, CodingKey {
             case transferFrom = "transfer.from"
             case transferTo = "transfer.to"
@@ -240,7 +239,7 @@ public extension API.V2.Hyperion {
             case after
             case before
         }
-        
+
         public init(_ account: Name? = nil, limit: UInt? = nil, skip: UInt? = nil,
                     track: String? = nil, filter: String? = nil, sort: SortDirection? = nil,
                     after: String? = nil, before: String? = nil) {
@@ -253,9 +252,8 @@ public extension API.V2.Hyperion {
             self.after = after
             self.before = before
         }
-
     }
-    
+
     /// Get Creator
     struct GetCreator: Request {
         public static let path = "/v2/history/get_creator"
@@ -276,7 +274,7 @@ public extension API.V2.Hyperion {
             self.account = account
         }
     }
-    
+
     /// Get Permission Links
     struct GetLinks: Request {
         public static let path = "/v2/state/get_links"
@@ -290,11 +288,11 @@ public extension API.V2.Hyperion {
             public let code: Name
             public let action: Name
         }
-        
+
         public struct Response: Decodable {
             public let links: [Link]
         }
-        
+
         /// Account name
         public var account: Name?
         /// Contract name
@@ -312,7 +310,6 @@ public extension API.V2.Hyperion {
             self.permission = permission
         }
     }
-    
-    // TODO: get_account, get_abi_snapshot, get_deltas, get_transaction, health, get_proposals, get_voters
 
+    // TODO: get_account, get_abi_snapshot, get_deltas, get_transaction, health, get_proposals, get_voters
 }

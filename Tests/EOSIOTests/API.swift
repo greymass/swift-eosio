@@ -183,7 +183,7 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.accounts.first?.name, "fees.newdex")
         XCTAssertEqual(res.accounts.first?.timestamp, "2020-04-22T17:03:33.500")
     }
-    
+
     func testHyperionGetKeyAccounts() throws {
         let hyperClient = Client(
             address: URL(string: "https://proton.cryptolions.io")!,
@@ -195,7 +195,7 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.accountNames.count, 1)
         XCTAssertEqual(res.accountNames.first?.stringValue, "protonwallet")
     }
-    
+
     func testHyperionGetTokens() throws {
         let hyperClient = Client(
             address: URL(string: "https://proton.cryptolions.io")!,
@@ -204,7 +204,7 @@ final class APITests: XCTestCase {
 
         var req = API.V2.Hyperion.GetTokens(Name("protonwallet"))
         req.limit = 1
-        
+
         let res = try hyperClient.sendSync(req).get()
         XCTAssertEqual(res.tokens.count, 1)
         XCTAssertEqual(res.tokens.first?.symbol, "XPR")
@@ -212,13 +212,13 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.tokens.first?.amount, 0.113)
         XCTAssertEqual(res.tokens.first?.contract, Name("eosio.token"))
     }
-    
+
     func testHyperionGetTransferActions() throws {
         let hyperClient = Client(
             address: URL(string: "https://proton.cryptolions.io")!,
             session: mockSession
         )
-        
+
         struct TransferActionData: ABIDecodable {
             let from: Name
             let to: Name
@@ -232,10 +232,10 @@ final class APITests: XCTestCase {
         req.filter = "eosio.token:transfer"
         req.transferSymbol = "XPR"
         req.limit = 1
-        
+
         let res = try hyperClient.sendSync(req).get()
         XCTAssertEqual(res.actions.count, 1)
-        XCTAssertEqual(res.actions.first?.timestamp, TimePoint(rawValue: 1587575238000000))
+        XCTAssertEqual(res.actions.first?.timestamp, TimePoint(rawValue: 1_587_575_238_000_000))
         XCTAssertEqual(res.actions.first?.blockNum, BlockNum(868))
         XCTAssertEqual(res.actions.first?.trxId, TransactionId(stringLiteral: "9a36577425f7a91ccde75c68a541922877ca2ce206f7c8094247efaf953044a6"))
         XCTAssertEqual(res.actions.first?.act.account, Name("eosio.token"))
@@ -250,14 +250,13 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.actions.first?.notified.first, Name("eosio.token"))
         XCTAssertEqual(res.actions.first?.cpuUsageUs, 301)
         XCTAssertEqual(res.actions.first?.netUsageWords, 18)
-        XCTAssertEqual(res.actions.first?.globalSequence, 112766)
+        XCTAssertEqual(res.actions.first?.globalSequence, 112_766)
         XCTAssertEqual(res.actions.first?.producer, Name("protonabp"))
         XCTAssertEqual(res.actions.first?.actionOrdinal, 1)
         XCTAssertEqual(res.actions.first?.creatorActionOrdinal, 0)
     }
-    
-    func testHyperionGetUpdateAuthActions() throws {
 
+    func testHyperionGetUpdateAuthActions() throws {
         let hyperClient = Client(
             address: URL(string: "https://proton.cryptolions.io")!,
             session: mockSession
@@ -267,7 +266,7 @@ final class APITests: XCTestCase {
             let threshold: UInt8
             let accounts: [PermissionLevelWeight]
         }
-        
+
         struct UpdateAuthActionData: ABIDecodable {
             let permission: Name
             let parent: Name
@@ -277,10 +276,10 @@ final class APITests: XCTestCase {
         var req = API.V2.Hyperion.GetActions<UpdateAuthActionData>(Name("protonwallet"))
         req.filter = "eosio:updateauth"
         req.limit = 1
-        
+
         let res = try hyperClient.sendSync(req).get()
         XCTAssertEqual(res.actions.count, 1)
-        XCTAssertEqual(res.actions.first?.timestamp, TimePoint(rawValue: 1587575409000000))
+        XCTAssertEqual(res.actions.first?.timestamp, TimePoint(rawValue: 1_587_575_409_000_000))
         XCTAssertEqual(res.actions.first?.blockNum, BlockNum(1210))
         XCTAssertEqual(res.actions.first?.trxId, TransactionId(stringLiteral: "a99bc1809fe3a43e838344620498b61d15de87ac93addf71408dea4a6be9b95d"))
         XCTAssertEqual(res.actions.first?.act.account, Name("eosio"))
@@ -289,7 +288,7 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.actions.first?.notified.first, Name("eosio"))
         XCTAssertEqual(res.actions.first?.cpuUsageUs, 191)
         XCTAssertEqual(res.actions.first?.netUsageWords, 18)
-        XCTAssertEqual(res.actions.first?.globalSequence, 157588)
+        XCTAssertEqual(res.actions.first?.globalSequence, 157_588)
         XCTAssertEqual(res.actions.first?.producer, Name("protonabp"))
         XCTAssertEqual(res.actions.first?.actionOrdinal, 1)
         XCTAssertEqual(res.actions.first?.creatorActionOrdinal, 0)
@@ -301,7 +300,7 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.actions.first?.act.data.auth.accounts.count, 1)
         XCTAssertEqual(res.actions.first?.act.data.auth.accounts.first?.permission, PermissionLevel(Name("admin.proton"), Name("partners")))
     }
-    
+
     func testHyperionGetCreator() throws {
         let hyperClient = Client(
             address: URL(string: "https://proton.cryptolions.io")!,
@@ -309,15 +308,15 @@ final class APITests: XCTestCase {
         )
 
         let req = API.V2.Hyperion.GetCreator(Name("protonwallet"))
-        
+
         let res = try hyperClient.sendSync(req).get()
         XCTAssertEqual(res.account, Name("protonwallet"))
         XCTAssertEqual(res.creator, Name("wlcm.proton"))
-        XCTAssertEqual(res.timestamp, TimePoint(rawValue: 1587574815000000))
+        XCTAssertEqual(res.timestamp, TimePoint(rawValue: 1_587_574_815_000_000))
         XCTAssertEqual(res.blockNum, BlockNum(22))
         XCTAssertEqual(res.trxId, TransactionId(stringLiteral: "533e3ff46a99369e83cae68b2d09dc899b2d68bb0b8fa0affb40e02ee135fb29"))
     }
-    
+
     func testHyperionGetLinks() throws {
         let hyperClient = Client(
             address: URL(string: "https://proton.cryptolions.io")!,
@@ -326,15 +325,14 @@ final class APITests: XCTestCase {
 
         let req = API.V2.Hyperion.GetLinks(Name("teamgreymass"), code: Name("cfund.proton"),
                                            action: Name("claimreward"), permission: Name("claim"))
-        
+
         let res = try hyperClient.sendSync(req).get()
         XCTAssertEqual(res.links.count, 1)
-        XCTAssertEqual(res.links.first?.blockNum, BlockNum(350559))
-        XCTAssertEqual(res.links.first?.timestamp, TimePoint(rawValue: 1587750083500000))
+        XCTAssertEqual(res.links.first?.blockNum, BlockNum(350_559))
+        XCTAssertEqual(res.links.first?.timestamp, TimePoint(rawValue: 1_587_750_083_500_000))
         XCTAssertEqual(res.links.first?.account, Name("teamgreymass"))
         XCTAssertEqual(res.links.first?.permission, Name("claim"))
         XCTAssertEqual(res.links.first?.code, Name("cfund.proton"))
         XCTAssertEqual(res.links.first?.action, Name("claimreward"))
     }
-
 }
