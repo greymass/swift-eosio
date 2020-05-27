@@ -37,6 +37,13 @@ public struct Signature: Equatable, Hashable {
         self.value = .k1(sig: sig, recovery: recovery)
     }
 
+    public init(type: String, data: Data) throws {
+        guard type.count == 2, type.uppercased() == type else {
+            throw Error.parsingFailed("Invalid curve type")
+        }
+        self.value = .unknown(name: type, data: data)
+    }
+
     public init(stringValue: String) throws {
         let parts = stringValue.split(separator: "_")
         guard parts.count == 3 else {
@@ -53,10 +60,7 @@ public struct Signature: Equatable, Hashable {
         case "K1":
             try self.init(fromK1Data: data)
         default:
-            guard parts[1].count == 2, parts[1].uppercased() == parts[1] else {
-                throw Error.parsingFailed("Invalid curve type")
-            }
-            self.init(value: .unknown(name: String(parts[1]), data: data))
+            try self.init(type: String(parts[1]), data: data)
         }
     }
 
