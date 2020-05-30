@@ -60,6 +60,8 @@ public struct SigningRequest: Equatable, Hashable {
         case invalidAbi(ABI)
         /// TaPoS source missing when resolving request.
         case missingTaposSource
+        /// Thrown during resolve if unable to decode or re-encode action data using given ABI(s).
+        case abiCodingFailed(action: Action, reason: Swift.Error)
     }
 
     /// Underlying request data.
@@ -438,9 +440,13 @@ public struct SigningRequest: Equatable, Hashable {
             guard let abiAction = abi.getAction(action.name) else {
                 throw Error.invalidAbi(abi)
             }
-            let object = Self.resolvePlaceholders(try action.data(using: abi), using: signer)
-            let encoder = ABIEncoder()
-            action.data = try encoder.encode(object, asType: abiAction.type, using: abi)
+            do {
+                let object = Self.resolvePlaceholders(try action.data(using: abi), using: signer)
+                let encoder = ABIEncoder()
+                action.data = try encoder.encode(object, asType: abiAction.type, using: abi)
+            } catch {
+                throw Error.abiCodingFailed(action: action, reason: error)
+            }
             action.authorization = action.authorization.map { auth in
                 var auth = auth
                 if auth.actor == Self.actorPlaceholder {
