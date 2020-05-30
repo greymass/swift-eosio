@@ -362,6 +362,7 @@ private func _encodeAnyBuiltIn(_ value: Any,
     case .symbol: try encodeS(Asset.Symbol.self, value)
     case .checksum256: try encodeS(Checksum256.self, value)
     case .public_key: try encodeS(PublicKey.self, value)
+    case .bool: try encode(Bool.self, value)
     }
 }
 
@@ -500,6 +501,7 @@ func _decodeAnyBuiltIn(_ type: ABI.ResolvedType,
     case .int64: return try container.decode(Int64.self)
     case .checksum256: return try container.decode(Checksum256.self)
     case .public_key: return try container.decode(PublicKey.self)
+    case .bool: return try container.decode(Bool.self)
     }
 }
 
