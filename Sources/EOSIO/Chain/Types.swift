@@ -74,11 +74,11 @@ private func BlockOne64(_ str: String) -> String {
 
 public struct AccountResourceLimit: ABICodable, Equatable, Hashable {
     /// Quantity used in current window.
-    public let used: Int64
+    public let used: Integer64
     /// Quantity available in current window (based upon fractional reserve).
-    public let available: Int64
+    public let available: Integer64
     /// Max per window under current congestion.
-    public let max: Int64
+    public let max: Integer64
 }
 
 public struct PermissionLevelWeight: ABICodable, Equatable, Hashable {
@@ -180,6 +180,65 @@ extension Float64: ABICodable {
     public func abiEncode(to encoder: ABIEncoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(self.value)
+    }
+}
+
+/// EOSIO Integer64 type, aka Int64, encodes to a string for values above `0xFFFFFFFF` in JSON instead of a number.
+public struct Integer64: Equatable, Hashable {
+    public let value: Int64
+}
+
+extension Integer64: ABICodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+
+        if let value = try? container.decode(Int64.self) {
+            self.value = value
+        } else {
+            guard let value = Int64(try container.decode(String.self)) else {
+                throw DecodingError.dataCorruptedError(
+                    in: container, debugDescription: "Invalid Integer64 value"
+                )
+            }
+            self.value = value
+        }
+    }
+
+    public init(fromAbi decoder: ABIDecoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.value = try container.decode(Int64.self)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        if self.value > 0xFFFF_FFFF {
+            try container.encode(String(self.value))
+        } else {
+            try container.encode(self.value)
+        }
+    }
+
+    public func abiEncode(to encoder: ABIEncoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.value)
+    }
+}
+
+extension Integer64 {
+    public static func == (lhs: Integer64, rhs: Int64) -> Bool {
+        lhs.value == rhs
+    }
+}
+
+extension Integer64: Comparable {
+    public static func < (lhs: Integer64, rhs: Integer64) -> Bool {
+        lhs.value < rhs.value
+    }
+}
+
+extension Integer64: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: Int64) {
+        self.value = value
     }
 }
 

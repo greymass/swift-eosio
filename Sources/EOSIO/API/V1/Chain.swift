@@ -11,7 +11,7 @@ public extension API.V1.Chain {
         public let owner: Name
         public let netWeight: Asset
         public let cpuWeight: Asset
-        public let ramBytes: Int64
+        public let ramBytes: Integer64
     }
 
     /// Type representing delegated bandwidth, from the eosio.system contract.
@@ -35,7 +35,7 @@ public extension API.V1.Chain {
         public let owner: Name
         public let proxy: Name
         public let producers: [Name]
-        public let staked: Int64
+        public let staked: Integer64
         public let lastVoteWeight: Float64
         public let proxiedVoteWeight: Float64
         public let isProxy: UInt8 // ABI says bool but eosio serializer gives a number?
@@ -281,12 +281,12 @@ public extension API.V1.Chain {
             public let lastCodeUpdate: TimePoint
             public let created: TimePoint
             public let coreLiquidBalance: Asset?
-            public let ramQuota: Int64
-            public let netWeight: Int64
-            public let cpuWeight: Int64
+            public let ramQuota: Integer64
+            public let netWeight: Integer64
+            public let cpuWeight: Integer64
             public let netLimit: AccountResourceLimit
             public let cpuLimit: AccountResourceLimit
-            public let ramUsage: Int64
+            public let ramUsage: Integer64
             public let permissions: [Permission]
             // the following params are from the eosio.system contract
             // these are represented by fc::variant in the api plugin
