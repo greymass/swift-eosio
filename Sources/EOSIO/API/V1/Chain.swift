@@ -11,7 +11,7 @@ public extension API.V1.Chain {
         public let owner: Name
         public let netWeight: Asset
         public let cpuWeight: Asset
-        public let ramBytes: Integer64
+        public let ramBytes: FCInt<Int64>
     }
 
     /// Type representing delegated bandwidth, from the eosio.system contract.
@@ -35,7 +35,7 @@ public extension API.V1.Chain {
         public let owner: Name
         public let proxy: Name
         public let producers: [Name]
-        public let staked: Integer64
+        public let staked: FCInt<Int64>
         public let lastVoteWeight: Float64
         public let proxiedVoteWeight: Float64
         public let isProxy: UInt8 // ABI says bool but eosio serializer gives a number?
@@ -70,13 +70,13 @@ public extension API.V1.Chain {
             /// Producer that signed the highest block (head block).
             public let headBlockProducer: AccountName
             /// CPU limit calculated after each block is produced, approximately 1000 times `blockCpuLimit`.
-            public let virtualBlockCpuLimit: UInt64
+            public let virtualBlockCpuLimit: FCInt<UInt64>
             /// NET limit calculated after each block is produced, approximately 1000 times `blockNetLimit`.
-            public let virtualBlockNetLimit: UInt64
+            public let virtualBlockNetLimit: FCInt<UInt64>
             /// Actual maximum CPU limit.
-            public let blockCpuLimit: UInt64
+            public let blockCpuLimit: FCInt<UInt64>
             /// Actual maximum NET limit.
-            public let blockNetLimit: UInt64
+            public let blockNetLimit: FCInt<UInt64>
             /// String representation of server version - Majorish-Minorish-Patchy.
             /// - Note; Not actually SEMVER.
             public let serverVersionString: String?
@@ -281,12 +281,12 @@ public extension API.V1.Chain {
             public let lastCodeUpdate: TimePoint
             public let created: TimePoint
             public let coreLiquidBalance: Asset?
-            public let ramQuota: Integer64
-            public let netWeight: Integer64
-            public let cpuWeight: Integer64
+            public let ramQuota: FCInt<Int64>
+            public let netWeight: FCInt<Int64>
+            public let cpuWeight: FCInt<Int64>
             public let netLimit: AccountResourceLimit
             public let cpuLimit: AccountResourceLimit
-            public let ramUsage: Integer64
+            public let ramUsage: FCInt<Int64>
             public let permissions: [Permission]
             // the following params are from the eosio.system contract
             // these are represented by fc::variant in the api plugin

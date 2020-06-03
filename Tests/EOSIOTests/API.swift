@@ -169,6 +169,17 @@ final class APITests: XCTestCase {
         }
     }
 
+    func testFcIntApi() {
+        let client = Client(
+            address: URL(string: "https://wax.greymass.com")!,
+            session: mockSession
+        )
+        let req = API.V1.Chain.GetAccount("teamgreymass")
+        let res = try! client.sendSync(req).get()
+        XCTAssertEqual(res.netWeight, 432_714_455_333)
+        XCTAssert(res.netWeight > 0xFFFFFF)
+    }
+
     func testHyperionGetCreatedAccounts() throws {
         let hyperClient = Client(
             address: URL(string: "https://proton.cryptolions.io")!,
