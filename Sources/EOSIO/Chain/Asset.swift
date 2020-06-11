@@ -141,7 +141,7 @@ extension Asset {
             try self.init(precision, name)
         }
 
-        /// The presicion (how many decimal points) this symbol has.
+        /// The precision (how many decimal points) this symbol has.
         public var precision: UInt8 {
             return UInt8(self.rawValue & 0xFF)
         }
@@ -165,7 +165,7 @@ extension Asset {
             return self.rawValue >> 8
         }
 
-        /// Number formatter configured to display numbers with this symbols presicion.
+        /// Number formatter configured to display numbers with this symbols precision.
         public var formatter: NumberFormatter {
             let digits = Int(self.precision)
             let formatter = NumberFormatter()
@@ -177,12 +177,12 @@ extension Asset {
             return formatter
         }
 
-        /// Convert units to value according to symbol presicion.
+        /// Convert units to value according to symbol precision.
         public func convert(_ units: Int64) -> Double {
             return Double(units) / pow(10, Double(self.precision))
         }
 
-        /// Convert value to units according to symbol presicion.
+        /// Convert value to units according to symbol precision.
         public func convert(_ value: Double) -> Int64 {
             return Int64(value * pow(10, Double(self.precision)))
         }

@@ -1,10 +1,10 @@
-/// EOSIO ABI Defenition.
+/// EOSIO ABI Definition.
 
 import Foundation
 
-/// Type describing a EOSIO ABI defenition.
+/// Type describing a EOSIO ABI definition.
 public struct ABI: Equatable, Hashable {
-    /// The ABI defenition version.
+    /// The ABI definition version.
     public let version: String
     /// List of type aliases.
     public var types: [TypeDef]
@@ -188,7 +188,7 @@ public struct ABI: Equatable, Hashable {
     }
 }
 
-// MARK: ABI Defenition Types
+// MARK: ABI Definition Types
 
 public extension ABI {
     struct TypeDef: ABICodable, Equatable, Hashable {
