@@ -3,7 +3,7 @@
 
 import Foundation
 
-/// Type representing a timestap with microsecond accuracy.
+/// Type representing a timestamp with microsecond accuracy.
 public struct TimePoint: RawRepresentable, Equatable, Hashable {
     internal static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -14,18 +14,18 @@ public struct TimePoint: RawRepresentable, Equatable, Hashable {
         return formatter
     }()
 
-    /// Nanoseconds since 1970.
+    /// Microseconds since 1970.
     public var rawValue: Int64
 
     /// Create a new instance.
-    /// - Parameter value: Nanoseconds since 1970.
+    /// - Parameter value: Microseconds since 1970.
     public init(rawValue: Int64) {
         self.rawValue = rawValue
     }
 
     /// Create a new instance from a date.
     public init(_ date: Date) {
-        self.rawValue = Int64(date.timeIntervalSince1970 * 1_000_000)
+        self.rawValue = Int64(round(date.timeIntervalSince1970 * 1_000_000))
     }
 
     /// Create a new instance from a `TimePointSec`
@@ -54,16 +54,16 @@ public struct TimePoint: RawRepresentable, Equatable, Hashable {
 
     /// Adds a time interval to this time point.
     public mutating func addTimeInterval(_ timeInterval: TimeInterval) {
-        self.rawValue += Int64(timeInterval * 1_000_000)
+        self.rawValue += Int64(round(timeInterval * 1_000_000))
     }
 
     /// Creates a new time point by adding a time interval.
     public func addingTimeInterval(_ timeInterval: TimeInterval) -> TimePoint {
-        return TimePoint(rawValue: self.rawValue + Int64(timeInterval * 1_000_000))
+        return TimePoint(rawValue: self.rawValue + Int64(round(timeInterval * 1_000_000)))
     }
 }
 
-/// Type representing a timestap with second accuracy.
+/// Type representing a timestamp with second accuracy.
 public struct TimePointSec: RawRepresentable, Equatable, Hashable {
     internal static let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
