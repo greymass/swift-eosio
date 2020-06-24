@@ -257,12 +257,15 @@ private func _encodeAny(_ value: Any,
             ))
         }
     }
-    if type.flags.contains(.optional) {
+    if type.flags.contains(.optional) || type.flags.contains(.binaryExt) {
         let hasValue: Bool
         if case Optional<Any>.none = value {
             hasValue = false
         } else {
             hasValue = true
+        }
+        if type.flags.contains(.binaryExt), !hasValue {
+            return
         }
         if let abiEncoder = encoder as? ABIEncoder {
             try abiEncoder.encode(hasValue)
@@ -390,6 +393,50 @@ func _decodeAny(_ type: ABI.ResolvedType,
         return try _decodeAny(type.other!, from: decoder)
     }
     func decode(_ decoder: Decoder) throws -> Any {
+        if let abiDecoder = decoder as? ABIDecoder {
+            if type.flags.contains(.optional) {
+                let exists = try abiDecoder.decode(Bool.self)
+                guard exists else {
+                    return nil as Any? as Any
+                }
+            }
+            if type.flags.contains(.array) {
+                let count = try abiDecoder.decode(UInt.self)
+                var rv: [Any] = []
+                for _ in 0..<count {
+                    rv.append(try decodeInner(abiDecoder))
+                }
+                return rv
+            } else {
+                return try decodeInner(abiDecoder)
+            }
+        } else {
+            if type.flags.contains(.array) {
+                var container: UnkeyedDecodingContainer
+                if type.flags.contains(.optional) {
+                    guard let c = try? decoder.unkeyedContainer() else {
+                        return nil as Any? as Any
+                    }
+                    container = c
+                } else {
+                    container = try decoder.unkeyedContainer()
+                }
+                var rv: [Any] = []
+                while !container.isAtEnd {
+                    rv.append(try decodeInner(try container.superDecoder()))
+                }
+                return rv
+            } else {
+                if type.flags.contains(.optional) {
+                    guard let container = (try? decoder.singleValueContainer()), !container.decodeNil() else {
+                        return nil as Any? as Any
+                    }
+                }
+                return try decodeInner(decoder)
+            }
+        }
+    }
+    func decodeInner(_ decoder: Decoder) throws -> Any {
         if type.builtIn != nil {
             return try _decodeAnyBuiltIn(type, from: decoder)
         } else if type.fields != nil {
@@ -403,47 +450,14 @@ func _decodeAny(_ type: ABI.ResolvedType,
             ))
         }
     }
-    if let abiDecoder = decoder as? ABIDecoder {
-        if type.flags.contains(.optional) {
-            let exists = try abiDecoder.decode(Bool.self)
-            guard exists else {
-                return nil as Any? as Any
-            }
-        }
-        if type.flags.contains(.array) {
-            let count = try abiDecoder.decode(UInt.self)
-            var rv: [Any] = []
-            for _ in 0..<count {
-                rv.append(try decode(abiDecoder))
-            }
-            return rv
-        } else {
-            return try decode(abiDecoder)
+    if type.flags.contains(.binaryExt) {
+        do {
+            return try decode(decoder)
+        } catch ABIDecoder.Error.prematureEndOfData {
+            return nil as Any? as Any
         }
     } else {
-        if type.flags.contains(.array) {
-            var container: UnkeyedDecodingContainer
-            if type.flags.contains(.optional) {
-                guard let c = try? decoder.unkeyedContainer() else {
-                    return nil as Any? as Any
-                }
-                container = c
-            } else {
-                container = try decoder.unkeyedContainer()
-            }
-            var rv: [Any] = []
-            while !container.isAtEnd {
-                rv.append(try decode(try container.superDecoder()))
-            }
-            return rv
-        } else {
-            if type.flags.contains(.optional) {
-                guard let container = (try? decoder.singleValueContainer()), !container.decodeNil() else {
-                    return nil as Any? as Any
-                }
-            }
-            return try decode(decoder)
-        }
+        return try decode(decoder)
     }
 }
 
