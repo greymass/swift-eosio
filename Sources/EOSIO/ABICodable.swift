@@ -360,12 +360,18 @@ private func _encodeAnyBuiltIn(_ value: Any,
     case .uint16: try encode(UInt16.self, value)
     case .uint32: try encode(UInt32.self, value)
     case .uint64: try encode(UInt64.self, value)
+    case .varuint32: try encode(UInt.self, value)
+    case .varint32: try encode(Int.self, value)
     case .name: try encodeS(Name.self, value)
     case .asset: try encodeS(Asset.self, value)
     case .symbol: try encodeS(Asset.Symbol.self, value)
     case .checksum256: try encodeS(Checksum256.self, value)
     case .public_key: try encodeS(PublicKey.self, value)
+    case .time_point: try encodeS(TimePoint.self, value)
+    case .time_point_sec: try encodeS(TimePointSec.self, value)
+    case .signature: try encodeS(Signature.self, value)
     case .bool: try encode(Bool.self, value)
+    case .bytes: try encode(Data.self, value)
     }
 }
 
@@ -515,7 +521,13 @@ func _decodeAnyBuiltIn(_ type: ABI.ResolvedType,
     case .int64: return try container.decode(Int64.self)
     case .checksum256: return try container.decode(Checksum256.self)
     case .public_key: return try container.decode(PublicKey.self)
+    case .time_point: return try container.decode(TimePoint.self)
+    case .time_point_sec: return try container.decode(TimePointSec.self)
+    case .varint32: return try container.decode(Int.self)
+    case .varuint32: return try container.decode(UInt.self)
     case .bool: return try container.decode(Bool.self)
+    case .bytes: return try container.decode(Data.self)
+    case .signature: return try container.decode(Signature.self)
     }
 }
 

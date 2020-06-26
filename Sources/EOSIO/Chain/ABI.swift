@@ -61,21 +61,27 @@ public struct ABI: Equatable, Hashable {
         public var other: ResolvedType?
 
         public enum BuiltIn: String {
-            case asset
-            case symbol
-            case name
-            case uint8
-            case uint16
-            case uint32
-            case uint64
+            case string
+            case bool
+            case bytes
             case int8
             case int16
             case int32
             case int64
-            case string
+            case uint8
+            case uint16
+            case uint32
+            case uint64
+            case varint32
+            case varuint32
+            case name
+            case asset
+            case symbol
             case checksum256
             case public_key
-            case bool
+            case signature
+            case time_point
+            case time_point_sec
         }
 
         public struct Flags: OptionSet {
