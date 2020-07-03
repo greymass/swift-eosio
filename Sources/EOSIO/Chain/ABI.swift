@@ -50,7 +50,15 @@ public struct ABI: Equatable, Hashable {
         self = try decoder.decode(ABI.self, from: data)
     }
 
-    public final class ResolvedType: CustomStringConvertible {
+    public final class ResolvedType: Hashable, CustomStringConvertible {
+        public static func == (lhs: ABI.ResolvedType, rhs: ABI.ResolvedType) -> Bool {
+            lhs.typeName == rhs.typeName
+        }
+
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(self.typeName)
+        }
+
         public let name: String
         public let flags: Flags
 
@@ -72,6 +80,8 @@ public struct ABI: Equatable, Hashable {
             case uint16
             case uint32
             case uint64
+            case float32
+            case float64
             case varint32
             case varuint32
             case name
@@ -92,19 +102,27 @@ public struct ABI: Equatable, Hashable {
             public static let binaryExt = Flags(rawValue: 1 << 2)
         }
 
-        init(_ name: String, _ flags: Flags) {
+        init(_ name: String) {
+            var name = name
+            var flags: Flags = []
+            if name.hasSuffix("$") {
+                name.removeLast()
+                flags.insert(.binaryExt)
+            }
+            if name.hasSuffix("?") {
+                name.removeLast()
+                flags.insert(.optional)
+            }
+            if name.hasSuffix("[]") {
+                name.removeLast(2)
+                flags.insert(.array)
+            }
             self.name = name
             self.flags = flags
         }
 
-        public var description: String {
-            var rv = "ResolvedType("
-            if self.variant != nil {
-                rv += "variant: "
-            } else if self.fields != nil {
-                rv += "struct: "
-            }
-            rv += self.name
+        var typeName: String {
+            var rv = self.name
             if self.flags.contains(.array) {
                 rv += "[]"
             }
@@ -114,7 +132,21 @@ public struct ABI: Equatable, Hashable {
             if self.flags.contains(.binaryExt) {
                 rv += "$"
             }
-            return rv + ")"
+            return rv
+        }
+
+        public var description: String {
+            var rv = self.typeName
+            if self.variant != nil {
+                rv += "(variant: \(self.variant!.map { $0.typeName }.joined(separator: " ")))"
+            } else if self.fields != nil {
+                rv += "(struct: \(self.fields!.map { "\($0.name)=\($0.type.typeName)" }.joined(separator: " ")))"
+            } else if self.other != nil {
+                rv += "(alias: \(self.other!.typeName))"
+            } else if self.builtIn != nil {
+                rv += "(builtin: \(self.builtIn!))"
+            }
+            return rv
         }
     }
 
@@ -123,34 +155,17 @@ public struct ABI: Equatable, Hashable {
         return self.resolveType(name, nil, &seen)
     }
 
-    func resolveTypeName(_ name: String) -> (String, ResolvedType.Flags) {
-        var name = name
-        var flags: ResolvedType.Flags = []
-        if name.hasSuffix("$") {
-            name.removeLast()
-            flags.insert(.binaryExt)
-        }
-        if name.hasSuffix("?") {
-            name.removeLast()
-            flags.insert(.optional)
-        }
-        if name.hasSuffix("[]") {
-            name.removeLast(2)
-            flags.insert(.array)
-        }
-        return (self.resolveTypeAlias(name), flags)
-    }
-
     func resolveType(_ name: String, _ parent: ResolvedType?, _ seen: inout [String: ResolvedType]) -> ResolvedType {
-        let res = self.resolveTypeName(name)
-        let type = ResolvedType(res.0, res.1)
+        let type = ResolvedType(name)
         type.parent = parent
-        if let existing = seen[name] {
+        if let existing = seen[type.typeName] {
             type.other = existing
             return type
         }
-        seen[name] = type
-        if let fields = self.resolveStruct(type.name) {
+        seen[type.typeName] = type
+        if let alias = self.types.first(where: { $0.newTypeName == type.name }) {
+            type.other = self.resolveType(alias.type, type, &seen)
+        } else if let fields = self.resolveStruct(type.name) {
             type.fields = fields.map { ($0.name, self.resolveType($0.type, type, &seen)) }
         } else if let variant = self.getVariant(type.name) {
             type.variant = variant.types.map { self.resolveType($0, parent, &seen) }
@@ -158,11 +173,6 @@ public struct ABI: Equatable, Hashable {
             type.builtIn = builtIn
         }
         return type
-    }
-
-    func resolveTypeAlias(_ name: String) -> String {
-        // TODO: handle more than 1 to 1 aliases
-        return self.types.first(where: { $0.newTypeName == name })?.type ?? name
     }
 
     public func resolveStruct(_ name: String) -> [ABI.Field]? {
@@ -414,10 +424,10 @@ extension ABI.Struct: ExpressibleByDictionaryLiteral {
     }
 }
 
-// MARK: ABI Defenition
+// MARK: ABI Definition
 
 extension ABI {
-    /// The ABI defenition for the ABI defenition.
+    /// The ABI definition for the ABI definition.
     public static let abi = ABI(structs: [
         ["extensions_entry": [
             ["tag", "uint16"],

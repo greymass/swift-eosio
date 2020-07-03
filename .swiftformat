@@ -1,4 +1,4 @@
---ranges no-space
+--nospaceoperators ...,..<
 --swiftversion 5
 --enable isEmpty
 --self insert

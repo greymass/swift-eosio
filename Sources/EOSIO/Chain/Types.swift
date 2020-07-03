@@ -159,17 +159,20 @@ public struct Float64: Equatable, Hashable {
 extension Float64: ABICodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        guard let value = Double(try container.decode(String.self)) else {
+        var double = try? container.decode(Double.self)
+        if double == nil, let string = try? container.decode(String.self) {
+            double = Double(string)
+        }
+        guard let value = double else {
             throw DecodingError.dataCorruptedError(
-                in: container, debugDescription: "Invalid Double string"
+                in: container, debugDescription: "Invalid Float64"
             )
         }
         self.value = value
     }
 
     public init(fromAbi decoder: ABIDecoder) throws {
-        let container = try decoder.singleValueContainer()
-        self.value = try container.decode(Double.self)
+        self.value = try decoder.decode(Double.self)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -178,8 +181,40 @@ extension Float64: ABICodable {
     }
 
     public func abiEncode(to encoder: ABIEncoder) throws {
+        try encoder.encode(self.value)
+    }
+}
+
+public struct Float32: Equatable, Hashable {
+    public let value: Float
+}
+
+extension Float32: ABICodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        var double = try? container.decode(Float.self)
+        if double == nil, let string = try? container.decode(String.self) {
+            double = Float(string)
+        }
+        guard let value = double else {
+            throw DecodingError.dataCorruptedError(
+                in: container, debugDescription: "Invalid Float32"
+            )
+        }
+        self.value = value
+    }
+
+    public init(fromAbi decoder: ABIDecoder) throws {
+        self.value = try decoder.decode(Float.self)
+    }
+
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(self.value)
+        try container.encode(String(self.value))
+    }
+
+    public func abiEncode(to encoder: ABIEncoder) throws {
+        try encoder.encode(self.value)
     }
 }
 

@@ -62,6 +62,14 @@ public final class ABIEncoder {
         self.appendVarint(UInt64(value))
     }
 
+    public func encode(_ value: Double) throws {
+        self.appendBytes(of: value)
+    }
+
+    public func encode(_ value: Float) throws {
+        self.appendBytes(of: value)
+    }
+
     public func encode<T: Sequence>(contentsOf sequence: T) throws where T.Element == UInt8 {
         self.data.append(contentsOf: sequence)
     }

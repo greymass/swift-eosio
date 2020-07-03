@@ -372,6 +372,8 @@ private func _encodeAnyBuiltIn(_ value: Any,
     case .signature: try encodeS(Signature.self, value)
     case .bool: try encode(Bool.self, value)
     case .bytes: try encode(Data.self, value)
+    case .float32: try encode(Float32.self, value)
+    case .float64: try encode(Float64.self, value)
     }
 }
 
@@ -525,9 +527,17 @@ func _decodeAnyBuiltIn(_ type: ABI.ResolvedType,
     case .time_point_sec: return try container.decode(TimePointSec.self)
     case .varint32: return try container.decode(Int.self)
     case .varuint32: return try container.decode(UInt.self)
-    case .bool: return try container.decode(Bool.self)
+    case .bool:
+        do {
+            return try container.decode(Bool.self)
+        } catch {
+            // cleos encodes bools as numbers in json :'(
+            return try container.decode(UInt8.self) != 0
+        }
     case .bytes: return try container.decode(Data.self)
     case .signature: return try container.decode(Signature.self)
+    case .float32: return try container.decode(Float32.self)
+    case .float64: return try container.decode(Float64.self)
     }
 }
 

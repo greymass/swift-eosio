@@ -83,15 +83,15 @@ public extension ABIDecoder {
     }
 
     func decode(_: Float.Type) throws -> Float {
-        var swapped = CFSwappedFloat32()
-        try read(into: &swapped)
-        return CFConvertFloatSwappedToHost(swapped)
+        var float = Float(0)
+        try read(into: &float)
+        return float
     }
 
     func decode(_: Double.Type) throws -> Double {
-        var swapped = CFSwappedFloat64()
-        try read(into: &swapped)
-        return CFConvertDoubleSwappedToHost(swapped)
+        var double = Double(0)
+        try read(into: &double)
+        return double
     }
 
     func decode(_: Data.Type, byteCount: Int?) throws -> Data {

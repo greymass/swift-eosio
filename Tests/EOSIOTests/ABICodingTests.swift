@@ -205,4 +205,51 @@ final class ABICodableTests: XCTestCase {
         let jsonData = try! action.jsonData(using: abi1)
         XCTAssertEqual(jsonData.utf8String.normalizedJSON, post.json.normalizedJSON)
     }
+
+    func testTimePoint() {
+        let tp = TimePoint(Date(timeIntervalSince1970: 1_234_567_890.123))
+        print(tp.rawValue)
+        AssertABICodable(
+            [tp],
+            """
+            ["2009-02-13T23:31:30.123"]
+            """,
+            "01f8b88a3cd5620400"
+        )
+        let tps = TimePointSec(Date(timeIntervalSince1970: 1_234_567_890.123))
+        print(tps.rawValue)
+        AssertABICodable(
+            [tps],
+            """
+            ["2009-02-13T23:31:30"]
+            """,
+            "01d2029649"
+        )
+    }
+
+    func testComplexABI() {
+        let abi = try! ABI(json: loadTestResource("atomicassets.abi.json"))
+        let json = """
+        {
+            "author": "foobar",
+            "collection_name": "test",
+            "allow_notify": true,
+            "authorized_accounts": ["foobar", "barfoo"],
+            "notify_accounts": ["foobar", "barfoo"],
+            "market_fee": "1.23456789",
+            "data": [
+                {"key": "one", "value": ["float32", "0.42"]}
+            ]
+        }
+        """
+        let object = try! JSONDecoder().decode("createcol", from: json.utf8Data, using: abi)
+        let recoded = try! JSONEncoder().encode(object, asType: "createcol", using: abi)
+        XCTAssertEqual(json.normalizedJSON, recoded.utf8String.normalizedJSON)
+
+        let data = try! ABIEncoder().encode(object, asType: "createcol", using: abi)
+        XCTAssertEqual(data.hexEncodedString(), "000000005c73285d000000000090b1ca0102000000005c73285d0000000050baae3902000000005c73285d0000000050baae391bde8342cac0f33f01036f6e65083d0ad73e")
+        let object2 = try! ABIDecoder().decode("createcol", from: data, using: abi)
+        let recoded2 = try! JSONEncoder().encode(object2, asType: "createcol", using: abi)
+        XCTAssertEqual(json.normalizedJSON, recoded2.utf8String.normalizedJSON)
+    }
 }
