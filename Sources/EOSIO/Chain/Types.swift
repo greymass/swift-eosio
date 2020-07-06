@@ -228,12 +228,25 @@ public struct PermissionLevel: ABICodable, Equatable, Hashable {
     }
 }
 
-extension PermissionLevel: ExpressibleByStringLiteral {
-    public init(stringLiteral value: String) {
-        let parts = value.split(separator: "@")
+extension PermissionLevel: LosslessStringConvertible {
+    public init?(_ description: String) {
+        let parts = description.split(separator: "@")
         guard parts.count == 2 else {
-            fatalError("Invalid PermissionLevel literal")
+            return nil
         }
         self = PermissionLevel(Name(String(parts[0])), Name(String(parts[1])))
+    }
+
+    public var description: String {
+        return "\(self.actor)@\(self.permission)"
+    }
+}
+
+extension PermissionLevel: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        guard let instance = Self(value) else {
+            fatalError("Invalid PermissionLevel literal")
+        }
+        self = instance
     }
 }
