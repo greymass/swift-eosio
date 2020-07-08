@@ -126,11 +126,10 @@ class SigningRequestTests: XCTestCase {
 
     func testMetadata() throws {
         let invitationKey = PrivateKey("5K64TPiF79H6RgRZnQxEW8zxXEC2PrurQDEKJdLAkDaegJXMAz6")
-        var request = SigningRequest(chainId: ChainId(.jungle), callback: "caldav://greymass.com", info: [
-            "date": "2019-12-24T21:00:00",
-            "title": "X-Mas Rave",
-            "location": "Greymass HQ",
-        ])
+        var request = SigningRequest(chainId: ChainId(.jungle), callback: "caldav://greymass.com")
+        request.setInfo("title", string: "X-Mas Rave")
+        request.setInfo("location", string: "Greymass HQ")
+        request.setInfo("date", string: "2019-12-24T21:00:00")
         request.setSignature(try invitationKey.sign(request.digest), signer: "teamgreymass")
         let uri = try request.encodeUri()
         XCTAssertEqual(uri, "esr://gmNgZmZgEk1OzElJLLPS108vSq3MTSwu1kvOz2VmLcksyUnlitD1TSxWCEosS-XIyU9OLMnMz-N2h6pT8AhkSUksSRU2MjC01DU00jUyCTEytDIwAKKGjRPjYtV6TzHIiwQGZR9eekvKxSfnYUd7lHLX9hrnS2FvygOyvz_8-NZNWVhfeGXW_ZfaK33nbV3k8jisnnmV8sYAj8bnWWe0LlU-vgYA")
@@ -150,5 +149,22 @@ class SigningRequestTests: XCTestCase {
         let decoded = try SigningRequest(uri)
         XCTAssertEqual(decoded.getInfo("amount", as: Asset.self)?.units, 10)
         XCTAssertEqual(decoded.getInfo("snowman", as: String.self), "☃")
+    }
+
+    func testScopedIdRequest() throws {
+        let scope = Name(rawValue: UInt64.max)
+        let request = SigningRequest(chainId: ChainId(.eos), scope: scope, callback: "https://example.com")
+        let uri = try request.encodeUri()
+        XCTAssertEqual(uri, "esr://g2NgZP4PBQxMwhklJQXFVvr6qRWJuQU5qXrJ-bkMAA")
+        XCTAssertEqual(request, try SigningRequest(uri))
+        XCTAssertEqual(request.identityScope, scope)
+        XCTAssertEqual(request.version, 3)
+        let resolved = try request.resolve(using: "foo@active")
+        XCTAssertTrue(resolved.transaction.expiration > 0)
+        XCTAssertEqual(resolved.transaction.actions.count, 1)
+        XCTAssertEqual(
+            resolved.transaction.actions[0].data,
+            "ffffffffffffffff01000000000000285d00000000a8ed3232"
+        )
     }
 }

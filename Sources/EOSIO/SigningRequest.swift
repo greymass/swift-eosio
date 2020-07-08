@@ -9,7 +9,7 @@ import Foundation
 
 public struct SigningRequest: Equatable, Hashable {
     /// The signing request version
-    public static let version: UInt8 = 2
+    public static let version: UInt8 = 3
 
     /// Special `Name` that is resolved to to signing actor (account name).
     public static let actorPlaceholder: Name = "............1"
@@ -22,9 +22,7 @@ public struct SigningRequest: Equatable, Hashable {
 
     /// Recursively resolve any `Name` placeholders types found in value.
     public static func resolvePlaceholders<T>(_ value: T, using signer: PermissionLevel) -> T {
-        var depth = 0
         func resolve(_ value: Any) -> Any {
-            guard depth < 100 else { return value }
             switch value {
             case let n as Name:
                 switch n {
@@ -36,10 +34,8 @@ public struct SigningRequest: Equatable, Hashable {
                     return n
                 }
             case let array as [Any]:
-                depth += 1
                 return array.map(resolve)
             case let object as [String: Any]:
-                depth += 1
                 return object.mapValues(resolve)
             default:
                 return value
@@ -64,6 +60,9 @@ public struct SigningRequest: Equatable, Hashable {
         case abiCodingFailed(action: Action, reason: Swift.Error)
     }
 
+    /// The request version.
+    public var version: UInt8
+
     /// Underlying request data.
     fileprivate var data: SigningRequestData
 
@@ -76,10 +75,14 @@ public struct SigningRequest: Equatable, Hashable {
     /// - Parameter broadcast: Whether the signer should broadcast the transaction after signing.
     /// - Parameter callback: Callback url signer should hit after signing and/or broadcasting.
     /// - Parameter background: Whether the callback should be performed in the background.
-    /// - Parameter info: Optional request headers.
-    public init(chainId: ChainId, actions: [Action], broadcast: Bool = true, callback: String? = nil, background: Bool = true, info: [String: String] = [:]) {
-        self = SigningRequest(chainId, req: actions.count == 1 ? .action(actions.first!) : .actions(actions),
-                              broadcast: broadcast, callback: callback, background: background, info: info)
+    public init(chainId: ChainId, actions: [Action], broadcast: Bool = true, callback: String? = nil, background: Bool = true) {
+        self = .init(version: 2, data: SigningRequestData(
+            chainId: chainId,
+            req: actions.count == 1 ? .action(actions.first!) : .actions(actions),
+            flags: SigningRequestData.RequestFlags(broadcast: broadcast, background: background),
+            callback: callback ?? "",
+            info: []
+        ))
     }
 
     /// Create a signing request with a transaction.
@@ -88,60 +91,57 @@ public struct SigningRequest: Equatable, Hashable {
     /// - Parameter broadcast: Whether the signer should broadcast the transaction after signing.
     /// - Parameter callback: Callback url signer should hit after signing and/or broadcasting.
     /// - Parameter background: Whether the callback should be performed in the background.
-    /// - Parameter info: Optional request headers.
-    public init(chainId: ChainId, transaction: Transaction, broadcast: Bool = true, callback: String? = nil, background: Bool = true, info: [String: String] = [:]) {
-        self = SigningRequest(chainId, req: .transaction(transaction),
-                              broadcast: broadcast, callback: callback, background: background, info: info)
+    public init(chainId: ChainId, transaction: Transaction, broadcast: Bool = true, callback: String? = nil, background: Bool = true) {
+        self = .init(version: 2, data: SigningRequestData(
+            chainId: chainId,
+            req: .transaction(transaction),
+            flags: SigningRequestData.RequestFlags(broadcast: broadcast, background: background),
+            callback: callback ?? "",
+            info: []
+        ))
     }
 
-    /// Create an identity request.
+    /// Create a legacy (v2) identity request.
     /// - Parameter chainId: The chain id for which the request is valid.
     /// - Parameter callback: Callback that wallet implementer should hit with the identity proof.
     /// - Parameter identity: The account name to request identity confirmation for, if nil will create a "any id" request.
     /// - Parameter permission: Optional account permission constrain identity request to.
     /// - Parameter background: Whether the callback should be performed in the background.
-    /// - Parameter info: Optional request headers.
-    public init(chainId: ChainId, callback: String, identity: Name? = nil, permission: Name? = nil, background: Bool = true, info: [String: String] = [:]) {
-        self = SigningRequest(chainId,
-                              req: .identity(IdentityData(identity, permission)),
-                              broadcast: false,
-                              callback: callback,
-                              background: background,
-                              info: info)
+    public init(chainId: ChainId, callback: String, identity: Name? = nil, permission: Name? = nil, background: Bool = true) {
+        self = .init(version: 2, data: SigningRequestData(
+            chainId: chainId,
+            req: .identity_v2(IdentityDataV2(identity, permission)),
+            flags: SigningRequestData.RequestFlags(background: background),
+            callback: callback,
+            info: []
+        ))
+    }
+
+    /// Create an identity request.
+    /// - Parameters:
+    ///   - chainId: The chain id for which the request is valid.
+    ///   - scope: Scope of the request, e.g. a contract or dapp name.
+    ///   - callback: Callback that wallet implementer should hit with the identity proof.
+    ///   - permission: Optional account permission constrain identity request to.
+    ///   - background: Whether the callback should be performed in the background.
+    public init(chainId: ChainId, scope: Name, callback: String, permission: PermissionLevel? = nil, background: Bool = true) {
+        self = .init(data: SigningRequestData(
+            chainId: chainId,
+            req: .identity_v3(IdentityDataV3(scope: scope, permission: permission)),
+            flags: SigningRequestData.RequestFlags(background: background),
+            callback: callback,
+            info: []
+        ))
     }
 
     private init(
-        _ chainId: ChainId,
-        req: SigningRequestData.RequestVariant,
-        broadcast: Bool,
-        callback: String?,
-        background: Bool,
-        info: [String: String]?
+        version: UInt8 = SigningRequest.version,
+        data: SigningRequestData,
+        sigData: RequestSignatureData? = nil
     ) {
-        var flags: SigningRequestData.RequestFlags = []
-        if broadcast {
-            flags.insert(.broadcast)
-        }
-        if background {
-            flags.insert(.background)
-        }
-        var infoPairs: [SigningRequestData.InfoPair] = []
-        if let info = info {
-            for (key, value) in info.sorted(by: { $0.key > $1.key }) {
-                guard let data = value.data(using: .utf8, allowLossyConversion: true) else {
-                    continue
-                }
-                infoPairs.append(SigningRequestData.InfoPair(key: key, value: data))
-            }
-        }
-        self.data = SigningRequestData(
-            chainId: chainId,
-            req: req,
-            flags: flags,
-            callback: callback ?? "",
-            info: infoPairs
-        )
-        self.sigData = nil
+        self.version = version
+        self.data = data
+        self.sigData = sigData
     }
 
     /// Decode a signing request from a string.
@@ -167,7 +167,7 @@ public struct SigningRequest: Equatable, Hashable {
             throw Error.decodingFailed("Request header missing")
         }
         let version = header & ~(1 << 7)
-        guard version == Self.version else {
+        guard version == 3 || version == 2 else {
             throw Error.decodingFailed("Unsupported version")
         }
         if (header & 1 << 7) != 0 {
@@ -194,6 +194,7 @@ public struct SigningRequest: Equatable, Hashable {
             #endif
         }
         let decoder = ABIDecoder()
+        decoder.userInfo[.esrVersion] = version
         do {
             self.data = try decoder.decode(SigningRequestData.self, from: data)
             do {
@@ -204,6 +205,7 @@ public struct SigningRequest: Equatable, Hashable {
         } catch {
             throw Error.decodingFailed("Request data malformed", reason: error)
         }
+        self.version = version
     }
 
     /// Whether the request has a callback.
@@ -214,7 +216,7 @@ public struct SigningRequest: Equatable, Hashable {
     /// Whether the request is an identity request.
     public var isIdentity: Bool {
         switch self.data.req {
-        case .identity:
+        case .identity_v2, .identity_v3:
             return true
         default:
             return false
@@ -225,7 +227,9 @@ public struct SigningRequest: Equatable, Hashable {
     /// - Note: This returns `nil` unless a specific identity has been requested, use`isIdentity` to check id requests.
     public var identity: Name? {
         switch self.data.req {
-        case let .identity(id):
+        case let .identity_v2(id):
+            return id.permission?.actor == Self.actorPlaceholder ? nil : id.permission?.actor
+        case let .identity_v3(id):
             return id.permission?.actor == Self.actorPlaceholder ? nil : id.permission?.actor
         default:
             return nil
@@ -236,8 +240,20 @@ public struct SigningRequest: Equatable, Hashable {
     /// - Note: This returns `nil` unless a specific identity with permission has been requested, use`isIdentity` to check id requests.
     public var identityPermission: Name? {
         switch self.data.req {
-        case let .identity(id):
+        case let .identity_v2(id):
             return id.permission?.permission == Self.permissionPlaceholder ? nil : id.permission?.permission
+        case let .identity_v3(id):
+            return id.permission?.permission == Self.permissionPlaceholder ? nil : id.permission?.permission
+        default:
+            return nil
+        }
+    }
+
+    /// Present for v3+ identity requests.
+    public var identityScope: Name? {
+        switch self.data.req {
+        case let .identity_v3(id):
+            return id.scope
         default:
             return nil
         }
@@ -288,7 +304,9 @@ public struct SigningRequest: Equatable, Hashable {
             return [action]
         case let .actions(actions):
             return actions
-        case let .identity(id):
+        case let .identity_v2(id):
+            return [id.action]
+        case let .identity_v3(id):
             return [id.action]
         case let .transaction(tx):
             return tx.actions
@@ -331,11 +349,17 @@ public struct SigningRequest: Equatable, Hashable {
         self.sigData?.signer
     }
 
+    /// Get the binary request data.
+    public func getData() throws -> Data {
+        let encoder = ABIEncoder()
+        encoder.userInfo[.esrVersion] = self.version
+        return try encoder.encode(self.data)
+    }
+
     /// Signing digest.
     public var digest: Checksum256 {
-        let encoder = ABIEncoder()
-        var data: Data = (try? encoder.encode(self.data)) ?? Data()
-        data.insert(Self.version, at: 0)
+        var data = try! self.getData()
+        data.insert(self.version, at: 0)
         data.insert(contentsOf: [0x72, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74], at: 1) // "request"
         return Checksum256.hash(data)
     }
@@ -425,6 +449,15 @@ public struct SigningRequest: Equatable, Hashable {
         return nil
     }
 
+    private var identityAbi: ABI {
+        switch self.version {
+        case 2:
+            return IdentityDataV2.abi
+        default:
+            return IdentityDataV3.abi
+        }
+    }
+
     /// Resolve the signing request.
     /// - Parameter permission: The permission level, aka signer, to use when resolving the request.
     /// - Parameter abis: The ABI definitions needed to resolve the action data, see `requiredAbis`.
@@ -434,7 +467,7 @@ public struct SigningRequest: Equatable, Hashable {
         var tx = self.transaction
         tx.actions = try tx.actions.map { action in
             var action = action
-            guard let abi = abis[action.account] ?? (action.account == 0 ? IdentityData.abi : nil) else {
+            guard let abi = abis[action.account] ?? (action.account == 0 ? self.identityAbi : nil) else {
                 throw Error.missingAbi(action.account)
             }
             guard let abiAction = abi.getAction(action.name) else {
@@ -471,6 +504,11 @@ public struct SigningRequest: Equatable, Hashable {
             tx.refBlockNum = values.refBlockNum
             tx.refBlockPrefix = values.refBlockPrefix
             tx.expiration = values.expiration ?? TimePointSec(Date().addingTimeInterval(60))
+        } else if self.isIdentity, self.version > 2 {
+            // identity requests on v3 onwards uses expiration time
+            tx.refBlockNum = 0
+            tx.refBlockPrefix = 0
+            tx.expiration = tapos?.taposValues.expiration ?? TimePointSec(Date().addingTimeInterval(60))
         }
         return ResolvedSigningRequest(self, signer, tx)
     }
@@ -479,6 +517,7 @@ public struct SigningRequest: Equatable, Hashable {
     /// - Parameter compress: Whether to compress the request, recommended.
     public func encode(compress: Bool = true) throws -> Data {
         let encoder = ABIEncoder()
+        encoder.userInfo[.esrVersion] = self.version
         var data: Data
         do {
             data = try encoder.encode(self.data)
@@ -488,7 +527,7 @@ public struct SigningRequest: Equatable, Hashable {
         } catch {
             throw Error.encodingFailed("Unable to ABI-encode request data", reason: error)
         }
-        var header: UInt8 = Self.version
+        var header: UInt8 = self.version
         if compress {
             #if canImport(Compression)
                 let compressed = try data.withUnsafeBytes { ptr -> Data? in
@@ -696,7 +735,7 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
     /// - Parameter blockNum: The block num hint obtained if the transaction was broadcast.
     /// - Returns: The resolved callback or `nil` if the request didn't specify any.
     public func getCallback(using signatures: [Signature], blockNum: BlockNum?) -> Callback? {
-        guard !self.request.data.callback.isEmpty else {
+        guard !self.request.data.callback.isEmpty, !signatures.isEmpty else {
             return nil
         }
         return Callback(self, signatures, blockNum)
@@ -741,7 +780,8 @@ private struct SigningRequestData: ABICodable, Hashable, Equatable {
         case action(Action)
         case actions([Action])
         case transaction(Transaction)
-        case identity(IdentityData)
+        case identity_v2(IdentityDataV2)
+        case identity_v3(IdentityDataV3)
     }
 
     struct InfoPair: Equatable, Hashable, ABICodable {
@@ -755,6 +795,17 @@ private struct SigningRequestData: ABICodable, Hashable, Equatable {
         static let broadcast = RequestFlags(rawValue: 1 << 0)
         /// Callback should be called in the background.
         static let background = RequestFlags(rawValue: 1 << 1)
+
+        init(rawValue: UInt8) {
+            self.rawValue = rawValue
+        }
+
+        init(broadcast: Bool = false, background: Bool = false) {
+            var flags = RequestFlags(rawValue: 0)
+            if broadcast { flags.insert(.broadcast) }
+            if background { flags.insert(.background) }
+            self = flags
+        }
     }
 
     /// The chain id for the request.
@@ -777,7 +828,7 @@ private struct SigningRequestData: ABICodable, Hashable, Equatable {
     }
 }
 
-private struct IdentityData: ABICodable, Equatable, Hashable {
+private struct IdentityDataV2: ABICodable, Equatable, Hashable {
     public let permission: PermissionLevel?
 
     init(_ actor: Name?, _ permission: Name?) {
@@ -785,7 +836,7 @@ private struct IdentityData: ABICodable, Equatable, Hashable {
             actor ?? SigningRequest.actorPlaceholder,
             permission ?? SigningRequest.permissionPlaceholder
         )
-        self = IdentityData(permission)
+        self = .init(permission)
     }
 
     init(_ permission: PermissionLevel?) {
@@ -819,6 +870,40 @@ private struct IdentityData: ABICodable, Equatable, Hashable {
                 ["permission", "name"],
             ]],
             ["identity": [
+                ["permission", "permission_level?"],
+            ]],
+        ],
+        actions: ["identity"]
+    )
+}
+
+private struct IdentityDataV3: ABICodable, Equatable, Hashable {
+    public var scope: Name
+    public var permission: PermissionLevel?
+
+    init(scope: Name, permission: PermissionLevel?) {
+        self.scope = scope
+        self.permission = permission
+    }
+
+    /// The mock action that is signed to prove identity.
+    public var action: Action {
+        var data = self
+        if data.permission == nil {
+            data.permission = SigningRequest.placeholderPermission
+        }
+        return try! Action(account: 0, name: "identity", authorization: [data.permission!], value: data)
+    }
+
+    /// ABI definition for the mock identity contract.
+    public static let abi = ABI(
+        structs: [
+            ["permission_level": [
+                ["actor", "name"],
+                ["permission", "name"],
+            ]],
+            ["identity": [
+                ["scope", "name"],
                 ["permission", "permission_level?"],
             ]],
         ],
@@ -1007,8 +1092,15 @@ extension SigningRequestData.ChainIdVariant: ABICodable {
     }
 }
 
+public extension CodingUserInfoKey {
+    /// The ESR version to follow when coding.
+    static let esrVersion = CodingUserInfoKey(rawValue: "esrVersion")!
+}
+
 extension SigningRequestData.RequestVariant: ABICodable {
     public init(from decoder: Decoder) throws {
+        let version = decoder.userInfo[.esrVersion] as? UInt8 ?? SigningRequest.version
+        print("decode json data version", version)
         var container = try decoder.unkeyedContainer()
         let type = try container.decode(String.self)
         switch type {
@@ -1019,13 +1111,19 @@ extension SigningRequestData.RequestVariant: ABICodable {
         case "transaction":
             self = .transaction(try container.decode(Transaction.self))
         case "identity":
-            self = .identity(try container.decode(IdentityData.self))
+            if version == 2 {
+                self = .identity_v2(try container.decode(IdentityDataV2.self))
+            } else {
+                self = .identity_v3(try container.decode(IdentityDataV3.self))
+            }
         default:
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unknown type in variant")
         }
     }
 
     public init(fromAbi decoder: ABIDecoder) throws {
+        let version = decoder.userInfo[.esrVersion] as? UInt8 ?? SigningRequest.version
+        print("decode abi data version", version)
         let type = try decoder.decode(UInt8.self)
         switch type {
         case 0:
@@ -1035,13 +1133,19 @@ extension SigningRequestData.RequestVariant: ABICodable {
         case 2:
             self = .transaction(try decoder.decode(Transaction.self))
         case 3:
-            self = .identity(try decoder.decode(IdentityData.self))
+            if version == 2 {
+                self = .identity_v2(try decoder.decode(IdentityDataV2.self))
+            } else {
+                self = .identity_v3(try decoder.decode(IdentityDataV3.self))
+            }
         default:
             throw ABIDecoder.Error.unknownVariant(type)
         }
     }
 
     public func encode(to encoder: Encoder) throws {
+        let version = encoder.userInfo[.esrVersion] as? UInt8 ?? SigningRequest.version
+        print("decode json data version", version)
         var container = encoder.unkeyedContainer()
         switch self {
         case let .action(action):
@@ -1053,13 +1157,30 @@ extension SigningRequestData.RequestVariant: ABICodable {
         case let .transaction(transaction):
             try container.encode("transaction")
             try container.encode(transaction)
-        case let .identity(identity):
+        case let .identity_v2(identity):
+            guard version == 2 else {
+                throw EncodingError.invalidValue(self, EncodingError.Context(
+                    codingPath: encoder.codingPath,
+                    debugDescription: "Unable to encode v2 identity payload for esr versions other than 2"
+                ))
+            }
+            try container.encode("identity")
+            try container.encode(identity)
+        case let .identity_v3(identity):
+            guard version > 2 else {
+                throw EncodingError.invalidValue(self, EncodingError.Context(
+                    codingPath: encoder.codingPath,
+                    debugDescription: "Unable to encode v3 identity payload for esr versions less than 3"
+                ))
+            }
             try container.encode("identity")
             try container.encode(identity)
         }
     }
 
     public func abiEncode(to encoder: ABIEncoder) throws {
+        let version = encoder.userInfo[.esrVersion] as? UInt8 ?? SigningRequest.version
+        print("encode abi data version", version)
         switch self {
         case let .action(action):
             try encoder.encode(0 as UInt8)
@@ -1070,7 +1191,22 @@ extension SigningRequestData.RequestVariant: ABICodable {
         case let .transaction(transaction):
             try encoder.encode(2 as UInt8)
             try encoder.encode(transaction)
-        case let .identity(identity):
+        case let .identity_v2(identity):
+            guard version == 2 else {
+                throw EncodingError.invalidValue(self, EncodingError.Context(
+                    codingPath: encoder.codingPath,
+                    debugDescription: "Unable to encode v2 identity payload for esr versions other than 2"
+                ))
+            }
+            try encoder.encode(3 as UInt8)
+            try encoder.encode(identity)
+        case let .identity_v3(identity):
+            guard version > 2 else {
+                throw EncodingError.invalidValue(self, EncodingError.Context(
+                    codingPath: encoder.codingPath,
+                    debugDescription: "Unable to encode v3 identity payload for esr versions less than 3"
+                ))
+            }
             try encoder.encode(3 as UInt8)
             try encoder.encode(identity)
         }
