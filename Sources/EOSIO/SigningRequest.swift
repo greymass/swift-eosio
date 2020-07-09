@@ -1100,7 +1100,6 @@ public extension CodingUserInfoKey {
 extension SigningRequestData.RequestVariant: ABICodable {
     public init(from decoder: Decoder) throws {
         let version = decoder.userInfo[.esrVersion] as? UInt8 ?? SigningRequest.version
-        print("decode json data version", version)
         var container = try decoder.unkeyedContainer()
         let type = try container.decode(String.self)
         switch type {
@@ -1123,7 +1122,6 @@ extension SigningRequestData.RequestVariant: ABICodable {
 
     public init(fromAbi decoder: ABIDecoder) throws {
         let version = decoder.userInfo[.esrVersion] as? UInt8 ?? SigningRequest.version
-        print("decode abi data version", version)
         let type = try decoder.decode(UInt8.self)
         switch type {
         case 0:
@@ -1145,7 +1143,6 @@ extension SigningRequestData.RequestVariant: ABICodable {
 
     public func encode(to encoder: Encoder) throws {
         let version = encoder.userInfo[.esrVersion] as? UInt8 ?? SigningRequest.version
-        print("decode json data version", version)
         var container = encoder.unkeyedContainer()
         switch self {
         case let .action(action):
@@ -1180,7 +1177,6 @@ extension SigningRequestData.RequestVariant: ABICodable {
 
     public func abiEncode(to encoder: ABIEncoder) throws {
         let version = encoder.userInfo[.esrVersion] as? UInt8 ?? SigningRequest.version
-        print("encode abi data version", version)
         switch self {
         case let .action(action):
             try encoder.encode(0 as UInt8)
