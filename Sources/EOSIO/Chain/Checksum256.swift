@@ -45,7 +45,7 @@ extension Checksum256: ExpressibleByStringLiteral {
 extension Checksum256: ABICodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        let data = try container.decode(Data.self)
+        let data = Data(hexEncoded: try container.decode(String.self))
         if data.count != 32 {
             throw DecodingError.dataCorruptedError(
                 in: container, debugDescription: "Encountered invalid checksum (expected 32 bytes got \(data.count))"
