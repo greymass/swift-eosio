@@ -265,8 +265,26 @@ public struct SigningRequest: Equatable, Hashable {
         set { self.data.chainId = SigningRequestData.ChainIdVariant(newValue) }
     }
 
+    /// Chain IDs this request is valid for, only valid for multi chain requests. Value of nil when `isMultiChain` is true denotes any chain.
+    public var chainIds: [ChainId]? {
+        get {
+            guard self.isMultiChain, let ids = self.getInfo("chain_ids", as: [SigningRequestData.ChainIdVariant].self) else {
+                return nil
+            }
+            return ids.map { $0.value }
+        }
+        set {
+            if let ids = newValue {
+                let value = ids.map { SigningRequestData.ChainIdVariant($0) }
+                self.setInfo("chain_ids", value: value)
+            } else {
+                self.removeInfo("chain_ids")
+            }
+        }
+    }
+
     /// True if chainId is set to chain alias `0` which indicates that the request is valid for any chain.
-    public var isAnyChainId: Bool {
+    public var isMultiChain: Bool {
         self.data.chainId == .alias(0)
     }
 
