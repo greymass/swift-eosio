@@ -58,6 +58,10 @@ public struct SigningRequest: Equatable, Hashable {
         case missingTaposSource
         /// Thrown during resolve if unable to decode or re-encode action data using given ABI(s).
         case abiCodingFailed(action: Action, reason: Swift.Error)
+        /// Chain id missing when resolving a multi chain request.
+        case missingChainId
+        /// Encountered chain id that wasn't part of requested chain ids when resolving request.
+        case unsupportedChainId(ChainId)
     }
 
     /// The request version.
@@ -482,11 +486,14 @@ public struct SigningRequest: Equatable, Hashable {
     }
 
     /// Resolve the signing request.
-    /// - Parameter permission: The permission level, aka signer, to use when resolving the request.
-    /// - Parameter abis: The ABI definitions needed to resolve the action data, see `requiredAbis`.
-    /// - Parameter tapos: The TaPoS source (e.g. block header or get info rpc call) used if request does not explicitly specify them, see `requiresTapos`.
+    /// - Parameters:
+    ///   - signer: The permission level, aka signer, to use when resolving the request.
+    ///   - abis: The ABI definitions needed to resolve the action data, see `requiredAbis`.
+    ///   - tapos: The TaPoS source (e.g. block header or get info rpc call) used if request does not explicitly specify them, see `requiresTapos`.
+    ///   - chainId: ChainID to use when resolving a multi network request.
+    /// - Throws: If the transaction couldn't be resolved or the required ABI or TaPoS was missing.
     /// - Returns: A resolved signing request ready to be signed and/or broadcast with a helper to resolve the callback if present.
-    public func resolve(using signer: PermissionLevel, abis: [Name: ABI] = [:], tapos: TaposSource? = nil) throws -> ResolvedSigningRequest {
+    public func resolve(using signer: PermissionLevel, abis: [Name: ABI] = [:], tapos: TaposSource? = nil, chainId: ChainId? = nil) throws -> ResolvedSigningRequest {
         var tx = self.transaction
         tx.actions = try tx.actions.map { action in
             var action = action
@@ -533,7 +540,17 @@ public struct SigningRequest: Equatable, Hashable {
             tx.refBlockPrefix = 0
             tx.expiration = tapos?.taposValues.expiration ?? TimePointSec(Date().addingTimeInterval(60))
         }
-        return ResolvedSigningRequest(self, signer, tx)
+        if self.isMultiChain {
+            guard let chainId = chainId else {
+                throw Error.missingChainId
+            }
+            if let chainIds = self.chainIds {
+                guard chainIds.contains(chainId) else {
+                    throw Error.unsupportedChainId(chainId)
+                }
+            }
+        }
+        return ResolvedSigningRequest(self, signer, tx, chainId)
     }
 
     /// Encode request to binary format.
@@ -601,6 +618,7 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
             let signatures: [Signature]
             let request: ResolvedSigningRequest
             let blockNum: BlockNum?
+            let chainId: ChainId
 
             enum Key: String, CaseIterable, CodingKey {
                 /// The first signature.
@@ -621,6 +639,8 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
                 case rid
                 /// The originating signing request packed as a uri string.
                 case req
+                /// The chain id of the request (or the selected chain id for multi chain requests)
+                case cid
             }
 
             struct SignatureKey: CodingKey {
@@ -662,6 +682,8 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
                     return String(self.request.transaction.refBlockPrefix)
                 case .ex:
                     return self.request.transaction.expiration.stringValue
+                case .cid:
+                    return String(self.chainId)
                 }
             }
 
@@ -704,8 +726,8 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
 
         private let data: Payload
 
-        fileprivate init(_ request: ResolvedSigningRequest, _ signatures: [Signature], _ blockNum: BlockNum?) {
-            self.data = Payload(signatures: signatures, request: request, blockNum: blockNum)
+        fileprivate init(_ request: ResolvedSigningRequest, _ signatures: [Signature], _ blockNum: BlockNum?, _ chainId: ChainId) {
+            self.data = Payload(signatures: signatures, request: request, blockNum: blockNum, chainId: chainId)
         }
 
         /// The url where the callback should be delivered.
@@ -738,13 +760,24 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
     }
 
     private let request: SigningRequest
+    private let resolvedChainId: ChainId?
     public let signer: PermissionLevel
     public private(set) var transaction: Transaction
 
-    fileprivate init(_ request: SigningRequest, _ signer: PermissionLevel, _ transaction: Transaction) {
+    fileprivate init(_ request: SigningRequest, _ signer: PermissionLevel, _ transaction: Transaction, _ chainId: ChainId?) {
         self.request = request
         self.signer = signer
         self.transaction = transaction
+        self.resolvedChainId = chainId
+    }
+
+    /// The resolved chainId.
+    public var chainId: ChainId {
+        if self.request.isMultiChain {
+            return self.resolvedChainId ?? self.request.chainId
+        } else {
+            return self.request.chainId
+        }
     }
 
     /// The transaction header, only part of transaction that can be mutated after being resolved.
@@ -761,7 +794,7 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
         guard !self.request.data.callback.isEmpty, !signatures.isEmpty else {
             return nil
         }
-        return Callback(self, signatures, blockNum)
+        return Callback(self, signatures, blockNum, self.chainId)
     }
 }
 

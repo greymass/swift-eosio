@@ -44,7 +44,8 @@ class SigningRequestTests: XCTestCase {
                 "rbn": "0",
                 "rid": "0",
                 "req": "esr:gmNgZGBY1mTC_MoglIGBIVzX5uxZRqAQGDBBaROYAARoxML5Aa5-7kBKOCQjMS-7WCEtv0ihJCNVIS2zOINZNqOkpKDYSl8_tSIxtyAnVS85P9e-pMK2urqkoraWAQA",
-                "foo": "bar"
+                "foo": "bar",
+                "cid": "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906"
             }
             """.normalizedJSON
         )
@@ -159,12 +160,14 @@ class SigningRequestTests: XCTestCase {
         XCTAssertEqual(request, try SigningRequest(uri))
         XCTAssertEqual(request.identityScope, scope)
         XCTAssertEqual(request.version, 3)
-        let resolved = try request.resolve(using: "foo@active")
-        XCTAssertTrue(resolved.transaction.expiration > 0)
+        let header = TransactionHeader(expiration: "2020-07-10T08:40:20", refBlockNum: 0, refBlockPrefix: 0)
+        let resolved = try request.resolve(using: "foo@active", tapos: header)
+        XCTAssertEqual(resolved.transaction.expiration, "2020-07-10T08:40:20")
         XCTAssertEqual(resolved.transaction.actions.count, 1)
         XCTAssertEqual(
             resolved.transaction.actions[0].data,
             "ffffffffffffffff01000000000000285d00000000a8ed3232"
         )
+        XCTAssertEqual(try resolved.transaction.digest(using: request.chainId), "70d1fd5bda1998135ed44cbf26bd1cc2ed976219b2b6913ac13f41d4dd013307")
     }
 }

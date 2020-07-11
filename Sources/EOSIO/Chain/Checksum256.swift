@@ -60,7 +60,7 @@ extension Checksum256: ABICodable {
 
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(self.bytes)
+        try container.encode(self.description)
     }
 
     public func abiEncode(to encoder: ABIEncoder) throws {
