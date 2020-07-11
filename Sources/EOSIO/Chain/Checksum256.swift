@@ -51,7 +51,7 @@ extension Checksum256: ABICodable {
                 in: container, debugDescription: "Encountered invalid checksum (expected 32 bytes got \(data.count))"
             )
         }
-        self.init(try container.decode(Data.self))
+        self.init(data)
     }
 
     public init(fromAbi decoder: ABIDecoder) throws {
