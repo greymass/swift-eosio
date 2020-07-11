@@ -77,7 +77,7 @@ public struct SigningRequest: Equatable, Hashable {
     /// - Parameter background: Whether the callback should be performed in the background.
     public init(chainId: ChainId, actions: [Action], broadcast: Bool = true, callback: String? = nil, background: Bool = true) {
         self = .init(version: 2, data: SigningRequestData(
-            chainId: chainId,
+            chainId: SigningRequestData.ChainIdVariant(chainId),
             req: actions.count == 1 ? .action(actions.first!) : .actions(actions),
             flags: SigningRequestData.RequestFlags(broadcast: broadcast, background: background),
             callback: callback ?? "",
@@ -93,7 +93,7 @@ public struct SigningRequest: Equatable, Hashable {
     /// - Parameter background: Whether the callback should be performed in the background.
     public init(chainId: ChainId, transaction: Transaction, broadcast: Bool = true, callback: String? = nil, background: Bool = true) {
         self = .init(version: 2, data: SigningRequestData(
-            chainId: chainId,
+            chainId: SigningRequestData.ChainIdVariant(chainId),
             req: .transaction(transaction),
             flags: SigningRequestData.RequestFlags(broadcast: broadcast, background: background),
             callback: callback ?? "",
@@ -109,7 +109,7 @@ public struct SigningRequest: Equatable, Hashable {
     /// - Parameter background: Whether the callback should be performed in the background.
     public init(chainId: ChainId, callback: String, identity: Name? = nil, permission: Name? = nil, background: Bool = true) {
         self = .init(version: 2, data: SigningRequestData(
-            chainId: chainId,
+            chainId: SigningRequestData.ChainIdVariant(chainId),
             req: .identity_v2(IdentityDataV2(identity, permission)),
             flags: SigningRequestData.RequestFlags(background: background),
             callback: callback,
@@ -124,9 +124,9 @@ public struct SigningRequest: Equatable, Hashable {
     ///   - callback: Callback that wallet implementer should hit with the identity proof.
     ///   - permission: Optional account permission constrain identity request to.
     ///   - background: Whether the callback should be performed in the background.
-    public init(chainId: ChainId, scope: Name, callback: String, permission: PermissionLevel? = nil, background: Bool = true) {
+    public init(chainId: ChainId?, scope: Name, callback: String, permission: PermissionLevel? = nil, background: Bool = true) {
         self = .init(data: SigningRequestData(
-            chainId: chainId,
+            chainId: (chainId != nil) ? SigningRequestData.ChainIdVariant(chainId!) : .alias(0),
             req: .identity_v3(IdentityDataV3(scope: scope, permission: permission)),
             flags: SigningRequestData.RequestFlags(background: background),
             callback: callback,
@@ -263,6 +263,11 @@ public struct SigningRequest: Equatable, Hashable {
     public var chainId: ChainId {
         get { self.data.chainId.value }
         set { self.data.chainId = SigningRequestData.ChainIdVariant(newValue) }
+    }
+
+    /// True if chainId is set to chain alias `0` which indicates that the request is valid for any chain.
+    public var isAnyChainId: Bool {
+        self.data.chainId == .alias(0)
     }
 
     /// Whether the request should be broadcast after being signed.
@@ -819,8 +824,8 @@ private struct SigningRequestData: ABICodable, Hashable, Equatable {
     /// Request metadata.
     var info: [InfoPair]
 
-    init(chainId: ChainId, req: RequestVariant, flags: RequestFlags, callback: String, info: [InfoPair]) {
-        self.chainId = ChainIdVariant(chainId)
+    init(chainId: ChainIdVariant, req: RequestVariant, flags: RequestFlags, callback: String, info: [InfoPair]) {
+        self.chainId = chainId
         self.req = req
         self.flags = flags
         self.callback = callback
