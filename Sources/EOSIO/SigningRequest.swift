@@ -175,7 +175,9 @@ public struct SigningRequest: Equatable, Hashable {
             throw Error.decodingFailed("Unsupported version")
         }
         if (header & 1 << 7) != 0 {
-            #if canImport(Compression)
+            #if canImport(zlib) || canImport(zlibLinux)
+                data = try data.inflated()
+            #elseif canImport(Compression)
                 data = try data.withUnsafeBytes { ptr in
                     guard !ptr.isEmpty else {
                         throw Error.decodingFailed("No data to decompress")
@@ -569,7 +571,13 @@ public struct SigningRequest: Equatable, Hashable {
         }
         var header: UInt8 = self.version
         if compress {
-            #if canImport(Compression)
+            #if canImport(zlib) || canImport(zlibLinux)
+                let compressed = try data.deflated(level: .bestCompression)
+                if compressed.count < data.count {
+                    header |= 1 << 7
+                    data = compressed
+                }
+            #elseif canImport(Compression)
                 let compressed = try data.withUnsafeBytes { ptr -> Data? in
                     var size = ptr.count
                     let buffer = UnsafeMutablePointer<UInt8>.allocate(capacity: size)
@@ -584,7 +592,7 @@ public struct SigningRequest: Equatable, Hashable {
                     }
                     return Data(bytes: buffer, count: size)
                 }
-                if let compressed = compressed {
+                if let compressed = compressed, compressed.count < data.count {
                     header |= 1 << 7
                     data = compressed
                 }
