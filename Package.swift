@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "EOSIO",
+    name: "swift-eosio",
     products: [
         .library(name: "EOSIO", targets: ["EOSIO"]),
     ],
