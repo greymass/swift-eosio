@@ -117,7 +117,14 @@ public struct Authority: ABICodable, Equatable, Hashable {
     public var accounts: [PermissionLevelWeight] = []
     public var waits: [WaitWeight] = []
 
-    init(_ key: PublicKey, delay: UInt32 = 0) {
+    public init(threshold: UInt32, keys: [KeyWeight] = [], accounts: [PermissionLevelWeight] = [], waits: [WaitWeight] = []) {
+        self.threshold = threshold
+        self.keys = keys
+        self.accounts = accounts
+        self.waits = waits
+    }
+
+    public init(_ key: PublicKey, delay: UInt32 = 0) {
         self.threshold = 1
         self.keys = [KeyWeight(key)]
         if delay > 0 {
