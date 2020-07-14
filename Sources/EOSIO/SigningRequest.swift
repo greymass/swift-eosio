@@ -991,7 +991,7 @@ public protocol TaposSource {
 }
 
 extension TaposSource {
-    var header: TransactionHeader {
+    public var transactionHeader: TransactionHeader {
         let values = self.taposValues
         return .init(
             expiration: values.expiration ?? TimePointSec(Date().addingTimeInterval(60)),
