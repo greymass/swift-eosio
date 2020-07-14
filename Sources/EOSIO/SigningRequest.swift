@@ -990,6 +990,17 @@ public protocol TaposSource {
     var taposValues: (refBlockNum: UInt16, refBlockPrefix: UInt32, expiration: TimePointSec?) { get }
 }
 
+extension TaposSource {
+    var header: TransactionHeader {
+        let values = self.taposValues
+        return .init(
+            expiration: values.expiration ?? TimePointSec(Date().addingTimeInterval(60)),
+            refBlockNum: values.refBlockNum,
+            refBlockPrefix: values.refBlockPrefix
+        )
+    }
+}
+
 extension TransactionHeader: TaposSource {
     public var taposValues: (refBlockNum: UInt16, refBlockPrefix: UInt32, expiration: TimePointSec?) {
         return (self.refBlockNum, self.refBlockPrefix, self.expiration)
