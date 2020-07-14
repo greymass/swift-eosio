@@ -248,14 +248,14 @@ public extension API.V1.Chain {
     struct PushTransaction: Request {
         public static let path = "/v1/chain/push_transaction"
         public struct Response: Decodable {
-            public struct TransactionTrace: Decodable {
-                // TODO: fully decode traces
-                public let blockNum: BlockNum
-                public let producerBlockId: BlockId?
-            }
-
             public let transactionId: TransactionId
-            public let processed: TransactionTrace
+            public let processed: [String: Any]
+
+            public init(from decoder: Decoder) throws {
+                let container = try decoder.container(keyedBy: StringCodingKey.self)
+                self.transactionId = try container.decode(TransactionId.self, forKey: "transactionId")
+                self.processed = try container.decode([String: Any].self, forKey: "processed")
+            }
         }
 
         public var signedTransaction: SignedTransaction
