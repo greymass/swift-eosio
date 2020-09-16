@@ -220,9 +220,9 @@ public struct SigningRequest: Equatable, Hashable {
     }
 
     /// Get the unresolved callback for this request (if any).
-    public var unresolvedCallback: String? {
+    public var unresolvedCallback: (url: String, background: Bool)? {
         guard self.hasCallback else { return nil }
-        return self.data.callback
+        return (self.data.callback, self.data.flags.contains(.background))
     }
 
     /// Whether the request is an identity request.
