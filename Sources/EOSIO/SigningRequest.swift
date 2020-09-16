@@ -219,6 +219,12 @@ public struct SigningRequest: Equatable, Hashable {
         !self.data.callback.isEmpty
     }
 
+    /// Get the unresolved callback for this request (if any).
+    public var unresolvedCallback: String? {
+        guard self.hasCallback else { return nil }
+        return self.data.callback
+    }
+
     /// Whether the request is an identity request.
     public var isIdentity: Bool {
         switch self.data.req {
