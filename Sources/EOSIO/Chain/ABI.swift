@@ -86,6 +86,7 @@ public struct ABI: Equatable, Hashable {
             case varuint32
             case name
             case asset
+            case extended_asset
             case symbol
             case symbol_code
             case checksum256

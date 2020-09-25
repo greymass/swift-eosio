@@ -221,4 +221,17 @@ final class TypeTests: XCTestCase {
             "015049000000000000"
         )
     }
+
+    func testExtendedAsset() {
+        AssertABICodable(
+            ExtendedAsset(quantity: "1.234 X", contract: "double"),
+            """
+            {
+              "contract" : "double",
+              "quantity" : "1.234 X"
+            }
+            """,
+            "d204000000000000035800000000000000000000a878344d"
+        )
+    }
 }

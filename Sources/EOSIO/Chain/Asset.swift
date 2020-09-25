@@ -224,6 +224,16 @@ extension Asset.Symbol {
     }
 }
 
+public struct ExtendedAsset: ABICodable, Equatable, Hashable {
+    public var quantity: Asset
+    public var contract: Name
+
+    public init(quantity: Asset, contract: Name) {
+        self.quantity = quantity
+        self.contract = contract
+    }
+}
+
 // MARK: ABI Coding
 
 extension Asset: ABICodable {
