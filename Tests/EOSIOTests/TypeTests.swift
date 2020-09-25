@@ -6,7 +6,8 @@ func AssertABICodable<T: ABICodable & Equatable>(_ value: T,
                                                  _ expectedJson: String,
                                                  _ expectedAbi: Data,
                                                  file: StaticString = #file,
-                                                 line: UInt = #line) {
+                                                 line: UInt = #line)
+{
     let jsonEncoder = JSONEncoder()
     jsonEncoder.keyEncodingStrategy = .convertToSnakeCase
     jsonEncoder.dataEncodingStrategy = .custom { data, encoder in

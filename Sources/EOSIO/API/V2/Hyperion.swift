@@ -242,7 +242,8 @@ public extension API.V2.Hyperion {
 
         public init(_ account: Name? = nil, limit: UInt? = nil, skip: UInt? = nil,
                     track: String? = nil, filter: String? = nil, sort: SortDirection? = nil,
-                    after: String? = nil, before: String? = nil) {
+                    after: String? = nil, before: String? = nil)
+        {
             self.account = account
             self.limit = limit
             self.skip = skip
@@ -303,7 +304,8 @@ public extension API.V2.Hyperion {
         public var permission: Name?
 
         public init(_ account: Name? = nil, code: Name? = nil, action: Name? = nil,
-                    permission: Name? = nil) {
+                    permission: Name? = nil)
+        {
             self.account = account
             self.code = code
             self.action = action

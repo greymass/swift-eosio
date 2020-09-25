@@ -232,14 +232,16 @@ public struct AnyABICodable: ABICodable {
 private func _encodeAny(_ value: Any,
                         ofType type: String,
                         to encoder: Encoder,
-                        using abi: ABI) throws {
+                        using abi: ABI) throws
+{
     let rootType = abi.resolveType(type)
     try _encodeAny(value, to: encoder, usingType: rootType)
 }
 
 private func _encodeAny(_ value: Any,
                         to encoder: Encoder,
-                        usingType type: ABI.ResolvedType) throws {
+                        usingType type: ABI.ResolvedType) throws
+{
     if let other = type.other {
         return try _encodeAny(value, to: encoder, usingType: other)
     }
@@ -297,7 +299,8 @@ private func _encodeAny(_ value: Any,
 
 private func _encodeAnyVariant(_ value: Any,
                                to encoder: Encoder,
-                               usingType type: ABI.ResolvedType) throws {
+                               usingType type: ABI.ResolvedType) throws
+{
     guard let array = value as? [Any], array.count == 2, let name = array[0] as? String else {
         throw EncodingError.invalidValue(value, EncodingError.Context(
             codingPath: encoder.codingPath,
@@ -323,7 +326,8 @@ private func _encodeAnyVariant(_ value: Any,
 
 private func _encodeAnyFields(_ value: Any,
                               to encoder: Encoder,
-                              usingType type: ABI.ResolvedType) throws {
+                              usingType type: ABI.ResolvedType) throws
+{
     guard let object = value as? [String: Any] else {
         throw EncodingError.invalidValue(value, EncodingError.Context(
             codingPath: encoder.codingPath,
@@ -339,7 +343,8 @@ private func _encodeAnyFields(_ value: Any,
 
 private func _encodeAnyBuiltIn(_ value: Any,
                                to encoder: Encoder,
-                               usingType type: ABI.ResolvedType) throws {
+                               usingType type: ABI.ResolvedType) throws
+{
     func encode<T: Encodable>(_ builtInType: T.Type, _ setValue: Any) throws {
         try _encodeValue(setValue, builtInType, to: encoder)
     }
@@ -392,13 +397,15 @@ private func _encodeValue<T: Encodable>(_ value: Any, _ builtinType: T.Type, to 
 
 func _decodeAny(_ type: String,
                 from decoder: Decoder,
-                using abi: ABI) throws -> Any {
+                using abi: ABI) throws -> Any
+{
     let rootType = abi.resolveType(type)
     return try _decodeAny(rootType, from: decoder)
 }
 
 func _decodeAny(_ type: ABI.ResolvedType,
-                from decoder: Decoder) throws -> Any {
+                from decoder: Decoder) throws -> Any
+{
     if type.other != nil {
         return try _decodeAny(type.other!, from: decoder)
     }
@@ -472,7 +479,8 @@ func _decodeAny(_ type: ABI.ResolvedType,
 }
 
 func _decodeAnyVariant(_ type: ABI.ResolvedType,
-                       from decoder: Decoder) throws -> Any {
+                       from decoder: Decoder) throws -> Any
+{
     if let abiDecoder = decoder as? ABIDecoder {
         let idx = try abiDecoder.decode(UInt8.self)
         guard idx < type.variant!.count else {
@@ -497,7 +505,8 @@ func _decodeAnyVariant(_ type: ABI.ResolvedType,
 }
 
 func _decodeAnyFields(_ type: ABI.ResolvedType,
-                      from decoder: Decoder) throws -> Any {
+                      from decoder: Decoder) throws -> Any
+{
     var object: [String: Any] = [:]
     let container = try decoder.container(keyedBy: StringCodingKey.self)
     for field in type.fields! {
@@ -508,7 +517,8 @@ func _decodeAnyFields(_ type: ABI.ResolvedType,
 }
 
 func _decodeAnyBuiltIn(_ type: ABI.ResolvedType,
-                       from decoder: Decoder) throws -> Any {
+                       from decoder: Decoder) throws -> Any
+{
     let container = try decoder.singleValueContainer()
     switch type.builtIn! {
     case .string: return try container.decode(String.self)
