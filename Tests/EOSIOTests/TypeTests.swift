@@ -208,4 +208,17 @@ final class TypeTests: XCTestCase {
         XCTAssertEqual(key, key3)
         XCTAssertEqual(key2.legacyFormattedString("XXX"), "XXX833UzE2PyXhvQMenoD2MESD8hVroRTHjBR58G94Hr6Uo7aSPb2")
     }
+
+    func testSymbolCode() {
+        let code = try! Asset.Symbol.Code(stringValue: "PI")
+        XCTAssertEqual(code.rawValue, 18768)
+        XCTAssertEqual(code.stringValue, "PI")
+        AssertABICodable(
+            [code],
+            """
+            ["PI"]
+            """,
+            "015049000000000000"
+        )
+    }
 }

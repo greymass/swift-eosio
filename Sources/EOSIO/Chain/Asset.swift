@@ -189,6 +189,41 @@ extension Asset {
     }
 }
 
+extension Asset.Symbol {
+    /// Asset symbol code, e.g. `EOS`.
+    public struct Code: Equatable, Hashable {
+        /// The underlying value
+        public let rawValue: UInt64
+
+        public init(rawValue: UInt64) throws {
+            self.rawValue = rawValue
+            guard self.rawStringValue != nil else {
+                throw Error.invalidSymbolName(message: "Encountered non-ascii character")
+            }
+        }
+
+        public init(stringValue: String) throws {
+            var bytes = stringValue.compactMap { $0.asciiValue }
+            if bytes.count != stringValue.count {
+                throw Error.invalidSymbolName(message: "Encountered non-ascii character")
+            }
+            while bytes.count < 8 { bytes.append(0) }
+            self.rawValue = bytes.withUnsafeBytes { UInt64(littleEndian: $0.load(as: UInt64.self)) }
+        }
+
+        private var rawStringValue: String? {
+            let asciiBytes = withUnsafeBytes(of: self.rawValue.bigEndian) { Data($0) }
+                .drop { $0 == 0 } // remove trailing zeroes
+                .reversed()
+            return String(bytes: asciiBytes, encoding: .ascii)
+        }
+
+        public var stringValue: String {
+            self.rawStringValue!
+        }
+    }
+}
+
 // MARK: ABI Coding
 
 extension Asset: ABICodable {
@@ -223,6 +258,28 @@ extension Asset.Symbol: ABICodable {
     public init(fromAbi decoder: ABIDecoder) throws {
         var container = try decoder.unkeyedContainer()
         try self.init(rawSymbol: try container.decode(UInt64.self))
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.stringValue)
+    }
+
+    public func abiEncode(to encoder: ABIEncoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.rawValue)
+    }
+}
+
+extension Asset.Symbol.Code: ABICodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        try self.init(stringValue: try container.decode(String.self))
+    }
+
+    public init(fromAbi decoder: ABIDecoder) throws {
+        var container = try decoder.unkeyedContainer()
+        try self.init(rawValue: try container.decode(UInt64.self))
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -273,6 +330,20 @@ extension Asset: LosslessStringConvertible {
 }
 
 extension Asset.Symbol: LosslessStringConvertible {
+    public init?(_ description: String) {
+        if let symbol = try? Self(stringValue: description) {
+            self = symbol
+        } else {
+            return nil
+        }
+    }
+
+    public var description: String {
+        return self.stringValue
+    }
+}
+
+extension Asset.Symbol.Code: LosslessStringConvertible {
     public init?(_ description: String) {
         if let symbol = try? Self(stringValue: description) {
             self = symbol

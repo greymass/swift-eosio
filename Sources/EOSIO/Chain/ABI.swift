@@ -87,6 +87,7 @@ public struct ABI: Equatable, Hashable {
             case name
             case asset
             case symbol
+            case symbol_code
             case checksum256
             case public_key
             case signature
