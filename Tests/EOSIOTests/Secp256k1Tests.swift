@@ -28,15 +28,13 @@ class Secp256k1Test: XCTestCase {
         let recoveredKey = try Secp256k1.shared.recover(message: message, signature: result.0, recoveryId: result.1)
         XCTAssertEqual(recoveredKey, publicKey)
         let result2 = try Secp256k1.shared.sign(message: message, secretKey: secretKey, ndata: "beef")
-        XCTAssertNotEqual(result.0, result2.0)
-        let result3 = try Secp256k1.shared.sign(message: message, secretKey: secretKey, ndata: "beef")
-        XCTAssertEqual(result2.0, result3.0)
         let recoveredKey2 = try Secp256k1.shared.recover(message: message, signature: result2.0, recoveryId: result2.1)
-        XCTAssertEqual(recoveredKey2, recoveredKey2)
+        XCTAssertEqual(recoveredKey, recoveredKey2)
         XCTAssertThrowsError(try Secp256k1.shared.recover(message: message, signature: result.0, recoveryId: 2))
         XCTAssertThrowsError(try Secp256k1.shared.recover(message: message, signature: "fafa", recoveryId: 0))
         XCTAssertThrowsError(try Secp256k1.shared.recover(message: "beef", signature: result.0, recoveryId: result.1))
         XCTAssertTrue(Secp256k1.shared.verify(signature: result.0, message: message, publicKey: publicKey))
+        XCTAssertTrue(Secp256k1.shared.verify(signature: result2.0, message: message, publicKey: publicKey))
     }
 
     func testCustomContext() throws {
