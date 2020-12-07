@@ -35,7 +35,7 @@ public extension API.V1.Chain {
         public let owner: Name
         public let proxy: Name
         public let producers: [Name]
-        public let staked: FCInt<Int64>
+        public let staked: FCInt<Int64>?
         public let lastVoteWeight: Float64
         public let proxiedVoteWeight: Float64
         public let isProxy: UInt8 // ABI says bool but eosio serializer gives a number?
