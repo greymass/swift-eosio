@@ -223,6 +223,46 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.tokens.first?.amount, 0.113)
         XCTAssertEqual(res.tokens.first?.contract, Name("eosio.token"))
     }
+    
+    func testHyperionGetTransaction() throws {
+        let hyperClient = Client(
+            address: URL(string: "https://proton.cryptolions.io")!,
+            session: mockSession
+        )
+
+        struct TransferActionData: ABIDecodable {
+            let from: Name
+            let to: Name
+            let amount: Double
+            let symbol: String
+            let memo: String
+            let quantity: Asset
+        }
+
+        let req = API.V2.Hyperion.GetTransaction<TransferActionData>(TransactionId(stringLiteral: "9a36577425f7a91ccde75c68a541922877ca2ce206f7c8094247efaf953044a6"))
+
+        let res = try hyperClient.sendSync(req).get()
+        XCTAssertEqual(res.actions.count, 1)
+        XCTAssertEqual(res.actions.first?.timestamp, TimePoint(rawValue: 1_587_575_238_000_000))
+        XCTAssertEqual(res.actions.first?.blockNum, BlockNum(868))
+        XCTAssertEqual(res.actions.first?.trxId, TransactionId(stringLiteral: "9a36577425f7a91ccde75c68a541922877ca2ce206f7c8094247efaf953044a6"))
+        XCTAssertEqual(res.actions.first?.act.account, Name("eosio.token"))
+        XCTAssertEqual(res.actions.first?.act.name, Name("transfer"))
+        XCTAssertEqual(res.actions.first?.act.authorization.first, PermissionLevel(Name("adrop.proton"), Name("active")))
+        XCTAssertEqual(res.actions.first?.act.data.amount, 0.113)
+        XCTAssertEqual(res.actions.first?.act.data.symbol, "XPR")
+        XCTAssertEqual(res.actions.first?.act.data.quantity, Asset(stringLiteral: "0.1130 XPR"))
+        XCTAssertEqual(res.actions.first?.act.data.memo, "1587575237728391")
+        XCTAssertEqual(res.actions.first?.act.data.to, Name("protonwallet"))
+        XCTAssertEqual(res.actions.first?.act.data.from, Name("adrop.proton"))
+        XCTAssertEqual(res.actions.first?.notified.first, Name("eosio.token"))
+        XCTAssertEqual(res.actions.first?.cpuUsageUs, 301)
+        XCTAssertEqual(res.actions.first?.netUsageWords, 18)
+        XCTAssertEqual(res.actions.first?.globalSequence, 112_766)
+        XCTAssertEqual(res.actions.first?.producer, Name("protonabp"))
+        XCTAssertEqual(res.actions.first?.actionOrdinal, 1)
+        XCTAssertEqual(res.actions.first?.creatorActionOrdinal, 0)
+    }
 
     func testHyperionGetTransferActions() throws {
         let hyperClient = Client(
