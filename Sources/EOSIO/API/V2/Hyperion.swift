@@ -6,6 +6,37 @@ public extension API.V2 {
 }
 
 public extension API.V2.Hyperion {
+
+    /// Shared struct for GetTransaction, GetActions
+    struct RamDelta: Decodable {
+        public let account: Name
+        public let delta: Int64
+    }
+
+    /// Shared struct for GetTransaction, GetActions
+    struct ResponseAction<T: ABIDecodable>: Decodable {
+        public let account: Name
+        public let name: Name
+        public let authorization: [PermissionLevel]
+        public let data: T
+    }
+
+    /// Shared struct for GetTransaction, GetActions
+    struct ActionReceipt<T: ABIDecodable>: Decodable {
+        public let timestamp: TimePoint
+        public let blockNum: BlockNum
+        public let trxId: TransactionId
+        public let act: ResponseAction<T>
+        public let notified: [Name]
+        public let cpuUsageUs: UInt?
+        public let netUsageWords: UInt?
+        public let globalSequence: UInt64?
+        public let accountRamDeltas: [RamDelta]?
+        public let producer: Name
+        public let actionOrdinal: UInt32
+        public let creatorActionOrdinal: UInt32
+    }
+
     /// Get all accounts created by one creator.
     struct GetCreatedAccounts: Request {
         public static let path = "/v2/history/get_created_accounts"
@@ -92,6 +123,26 @@ public extension API.V2.Hyperion {
             self.skip = skip
         }
     }
+    
+    /// Get all actions belonging to the same transaction
+    struct GetTransaction<T: ABIDecodable>: Request {
+        public static var path: String { "/v2/history/get_transaction" }
+        public static var method: String { "GET" }
+
+        public struct Response: Decodable {
+            public let actions: [ActionReceipt<T>]
+        }
+
+        public var id: TransactionId
+
+        public enum CodingKeys: String, CodingKey {
+            case id = "id"
+        }
+
+        public init(_ transactionId: TransactionId) {
+            self.id = transactionId
+        }
+    }
 
     /// Get actions based on notified account.
     struct GetActions<T: ABIDecodable>: Request {
@@ -103,35 +154,8 @@ public extension API.V2.Hyperion {
             case asc
         }
 
-        public struct RamDelta: Decodable {
-            public let account: Name
-            public let delta: Int64
-        }
-
-        public struct ResponseAction: Decodable {
-            public let account: Name
-            public let name: Name
-            public let authorization: [PermissionLevel]
-            public let data: T
-        }
-
-        public struct ActionReceipt: Decodable {
-            public let timestamp: TimePoint
-            public let blockNum: BlockNum
-            public let trxId: TransactionId
-            public let act: ResponseAction
-            public let notified: [Name]
-            public let cpuUsageUs: UInt?
-            public let netUsageWords: UInt?
-            public let globalSequence: UInt64?
-            public let accountRamDeltas: [RamDelta]?
-            public let producer: Name
-            public let actionOrdinal: UInt32
-            public let creatorActionOrdinal: UInt32
-        }
-
         public struct Response: Decodable {
-            public let actions: [ActionReceipt]
+            public let actions: [ActionReceipt<T>]
         }
 
         /// Creator account to lookup.
@@ -313,5 +337,5 @@ public extension API.V2.Hyperion {
         }
     }
 
-    // TODO: get_account, get_abi_snapshot, get_deltas, get_transaction, health, get_proposals, get_voters
+    // TODO: get_account, get_abi_snapshot, get_deltas, health, get_proposals, get_voters
 }
