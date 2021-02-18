@@ -132,7 +132,7 @@ extension KeyedEncodingContainerProtocol where Key == JSONCodingKeys {
                 try self.encode(value, forKey: key)
             case let value as [Any]:
                 try self.encode(value, forKey: key)
-            case Any?.none:
+            case Optional<Any>.none:
                 try encodeNil(forKey: key)
             default:
                 throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: codingPath + [key], debugDescription: "Invalid JSON value"))
@@ -173,7 +173,7 @@ extension UnkeyedEncodingContainer {
                 try self.encode(value)
             case let value as [Any]:
                 try self.encodeNestedArray(value)
-            case Any?.none:
+            case Optional<Any>.none:
                 try encodeNil()
             default:
                 let keys = JSONCodingKeys(intValue: index).map { [$0] } ?? []

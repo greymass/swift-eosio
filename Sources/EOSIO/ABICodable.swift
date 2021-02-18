@@ -261,7 +261,7 @@ private func _encodeAny(_ value: Any,
     }
     if type.flags.contains(.optional) || type.flags.contains(.binaryExt) {
         let hasValue: Bool
-        if case Any?.none = value {
+        if case Optional<Any>.none = value {
             hasValue = false
         } else {
             hasValue = true
