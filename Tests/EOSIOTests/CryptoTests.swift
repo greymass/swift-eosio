@@ -73,6 +73,11 @@ final class CryptoTests: XCTestCase {
         XCTAssertNil(PublicKey("garbage" as String))
         XCTAssertNil(PrivateKey("garbage" as String))
         XCTAssertNil(Signature("garbage" as String))
+
+        XCTAssertEqual(
+            "PVT_K1_zVFeDTSxD6KDCjQomkzZMdB5AiaR3EnCZLrxmsx5tDzH937km" as PrivateKey,
+            "5JomqKfYXQn5aDb1T1Df5c6kPfzdnYuKW1d868pdBxjs9quS1xE"
+        )
     }
 
     func testSharedSecret() {
