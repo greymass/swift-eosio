@@ -996,8 +996,8 @@ public protocol TaposSource {
     var taposValues: (refBlockNum: UInt16, refBlockPrefix: UInt32, expiration: TimePointSec?) { get }
 }
 
-extension TaposSource {
-    public var transactionHeader: TransactionHeader {
+public extension TaposSource {
+    var transactionHeader: TransactionHeader {
         let values = self.taposValues
         return .init(
             expiration: values.expiration ?? TimePointSec(Date().addingTimeInterval(60)),
@@ -1094,12 +1094,12 @@ public enum ChainName: UInt8, CaseIterable, CustomStringConvertible {
     }
 }
 
-extension ChainId {
-    public init(_ name: ChainName) {
+public extension ChainId {
+    init(_ name: ChainName) {
         self = name.id
     }
 
-    public var name: ChainName {
+    var name: ChainName {
         for name in ChainName.allCases {
             if self == name.id {
                 return name

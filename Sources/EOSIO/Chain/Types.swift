@@ -134,9 +134,9 @@ public struct Authority: ABICodable, Equatable, Hashable {
     }
 }
 
-extension Authority {
+public extension Authority {
     /// Total weight of all waits.
-    public var waitThreshold: UInt32 {
+    var waitThreshold: UInt32 {
         self.waits.reduce(0) { (val, wait) -> UInt32 in
             val + UInt32(wait.weight)
         }
@@ -145,7 +145,7 @@ extension Authority {
     /// Check if given public key has permission in this authority,
     /// - Parameter includePartial: Whether to consider auths where the key is included but can't be reached alone (e.g. multisig).
     /// - Attention: Does not take indirect permissions for the key via account weights into account.
-    public func hasPermission(for publicKey: PublicKey, includePartial: Bool = false) -> Bool {
+    func hasPermission(for publicKey: PublicKey, includePartial: Bool = false) -> Bool {
         let keyTreshhold = self.threshold - self.waitThreshold
         for val in self.keys {
             if val.key == publicKey, includePartial || val.weight >= keyTreshhold {

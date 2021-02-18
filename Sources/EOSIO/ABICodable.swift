@@ -28,14 +28,14 @@ extension String: ABICodable {
 
 /// Fixed-width integers are encoded as little endian.
 /// - NOTE: The Int and UInt types are encoded as var(u)ints by the encoder.
-extension FixedWidthInteger where Self: ABICodable {
-    public init(fromAbi decoder: ABIDecoder) throws {
+public extension FixedWidthInteger where Self: ABICodable {
+    init(fromAbi decoder: ABIDecoder) throws {
         var v = Self()
         try decoder.read(into: &v)
         self.init(littleEndian: v)
     }
 
-    public func abiEncode(to encoder: ABIEncoder) throws {
+    func abiEncode(to encoder: ABIEncoder) throws {
         try withUnsafeBytes(of: self.littleEndian) {
             try encoder.encode(contentsOf: $0)
         }
@@ -261,7 +261,7 @@ private func _encodeAny(_ value: Any,
     }
     if type.flags.contains(.optional) || type.flags.contains(.binaryExt) {
         let hasValue: Bool
-        if case Optional<Any>.none = value {
+        if case Any?.none = value {
             hasValue = false
         } else {
             hasValue = true

@@ -132,8 +132,8 @@
         }
     }
 
-    extension Data {
-        public func deflated(level: CompressionLevel = .defaultCompression) throws -> Data {
+    public extension Data {
+        func deflated(level: CompressionLevel = .defaultCompression) throws -> Data {
             guard !self.isEmpty else {
                 return Data()
             }
@@ -196,7 +196,7 @@
             return data
         }
 
-        public func inflated() throws -> Data {
+        func inflated() throws -> Data {
             guard !self.isEmpty else {
                 return Data()
             }

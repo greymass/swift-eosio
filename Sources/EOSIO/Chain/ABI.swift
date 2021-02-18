@@ -428,9 +428,9 @@ extension ABI.Struct: ExpressibleByDictionaryLiteral {
 
 // MARK: ABI Definition
 
-extension ABI {
+public extension ABI {
     /// The ABI definition for the ABI definition.
-    public static let abi = ABI(structs: [
+    static let abi = ABI(structs: [
         ["extensions_entry": [
             ["tag", "uint16"],
             ["value", "bytes"],

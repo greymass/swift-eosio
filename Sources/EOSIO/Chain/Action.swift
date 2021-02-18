@@ -29,14 +29,14 @@ public struct Action: ABICodable, Equatable, Hashable {
     }
 }
 
-extension Action {
+public extension Action {
     /// Decode action to compatible type.
-    public func data<T: ABIDecodable>(as type: T.Type) throws -> T {
+    func data<T: ABIDecodable>(as type: T.Type) throws -> T {
         return try ABIDecoder.decode(type, data: self.data)
     }
 
     /// Decode action data using ABI definition.
-    public func data(using abi: ABI) throws -> [String: Any] {
+    func data(using abi: ABI) throws -> [String: Any] {
         let decoder = ABIDecoder()
         guard let abiAction = abi.getAction(self.name) else {
             throw DecodingError.dataCorrupted(DecodingError.Context(
@@ -55,7 +55,7 @@ extension Action {
     }
 
     /// Re-encode action data to JSON using ABI definition.
-    public func jsonData(using abi: ABI) throws -> Data {
+    func jsonData(using abi: ABI) throws -> Data {
         let data = try self.data(using: abi)
         let encoder = Client.JSONEncoder()
         return try encoder.encode(AnyABICodable(data, abi: abi, type: abi.getAction(self.name)?.type))

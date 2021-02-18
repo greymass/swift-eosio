@@ -96,7 +96,7 @@ extension UnkeyedDecodingContainer {
             } else if let nestedArray = try? decodeNestedArray([Any].self) {
                 array.append(nestedArray)
             } else if let isValueNil = try? decodeNil(), isValueNil == true {
-                array.append(Optional<Any>.none as Any)
+                array.append(Any?.none as Any)
             } else {
                 throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: codingPath, debugDescription: "Unable to decode value"))
             }
@@ -132,7 +132,7 @@ extension KeyedEncodingContainerProtocol where Key == JSONCodingKeys {
                 try self.encode(value, forKey: key)
             case let value as [Any]:
                 try self.encode(value, forKey: key)
-            case Optional<Any>.none:
+            case Any?.none:
                 try encodeNil(forKey: key)
             default:
                 throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: codingPath + [key], debugDescription: "Invalid JSON value"))
@@ -173,7 +173,7 @@ extension UnkeyedEncodingContainer {
                 try self.encode(value)
             case let value as [Any]:
                 try self.encodeNestedArray(value)
-            case Optional<Any>.none:
+            case Any?.none:
                 try encodeNil()
             default:
                 let keys = JSONCodingKeys(intValue: index).map { [$0] } ?? []

@@ -6,7 +6,6 @@ public extension API.V2 {
 }
 
 public extension API.V2.Hyperion {
-
     /// Shared struct for GetTransaction, GetActions
     struct RamDelta: Decodable {
         public let account: Name
@@ -123,7 +122,7 @@ public extension API.V2.Hyperion {
             self.skip = skip
         }
     }
-    
+
     /// Get all actions belonging to the same transaction
     struct GetTransaction<T: ABIDecodable>: Request {
         public static var path: String { "/v2/history/get_transaction" }
@@ -136,7 +135,7 @@ public extension API.V2.Hyperion {
         public var id: TransactionId
 
         public enum CodingKeys: String, CodingKey {
-            case id = "id"
+            case id
         }
 
         public init(_ transactionId: TransactionId) {

@@ -172,8 +172,8 @@ private func isCanonicalK1(_ sig: Data) -> Bool {
 // MARK: Language extensions
 
 // not confirming to LosslessStringConvertible so that secrets can't be unintentionally printed
-extension PrivateKey {
-    public init?(_ wif: String) {
+public extension PrivateKey {
+    init?(_ wif: String) {
         guard let instance = try? PrivateKey(stringValue: wif) else {
             return nil
         }

@@ -121,8 +121,8 @@ public struct PackedTransaction: ABICodable, Equatable, Hashable {
 
 // MARK: Signing digest
 
-extension Transaction {
-    public var id: TransactionId {
+public extension Transaction {
+    var id: TransactionId {
         let encoder = ABIEncoder()
         guard let data: Data = try? encoder.encode(self) else {
             return Checksum256(Data(repeating: 0, count: 32))
@@ -130,7 +130,7 @@ extension Transaction {
         return Checksum256.hash(data)
     }
 
-    public func data(using chainId: ChainId) throws -> Data {
+    func data(using chainId: ChainId) throws -> Data {
         let encoder = ABIEncoder()
         var data: Data = try encoder.encode(self)
         data.insert(contentsOf: chainId.bytes, at: 0)
@@ -138,7 +138,7 @@ extension Transaction {
         return data
     }
 
-    public func digest(using chainId: ChainId) throws -> Checksum256 {
+    func digest(using chainId: ChainId) throws -> Checksum256 {
         return Checksum256.hash(try self.data(using: chainId))
     }
 }
@@ -159,8 +159,8 @@ private enum TransactionCodingKeys: String, CodingKey {
     case contextFreeData
 }
 
-extension Transaction {
-    public init(from decoder: Decoder) throws {
+public extension Transaction {
+    init(from decoder: Decoder) throws {
         self.header = try TransactionHeader(from: decoder)
         let container = try decoder.container(keyedBy: TransactionCodingKeys.self)
         self.contextFreeActions = try container.decode(.contextFreeActions)
@@ -168,7 +168,7 @@ extension Transaction {
         self.transactionExtensions = try container.decode(.transactionExtensions)
     }
 
-    public func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         try self.header.encode(to: encoder)
         var container = encoder.container(keyedBy: TransactionCodingKeys.self)
         try container.encode(self.contextFreeActions, forKey: .contextFreeActions)
@@ -177,15 +177,15 @@ extension Transaction {
     }
 }
 
-extension SignedTransaction {
-    public init(from decoder: Decoder) throws {
+public extension SignedTransaction {
+    init(from decoder: Decoder) throws {
         self.transaction = try Transaction(from: decoder)
         let container = try decoder.container(keyedBy: TransactionCodingKeys.self)
         self.signatures = try container.decode(.signatures)
         self.contextFreeData = try container.decode(.contextFreeData)
     }
 
-    public func encode(to encoder: Encoder) throws {
+    func encode(to encoder: Encoder) throws {
         try self.transaction.encode(to: encoder)
         var container = encoder.container(keyedBy: TransactionCodingKeys.self)
         try container.encode(self.signatures, forKey: .signatures)

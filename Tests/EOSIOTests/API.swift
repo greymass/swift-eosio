@@ -223,7 +223,7 @@ final class APITests: XCTestCase {
         XCTAssertEqual(res.tokens.first?.amount, 0.113)
         XCTAssertEqual(res.tokens.first?.contract, Name("eosio.token"))
     }
-    
+
     func testHyperionGetTransaction() throws {
         let hyperClient = Client(
             address: URL(string: "https://proton.cryptolions.io")!,
