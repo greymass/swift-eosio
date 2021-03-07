@@ -52,7 +52,6 @@ final class TypeTests: XCTestCase {
         XCTAssertEqual(Name("foo" as String), "foo")
         XCTAssertEqual(("foo" as Name).description, "foo")
         XCTAssertEqual(Name("❄︎flake"), ".flake")
-        print(Name(0).stringValue)
         XCTAssert(Name(0).isValidAccountName == false)
         XCTAssert(Name(1).isValidAccountName == false)
         XCTAssert(Name("foobar").isValidAccountName == true)

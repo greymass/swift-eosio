@@ -208,7 +208,6 @@ final class ABICodableTests: XCTestCase {
 
     func testTimePoint() {
         let tp = TimePoint(Date(timeIntervalSince1970: 1_234_567_890.123))
-        print(tp.rawValue)
         AssertABICodable(
             [tp],
             """
@@ -217,7 +216,6 @@ final class ABICodableTests: XCTestCase {
             "01f8b88a3cd5620400"
         )
         let tps = TimePointSec(Date(timeIntervalSince1970: 1_234_567_890.123))
-        print(tps.rawValue)
         AssertABICodable(
             [tps],
             """
