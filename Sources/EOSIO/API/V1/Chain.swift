@@ -308,33 +308,15 @@ public extension API.V1.Chain {
     }
 
     /// Get list of accounts controlled by given public key or authority.
-    /// - Attention: Experimental endpoint, see <https://github.com/EOSIO/eos/pull/8899>
     struct GetAccountsByAuthorizers: Request {
         public static let path = "/v1/chain/get_accounts_by_authorizers"
 
         /// Account auth response type, used by the `GetAccountsByAuthorizers` api.
         public struct AccountAuthorizer: Decodable, Equatable, Hashable {
-            public enum Authorizer: Decodable, Equatable, Hashable {
-                case publicKey(PublicKey)
-                case permissionLevel(PermissionLevel)
-
-                public init(from decoder: Decoder) throws {
-                    let container = try decoder.singleValueContainer()
-                    if let x = try? container.decode(PublicKey.self) {
-                        self = .publicKey(x)
-                        return
-                    }
-                    if let x = try? container.decode(PermissionLevel.self) {
-                        self = .permissionLevel(x)
-                        return
-                    }
-                    throw DecodingError.typeMismatch(Authorizer.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Wrong type for AuthorizerVariant"))
-                }
-            }
-
             public let accountName: Name
             public let permissionName: Name
-            public let authorizer: Authorizer
+            public let authorizingAccount: PermissionLevel?
+            public let authorizingKey: PublicKey?
             public let weight: Weight
             public let threshold: UInt32
         }

@@ -26,7 +26,7 @@ var mockSession = MockSession(
     resourcePath.appendingPathComponent("API", isDirectory: true),
     mode: env["MOCK_RECORD"] != nil ? .record : .replay
 )
-let nodeAddress = URL(string: "https://jungle.greymass.com")! // only used when recording
+let nodeAddress = URL(string: "https://jungle3.greymass.com")! // only used when recording
 let client = Client(address: nodeAddress, session: mockSession)
 
 final class APITests: XCTestCase {
@@ -116,7 +116,7 @@ final class APITests: XCTestCase {
         let res = try! client.sendSync(req).get()
         XCTAssertEqual(res.accounts.first?.accountName, "jestasmobile")
         XCTAssertEqual(res.accounts.first?.permissionName, "active")
-        XCTAssertEqual(res.accounts.first?.authorizer, .publicKey(pubkey))
+        XCTAssertEqual(res.accounts.first?.authorizingKey, pubkey)
         XCTAssertEqual(res.accounts.first?.threshold, 1)
         XCTAssertEqual(res.accounts.first?.weight, 1)
     }
@@ -126,7 +126,7 @@ final class APITests: XCTestCase {
         let res = try! client.sendSync(req).get()
         XCTAssertEqual(res.accounts.first?.accountName, "eosio.assert")
         XCTAssertEqual(res.accounts.first?.permissionName, "active")
-        XCTAssertEqual(res.accounts.first?.authorizer, .permissionLevel("eosio@active"))
+        XCTAssertEqual(res.accounts.first?.authorizingAccount, "eosio@active")
         XCTAssertEqual(res.accounts.first?.threshold, 1)
         XCTAssertEqual(res.accounts.first?.weight, 1)
     }
