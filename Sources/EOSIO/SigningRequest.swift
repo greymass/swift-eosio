@@ -350,14 +350,19 @@ public struct SigningRequest: Equatable, Hashable {
 
     /// The unresolved transaction.
     public var transaction: Transaction {
-        let actions: [Action]
-        switch self.data.req {
-        case let .transaction(tx):
-            return tx
-        default:
-            actions = self.actions
+        get {
+            let actions: [Action]
+            switch self.data.req {
+            case let .transaction(tx):
+                return tx
+            default:
+                actions = self.actions
+            }
+            return Transaction(TransactionHeader.zero, actions: actions)
         }
-        return Transaction(TransactionHeader.zero, actions: actions)
+        set {
+            self.data.req = .transaction(newValue)
+        }
     }
 
     /// ABIs required to resolve this request.
@@ -778,7 +783,7 @@ public struct ResolvedSigningRequest: Hashable, Equatable {
     public let signer: PermissionLevel
     public private(set) var transaction: Transaction
 
-    fileprivate init(_ request: SigningRequest, _ signer: PermissionLevel, _ transaction: Transaction, _ chainId: ChainId?) {
+    public init(_ request: SigningRequest, _ signer: PermissionLevel, _ transaction: Transaction, _ chainId: ChainId?) {
         self.request = request
         self.signer = signer
         self.transaction = transaction
