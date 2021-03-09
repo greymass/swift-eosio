@@ -142,7 +142,7 @@ open class Client {
             if let error = error as? Error {
                 return .failure(error)
             } else {
-                return .failure(.codingError(message: "Unexpected decoding error", error: error))
+                return .failure(.codingError(message: "Unable to decode response", error: error))
             }
         }
     }
@@ -151,11 +151,13 @@ open class Client {
     open func decodeResponse<T: Request>(for _: T, response: HTTPURLResponse, data: Data) throws -> T.Response {
         let decoder = Client.JSONDecoder()
         if response.statusCode > 299 {
-            if let error = try? decoder.decode(ResponseError.self, from: data) {
-                throw Error.responseError(error: error)
-            } else {
-                throw Error.networkError(message: "Server responded with HTTP \(response.statusCode)", error: nil)
+            let responseError: ResponseError
+            do {
+                responseError = try decoder.decode(ResponseError.self, from: data)
+            } catch {
+                throw Error.networkError(message: "Server responded with HTTP \(response.statusCode)", error: error)
             }
+            throw Error.responseError(error: responseError)
         }
         return try decoder.decode(T.Response.self, from: data)
     }
