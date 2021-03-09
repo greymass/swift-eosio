@@ -125,7 +125,7 @@ open class Client {
     }
 
     /// Resolve a URLSession dataTask to a `Response`.
-    internal func resolveResponse<T: Request>(for _: T, data: Data?, response: URLResponse?) -> Result<T.Response, Error> {
+    internal func resolveResponse<T: Request>(for type: T, data: Data?, response: URLResponse?) -> Result<T.Response, Error> {
         guard let response = response else {
             return Result.failure(Error.networkError(message: "No response from server", error: nil))
         }
@@ -135,22 +135,29 @@ open class Client {
         guard let data = data else {
             return Result.failure(Error.networkError(message: "Response body empty", error: nil))
         }
-        let decoder = Client.JSONDecoder()
-        if httpResponse.statusCode > 299 {
-            do {
-                let error = try decoder.decode(ResponseError.self, from: data)
-                return Result.failure(Error.responseError(error: error))
-            } catch {
-                return Result.failure(Error.networkError(message: "Server responded with HTTP \(httpResponse.statusCode)", error: error))
+        do {
+            let rv = try decodeResponse(for: type, response: httpResponse, data: data)
+            return .success(rv)
+        } catch {
+            if let error = error as? Error {
+                return .failure(error)
+            } else {
+                return .failure(.codingError(message: "Unexpected decoding error", error: error))
             }
         }
-        let rv: T.Response
-        do {
-            rv = try decoder.decode(T.Response.self, from: data)
-        } catch {
-            return Result.failure(Error.codingError(message: "Unable to decode response", error: error))
+    }
+
+    /// Decode response fror request, subclasses can override this to implement additional parsing logic.
+    open func decodeResponse<T: Request>(for _: T, response: HTTPURLResponse, data: Data) throws -> T.Response {
+        let decoder = Client.JSONDecoder()
+        if response.statusCode > 299 {
+            if let error = try? decoder.decode(ResponseError.self, from: data) {
+                throw Error.responseError(error: error)
+            } else {
+                throw Error.networkError(message: "Server responded with HTTP \(response.statusCode)", error: nil)
+            }
         }
-        return Result.success(rv)
+        return try decoder.decode(T.Response.self, from: data)
     }
 
     /// Send a request.
