@@ -5,7 +5,7 @@
 /// This is needed because nodeos (or more precisely `fc` the library nodeos relies on for json encoding its structs) thinks its a good idea to encode numbers as strings when
 /// they exceed `0xFFFFFFFF` (UInt32.max), this is presumably done so that JavaScript JSON decoders won't loose precision for values larger than 52-bit.
 public struct FCInt<Wrapped>: Equatable, Codable where Wrapped: ExpressibleByIntegerLiteral & Comparable & Codable & LosslessStringConvertible {
-    var value: Wrapped
+    public var value: Wrapped
 
     init(_ value: Wrapped) {
         self.value = value
