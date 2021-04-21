@@ -79,10 +79,26 @@ open class Client {
     /// The clients user-agent string.
     static let userAgent = "swift-eosio/\(SWIFT_EOSIO_VERSION) (+https://github.com/greymass/swift-eosio)"
 
+    /// Underlying HTTP error contained by `Error.networkError` when the response data is in a unknown format.
+    public struct HTTPResponseError: LocalizedError {
+        public let response: HTTPURLResponse
+        public let data: Data
+
+        public var errorDescription: String? {
+            var rv = "HTTP \(response.statusCode)"
+            if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
+                rv += " (\(String(describing: json)))"
+            } else if data.count <= 1024, let text = String(bytes: data, encoding: .ascii) {
+                rv += " (\(text))"
+            }
+            return rv
+        }
+    }
+
     /// All errors `Client` can throw.
     public enum Error: LocalizedError {
         /// Unable to send request or invalid response from server.
-        case networkError(message: String, error: Swift.Error?)
+        case networkError(message: String, error: Swift.Error? = nil)
         /// Server responded with an error.
         case responseError(error: ResponseError)
         /// Unable to decode the result or encode the request params.
@@ -127,13 +143,13 @@ open class Client {
     /// Resolve a URLSession dataTask to a `Response`.
     internal func resolveResponse<T: Request>(for type: T, data: Data?, response: URLResponse?) -> Result<T.Response, Error> {
         guard let response = response else {
-            return Result.failure(Error.networkError(message: "No response from server", error: nil))
+            return Result.failure(Error.networkError(message: "No response from server"))
         }
         guard let httpResponse = response as? HTTPURLResponse else {
-            return Result.failure(Error.networkError(message: "Not a HTTP response", error: nil))
+            return Result.failure(Error.networkError(message: "Not a HTTP response"))
         }
         guard let data = data else {
-            return Result.failure(Error.networkError(message: "Response body empty", error: nil))
+            return Result.failure(Error.networkError(message: "Response body empty"))
         }
         do {
             let rv = try decodeResponse(for: type, response: httpResponse, data: data)
@@ -151,13 +167,11 @@ open class Client {
     open func decodeResponse<T: Request>(for _: T, response: HTTPURLResponse, data: Data) throws -> T.Response {
         let decoder = Client.JSONDecoder()
         if response.statusCode > 299 {
-            let responseError: ResponseError
-            do {
-                responseError = try decoder.decode(ResponseError.self, from: data)
-            } catch {
-                throw Error.networkError(message: "Server responded with HTTP \(response.statusCode)", error: error)
+            if let error = try? decoder.decode(ResponseError.self, from: data) {
+                throw Error.responseError(error: error)
+            } else {
+                throw Error.networkError(message: "Unexpected error response", error: HTTPResponseError(response: response, data: data))
             }
-            throw Error.responseError(error: responseError)
         }
         return try decoder.decode(T.Response.self, from: data)
     }
