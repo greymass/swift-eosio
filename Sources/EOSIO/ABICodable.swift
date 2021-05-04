@@ -260,15 +260,7 @@ private func _encodeAny(_ value: Any,
         }
     }
     if type.flags.contains(.optional) || type.flags.contains(.binaryExt) {
-        let hasValue: Bool
-        if case Optional<Any>.none = value {
-            hasValue = false
-        } else if String(describing: value) == "Optional(nil)" {
-            // fix for swift >5.3 where some(!!) optionals no longer detectable using the method above
-            hasValue = false
-        } else {
-            hasValue = true
-        }
+        let hasValue: Bool = !(value as Optional<Any>).isNil
         if type.flags.contains(.binaryExt), !hasValue {
             return
         }
