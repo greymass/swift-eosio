@@ -137,7 +137,7 @@ public struct Authority: ABICodable, Equatable, Hashable {
 public extension Authority {
     /// Total weight of all waits.
     var waitThreshold: UInt32 {
-        self.waits.reduce(0) { (val, wait) -> UInt32 in
+        self.waits.reduce(0) { val, wait -> UInt32 in
             val + UInt32(wait.weight)
         }
     }

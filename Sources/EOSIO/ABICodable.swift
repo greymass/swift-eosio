@@ -260,7 +260,7 @@ private func _encodeAny(_ value: Any,
         }
     }
     if type.flags.contains(.optional) || type.flags.contains(.binaryExt) {
-        let hasValue: Bool = !(value as Optional<Any>).isNil
+        let hasValue: Bool = !(value as Any?).isNil
         if type.flags.contains(.binaryExt), !hasValue {
             return
         }

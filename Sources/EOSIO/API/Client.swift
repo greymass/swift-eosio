@@ -88,7 +88,7 @@ open class Client {
             var rv = "HTTP \(response.statusCode)"
             if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
                 rv += " (\(String(describing: json)))"
-            } else if data.count <= 1024, let text = String(bytes: data, encoding: .ascii) {
+            } else if self.data.count <= 1024, let text = String(bytes: data, encoding: .ascii) {
                 rv += " (\(text))"
             }
             return rv
@@ -213,17 +213,17 @@ open class Client {
 // MARK: JSON Coding helpers
 
 extension Client {
-    static let dateEncoder = Foundation.JSONEncoder.DateEncodingStrategy.custom { (date, encoder) throws in
+    static let dateEncoder = Foundation.JSONEncoder.DateEncodingStrategy.custom { date, encoder throws in
         var container = encoder.singleValueContainer()
         try container.encode(TimePoint(date).stringValue)
     }
 
-    static let dataEncoder = Foundation.JSONEncoder.DataEncodingStrategy.custom { (data, encoder) throws in
+    static let dataEncoder = Foundation.JSONEncoder.DataEncodingStrategy.custom { data, encoder throws in
         var container = encoder.singleValueContainer()
         try container.encode(data.hexEncodedString())
     }
 
-    static let dateDecoder = Foundation.JSONDecoder.DateDecodingStrategy.custom { (decoder) -> Date in
+    static let dateDecoder = Foundation.JSONDecoder.DateDecodingStrategy.custom { decoder -> Date in
         let container = try decoder.singleValueContainer()
         guard let date = TimePoint(try container.decode(String.self))?.date else {
             throw DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date")
@@ -231,7 +231,7 @@ extension Client {
         return date
     }
 
-    static let dataDecoder = Foundation.JSONDecoder.DataDecodingStrategy.custom { (decoder) -> Data in
+    static let dataDecoder = Foundation.JSONDecoder.DataDecodingStrategy.custom { decoder -> Data in
         let container = try decoder.singleValueContainer()
         return Data(hexEncoded: try container.decode(String.self))
     }
