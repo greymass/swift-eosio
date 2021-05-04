@@ -170,4 +170,11 @@ class SigningRequestTests: XCTestCase {
         )
         XCTAssertEqual(try resolved.transaction.digest(using: request.chainId), "70d1fd5bda1998135ed44cbf26bd1cc2ed976219b2b6913ac13f41d4dd013307")
     }
+
+    func testResolveMsig() throws {
+        let request = try SigningRequest("esr:gmNgZGJAAYwMDMURTK8MQoFsh9yqbFPGCVeviF7s9C0Gya54a2SkIKBW_MPj7ibrC7pP4o-XhaSiK2Bgss4oKSkottLXT07SS8xLzsgv0svJzMvWN0yyMDIxMzLUNUxLS9Y1STM31000TrbQNTJKNExKTrI0NTRLZuIuSi0pLcqLL0gsyTCGGVReXq6XlJOfXayXma-fW5yZrp-UWZJRmpsEZOYZ6qcXpCZl5JRWlWcXVrCArGKRuzIhAQA")
+        let abi = try ABI(json: loadTestResource("eosio.msig.abi.json"))
+        let header = TransactionHeader.zero
+        XCTAssertNoThrow(try request.resolve(using: "foo@bar", abis: ["eosio.msig": abi], tapos: header))
+    }
 }
