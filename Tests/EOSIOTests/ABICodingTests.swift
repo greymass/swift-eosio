@@ -250,4 +250,32 @@ final class ABICodableTests: XCTestCase {
         let recoded2 = try! JSONEncoder().encode(object2, asType: "createcol", using: abi)
         XCTAssertEqual(json.normalizedJSON, recoded2.utf8String.normalizedJSON)
     }
+
+    func testComplexVariant() {
+        let abi = try! ABI(json: loadTestResource("variant.abi.json"))
+        let actionJSON = """
+        {
+            "authorized_account": "foobarfoobar",
+            "group": {
+                "logical_operator": 0,
+                "filters": [
+                    [
+                        "COLLECTION_HOLDINGS",
+                        {
+                            "collection_name": "alpacaworlds",
+                            "comparison_operator": 3,
+                            "amount": 1
+                        }
+                    ]
+                ]
+            }
+        }
+        """
+        let actionData = try! JSONSerialization.jsonObject(with: actionJSON.utf8Data, options: [])
+        let encoded = try! ABIEncoder().encode(actionData, asType: "addproofown", using: abi)
+        XCTAssertEqual(encoded, "70cda1745d73285d0001028053bc941b646a340301000000")
+        let decoded = try! ABIDecoder().decode("addproofown", from: encoded, using: abi)
+        let json = try! JSONEncoder().encode(decoded, asType: "addproofown", using: abi)
+        XCTAssertEqual(json.utf8String.normalizedJSON, actionJSON.normalizedJSON)
+    }
 }

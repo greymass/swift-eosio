@@ -1,0 +1,152 @@
+{
+  "version": "eosio::abi/1.2",
+  "types": [{
+      "new_type_name": "FILTER",
+      "type": "variant_TOKEN_HOLDING_TEMPLATE_HOLDINGS_COLLECTION_HOLDINGS_SCHEMA_HOLDINGS"
+    }
+  ],
+  "structs": [{
+      "name": "COLLECTION_HOLDINGS",
+      "base": "",
+      "fields": [{
+          "name": "collection_name",
+          "type": "name"
+        },{
+          "name": "comparison_operator",
+          "type": "uint8"
+        },{
+          "name": "amount",
+          "type": "uint32"
+        }
+      ]
+    },{
+      "name": "LOGICAL_GROUP",
+      "base": "",
+      "fields": [{
+          "name": "logical_operator",
+          "type": "uint8"
+        },{
+          "name": "filters",
+          "type": "FILTER[]"
+        }
+      ]
+    },{
+      "name": "SCHEMA_HOLDINGS",
+      "base": "",
+      "fields": [{
+          "name": "collection_name",
+          "type": "name"
+        },{
+          "name": "schema_name",
+          "type": "name"
+        },{
+          "name": "comparison_operator",
+          "type": "uint8"
+        },{
+          "name": "amount",
+          "type": "uint32"
+        }
+      ]
+    },{
+      "name": "TEMPLATE_HOLDINGS",
+      "base": "",
+      "fields": [{
+          "name": "collection_name",
+          "type": "name"
+        },{
+          "name": "template_id",
+          "type": "uint32"
+        },{
+          "name": "comparison_operator",
+          "type": "uint8"
+        },{
+          "name": "amount",
+          "type": "uint32"
+        }
+      ]
+    },{
+      "name": "TOKEN_HOLDING",
+      "base": "",
+      "fields": [{
+          "name": "token_contract",
+          "type": "name"
+        },{
+          "name": "token_symbol",
+          "type": "symbol"
+        },{
+          "name": "comparison_operator",
+          "type": "uint8"
+        },{
+          "name": "amount",
+          "type": "asset"
+        }
+      ]
+    },{
+      "name": "addproofown",
+      "base": "",
+      "fields": [{
+          "name": "authorized_account",
+          "type": "name"
+        },{
+          "name": "group",
+          "type": "LOGICAL_GROUP"
+        }
+      ]
+    },{
+      "name": "delproofown",
+      "base": "",
+      "fields": [{
+          "name": "authorized_account",
+          "type": "name"
+        },{
+          "name": "own_id",
+          "type": "uint64"
+        }
+      ]
+    },{
+      "name": "proofown_s",
+      "base": "",
+      "fields": [{
+          "name": "own_id",
+          "type": "uint64"
+        },{
+          "name": "group",
+          "type": "LOGICAL_GROUP"
+        }
+      ]
+    }
+  ],
+  "actions": [{
+      "name": "addproofown",
+      "type": "addproofown",
+      "ricardian_contract": ""
+    },{
+      "name": "delproofown",
+      "type": "delproofown",
+      "ricardian_contract": ""
+    }
+  ],
+  "tables": [{
+      "name": "proofown",
+      "index_type": "i64",
+      "key_names": [],
+      "key_types": [],
+      "type": "proofown_s"
+    }
+  ],
+  "ricardian_clauses": [],
+  "error_messages": [],
+  "abi_extensions": [],
+  "variants": [{
+      "name": "variant_TOKEN_HOLDING_TEMPLATE_HOLDINGS_COLLECTION_HOLDINGS_SCHEMA_HOLDINGS",
+      "types": [
+        "TOKEN_HOLDING",
+        "TEMPLATE_HOLDINGS",
+        "COLLECTION_HOLDINGS",
+        "SCHEMA_HOLDINGS"
+      ]
+    }
+  ],
+  "action_results": [],
+  "kv_tables": {}
+}

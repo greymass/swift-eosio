@@ -161,8 +161,7 @@ public struct ABI: Equatable, Hashable {
         let type = ResolvedType(name)
         type.parent = parent
         if let existing = seen[type.typeName] {
-            type.other = existing
-            return type
+            return existing
         }
         seen[type.typeName] = type
         if let alias = self.types.first(where: { $0.newTypeName == type.name }) {

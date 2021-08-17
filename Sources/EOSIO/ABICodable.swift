@@ -242,11 +242,10 @@ private func _encodeAny(_ value: Any,
                         to encoder: Encoder,
                         usingType type: ABI.ResolvedType) throws
 {
-    if let other = type.other {
-        return try _encodeAny(value, to: encoder, usingType: other)
-    }
     func encode(_ value: Any, _ encoder: Encoder) throws {
-        if type.builtIn != nil {
+        if let other = type.other {
+            return try _encodeAny(value, to: encoder, usingType: other)
+        } else if type.builtIn != nil {
             try _encodeAnyBuiltIn(value, to: encoder, usingType: type)
         } else if type.fields != nil {
             try _encodeAnyFields(value, to: encoder, usingType: type)
@@ -401,9 +400,6 @@ func _decodeAny(_ type: String,
 func _decodeAny(_ type: ABI.ResolvedType,
                 from decoder: Decoder) throws -> Any
 {
-    if type.other != nil {
-        return try _decodeAny(type.other!, from: decoder)
-    }
     func decode(_ decoder: Decoder) throws -> Any {
         if let abiDecoder = decoder as? ABIDecoder {
             if type.flags.contains(.optional) {
@@ -449,7 +445,9 @@ func _decodeAny(_ type: ABI.ResolvedType,
         }
     }
     func decodeInner(_ decoder: Decoder) throws -> Any {
-        if type.builtIn != nil {
+        if type.other != nil {
+            return try _decodeAny(type.other!, from: decoder)
+        } else if type.builtIn != nil {
             return try _decodeAnyBuiltIn(type, from: decoder)
         } else if type.fields != nil {
             return try _decodeAnyFields(type, from: decoder)
