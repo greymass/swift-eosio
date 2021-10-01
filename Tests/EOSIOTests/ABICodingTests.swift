@@ -223,6 +223,14 @@ final class ABICodableTests: XCTestCase {
             """,
             "01d2029649"
         )
+        let bts = BlockTimestamp(Date(timeIntervalSince1970: 1_234_567_890.123))
+        AssertABICodable(
+            [bts],
+            """
+            ["2009-02-13T23:31:30.000"]
+            """,
+            "01a47e5122"
+        )
     }
 
     func testComplexABI() {

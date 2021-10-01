@@ -184,6 +184,12 @@ final class TypeTests: XCTestCase {
         time.addTimeInterval(0.123)
         XCTAssertEqual(time, "1970-01-01T00:00:10.123")
     }
+    
+    func testBlockTimestamp() {
+        let t = BlockTimestamp(10)
+        XCTAssertEqual(t, "2000-01-01T00:00:05.000")
+    }
+
 
     func testAuthority() {
         let key = "EOS8YttBP1djravhBMt1u4yWrafG6fyHNPyRKXWRMbrqrHBHtEYHt" as PublicKey

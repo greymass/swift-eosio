@@ -123,6 +123,52 @@ public struct TimePointSec: RawRepresentable, Equatable, Hashable {
     }
 }
 
+/// Type representing a block timestamp (half seconds since 2020).
+public struct BlockTimestamp: RawRepresentable, Equatable, Hashable {
+    internal static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .iso8601)
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.timeZone = TimeZone(secondsFromGMT: 0)
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        return formatter
+    }()
+
+    /// Half-seconds since 2000
+    public var rawValue: UInt32
+
+    /// Create a new instance from raw value.
+    /// - Parameter value: Half-seconds since 2000.
+    public init(rawValue: UInt32) {
+        self.rawValue = rawValue
+    }
+
+    /// Create a new instance from a Date.
+    public init(_ date: Date) {
+        self.rawValue = UInt32(date.timeIntervalSince1970 - 946684800) * 2
+    }
+
+    /// Create a new instance from a ISO 8601-ish date string.
+    /// - Parameter date: Date string, e.g. `2019-01-22T21:42:55.500`.
+    public init?(_ date: String) {
+        guard let date = Self.dateFormatter.date(from: date) else {
+            return nil
+        }
+        self.init(date)
+    }
+
+    /// Date representation.
+    public var date: Date {
+        return Date(timeIntervalSince1970: ((TimeInterval(self.rawValue) / 2) + 946684800))
+    }
+
+    /// ISO 8601-ish formatted string.
+    public var stringValue: String {
+        return Self.dateFormatter.string(from: self.date)
+    }
+}
+
+
 // MARK: ABI Coding
 
 extension TimePoint: ABICodable {
@@ -153,6 +199,32 @@ extension TimePoint: ABICodable {
 }
 
 extension TimePointSec: ABICodable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        guard let instance = Self(try container.decode(String.self)) else {
+            throw DecodingError.dataCorruptedError(
+                in: container, debugDescription: "Unable to decode date"
+            )
+        }
+        self = instance
+    }
+
+    public init(fromAbi decoder: ABIDecoder) throws {
+        let container = try decoder.singleValueContainer()
+        self.rawValue = try container.decode(UInt32.self)
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(self.stringValue)
+    }
+
+    public func abiEncode(to encoder: ABIEncoder) throws {
+        try encoder.encode(self.rawValue)
+    }
+}
+
+extension BlockTimestamp: ABICodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
         guard let instance = Self(try container.decode(String.self)) else {
@@ -222,6 +294,27 @@ extension TimePointSec: ExpressibleByIntegerLiteral {
     }
 }
 
+extension BlockTimestamp: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        guard let instance = BlockTimestamp(value) else {
+            fatalError("Invalid BlockTimestamp literal")
+        }
+        self = instance
+    }
+}
+
+extension BlockTimestamp: LosslessStringConvertible {
+    public var description: String {
+        return self.stringValue
+    }
+}
+
+extension BlockTimestamp: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: UInt32) {
+        self.rawValue = value
+    }
+}
+
 extension TimePoint: Comparable {
     public static func < (lhs: TimePoint, _: TimePoint) -> Bool {
         return lhs.rawValue < lhs.rawValue
@@ -230,6 +323,12 @@ extension TimePoint: Comparable {
 
 extension TimePointSec: Comparable {
     public static func < (lhs: TimePointSec, rhs: TimePointSec) -> Bool {
+        return lhs.rawValue < rhs.rawValue
+    }
+}
+
+extension BlockTimestamp: Comparable {
+    public static func < (lhs: BlockTimestamp, rhs: BlockTimestamp) -> Bool {
         return lhs.rawValue < rhs.rawValue
     }
 }

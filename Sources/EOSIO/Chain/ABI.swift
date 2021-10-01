@@ -94,6 +94,7 @@ public struct ABI: Equatable, Hashable {
             case signature
             case time_point
             case time_point_sec
+            case block_timestamp_type
         }
 
         public struct Flags: OptionSet {

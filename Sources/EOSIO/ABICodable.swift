@@ -370,6 +370,7 @@ private func _encodeAnyBuiltIn(_ value: Any,
     case .public_key: try encodeS(PublicKey.self, value)
     case .time_point: try encodeS(TimePoint.self, value)
     case .time_point_sec: try encodeS(TimePointSec.self, value)
+    case .block_timestamp_type: try encodeS(BlockTimestamp.self, value)
     case .signature: try encodeS(Signature.self, value)
     case .bool: try encode(Bool.self, value)
     case .bytes: try encode(Data.self, value)
@@ -532,6 +533,7 @@ func _decodeAnyBuiltIn(_ type: ABI.ResolvedType,
     case .public_key: return try container.decode(PublicKey.self)
     case .time_point: return try container.decode(TimePoint.self)
     case .time_point_sec: return try container.decode(TimePointSec.self)
+    case .block_timestamp_type: return try container.decode(BlockTimestamp.self)
     case .varint32: return try container.decode(Int.self)
     case .varuint32: return try container.decode(UInt.self)
     case .bool:
