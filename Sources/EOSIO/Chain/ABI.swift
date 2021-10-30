@@ -89,7 +89,9 @@ public struct ABI: Equatable, Hashable {
             case extended_asset
             case symbol
             case symbol_code
+            case checksum160
             case checksum256
+            case checksum512
             case public_key
             case signature
             case time_point

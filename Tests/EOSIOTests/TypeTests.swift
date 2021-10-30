@@ -162,10 +162,24 @@ final class TypeTests: XCTestCase {
         XCTAssertEqual(signed.expiration, signed.transaction.header.expiration)
     }
 
+    func testChecksum160() {
+        XCTAssertEqual(
+            Checksum160.hash("hello".data(using: .utf8)!),
+            "108f07b8382412612c048d07d13f814118445acd"
+        )
+    }
+
     func testChecksum256() {
         XCTAssertEqual(
             Checksum256.hash("hello".data(using: .utf8)!),
             "2cf24dba5fb0a30e26e83b2ac5b9e29e1b161e5c1fa7425e73043362938b9824"
+        )
+    }
+
+    func testChecksum512() {
+        XCTAssertEqual(
+            Checksum512.hash("hello world".data(using: .utf8)!),
+            "309ecc489c12d6eb4cc40f50c902f2b4d0ed77ee511a7c7a9bcd3ca86d4cd86f989dd35bc5ff499670da34255b45b0cfd830e81f605dcf7dc5542e93ae9cd76f"
         )
     }
 
