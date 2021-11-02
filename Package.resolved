@@ -2,11 +2,11 @@
   "object": {
     "pins": [
       {
-        "package": "secp256k1",
+        "package": "secp256k1gm",
         "repositoryURL": "https://github.com/greymass/secp256k1.git",
         "state": {
           "branch": "master",
-          "revision": "24482220d1e7731f6b48df20096d0de840a63af2",
+          "revision": "4da26c7041ba6cf43ba1ab9c404705cd65a624b9",
           "version": null
         }
       },

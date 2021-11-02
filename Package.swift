@@ -1,4 +1,4 @@
-// swift-tools-version:5.1
+// swift-tools-version:5.3
 
 import PackageDescription
 
@@ -8,13 +8,13 @@ let package = Package(
         .library(name: "EOSIO", targets: ["EOSIO"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/greymass/secp256k1.git", .branch("master")),
-        .package(url: "https://github.com/jnordberg/swift-query-string-coder.git", .branch("master")),
+        .package(name: "secp256k1gm", url: "https://github.com/greymass/secp256k1.git", .branch("master")),
+        .package(name: "QueryStringCoder", url: "https://github.com/jnordberg/swift-query-string-coder.git", .branch("master")),
     ],
     targets: [
         .target(
             name: "EOSIO",
-            dependencies: ["secp256k1", "CCrypto", "QueryStringCoder"]
+            dependencies: ["secp256k1gm", "CCrypto", "QueryStringCoder"]
         ),
         .target(
             name: "CCrypto"

@@ -3,7 +3,7 @@
 
 import CCrypto
 import Foundation
-import secp256k1
+import secp256k1gm
 
 /// Class representing a libsecp256k1 context.
 internal class Secp256k1 {
