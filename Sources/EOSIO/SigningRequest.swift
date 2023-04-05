@@ -151,8 +151,10 @@ public struct SigningRequest: Equatable, Hashable {
     /// Decode a signing request from a string.
     public init(_ string: String) throws {
         var string = string
-        if string.starts(with: "esr:") {
-            string.removeFirst(4)
+        let components = string.split(separator: ":")
+        if components.count > 1 {
+            string = String(components[1])
+            
             if string.starts(with: "//") {
                 string.removeFirst(2)
             }
@@ -619,9 +621,9 @@ public struct SigningRequest: Equatable, Hashable {
     /// - Parameter compress: Whether to compress the request, recommended.
     /// - Parameter slashes: Whether to add two slashes after the protocol, recommended as the resulting uri string will not be clickable in many places otherwise.
     ///                      Can be turned off if uri will be used in a QR code or encoded in a NFC tag to save two bytes.
-    public func encodeUri(compress: Bool = true, slashes: Bool = true) throws -> String {
+    public func encodeUri(compress: Bool = true, slashes: Bool = true, scheme: String = "esr") throws -> String {
         let data = try self.encode(compress: compress)
-        var scheme = "esr:"
+        var scheme = scheme + ":"
         if slashes {
             scheme += "//"
         }
