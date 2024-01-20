@@ -286,4 +286,25 @@ final class ABICodableTests: XCTestCase {
         let json = try! JSONEncoder().encode(decoded, asType: "addproofown", using: abi)
         XCTAssertEqual(json.utf8String.normalizedJSON, actionJSON.normalizedJSON)
     }
+    
+    func testUnlinkAuth() {
+        let abi = try! ABI(json: loadTestResource("eosio.json"))
+        let json = """
+        {
+            "account": "test.gm",
+            "code": "rams.eos",
+            "type": "mint",
+            "authorized_by": "test.gm"
+        }
+        """
+        let object = try! JSONDecoder().decode("unlinkauth", from: json.utf8Data, using: abi)
+        let recoded = try! JSONEncoder().encode(object, asType: "unlinkauth", using: abi)
+        XCTAssertEqual(json.normalizedJSON, recoded.utf8String.normalizedJSON)
+
+        let data = try! ABIEncoder().encode(object, asType: "unlinkauth", using: abi)
+
+        let object2 = try! ABIDecoder().decode("unlinkauth", from: data, using: abi)
+        let recoded2 = try! JSONEncoder().encode(object2, asType: "unlinkauth", using: abi)
+        XCTAssertEqual(json.normalizedJSON, recoded2.utf8String.normalizedJSON)
+    }
 }
