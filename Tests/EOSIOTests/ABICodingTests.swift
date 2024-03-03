@@ -29,32 +29,32 @@ final class ABICodableTests: XCTestCase {
             "quantity": "0 DUCKS",
             "memo": "thanks for the fish",
         ]
-
+        
         let jsonData = try jsonEncoder.encode(transferData, asType: "transfer", using: Transfer.abi)
-
+        
         let jsonDecoder = JSONDecoder()
         let decodedAny = try jsonDecoder.decode("transfer", from: jsonData, using: Transfer.abi)
         let decodedObj = decodedAny as! [String: Any]
-
+        
         XCTAssertEqual(decodedObj["from"] as? Name, "foo")
         XCTAssertEqual(decodedObj["to"] as? Name, "bar")
         XCTAssertEqual(decodedObj["quantity"] as? Asset, "0 DUCKS")
         XCTAssertEqual(decodedObj["memo"] as? String, "thanks for the fish")
-
+        
         let decodedTyped = try jsonDecoder.decode(Transfer.self, from: jsonData)
-
+        
         XCTAssertEqual(decodedObj["from"] as? Name, decodedTyped.from)
         XCTAssertEqual(decodedObj["to"] as? Name, decodedTyped.to)
         XCTAssertEqual(decodedObj["quantity"] as? Asset, decodedTyped.quantity)
         XCTAssertEqual(decodedObj["memo"] as? String, decodedTyped.memo)
-
+        
         let abiEncoder = ABIEncoder()
         let binaryFromUntyped = try abiEncoder.encode(transferData, asType: "transfer", using: Transfer.abi)
         let binaryFromTyped = (try abiEncoder.encode(decodedTyped)) as Data
-
+        
         XCTAssertEqual(binaryFromUntyped.hexEncodedString(), binaryFromTyped.hexEncodedString())
     }
-
+    
     func testAbiCoding() {
         let tokenAbi = loadTestDataPair("eosio.token.abi")
         AssertABICodable(
@@ -114,7 +114,7 @@ final class ABICodableTests: XCTestCase {
             tokenAbi.bin
         )
     }
-
+    
     func testTransfer() throws {
         AssertABICodable(
             Transfer(from: "foo", to: "bar", quantity: "1.0000 BAZ", memo: "qux"),
@@ -129,7 +129,7 @@ final class ABICodableTests: XCTestCase {
             "000000000000285D000000000000AE3910270000000000000442415A0000000003717578"
         )
     }
-
+    
     func testAbiSpec() {
         let abiAbi = loadTestDataPair("abi.abi")
         AssertABICodable(
@@ -138,7 +138,7 @@ final class ABICodableTests: XCTestCase {
             abiAbi.bin
         )
     }
-
+    
     func testPublicKey() {
         AssertABICodable(
             [PublicKey("PUB_K1_5AHoNnWetuDhKWSDx3WUf8W7Dg5xjHCMc4yHmmSiaJCFvvAgnB")],
@@ -148,7 +148,7 @@ final class ABICodableTests: XCTestCase {
             "01000223E0AE8AACB41B06DC74AF1A56B2EB69133F07F7F75BD1D5E53316BFF195EDF4"
         )
     }
-
+    
     func testSignature() {
         AssertABICodable(
             [Signature("SIG_K1_KfPLgpw35iX8nfDzhbcmSBCr7nEGNEYXgmmempQspDJYBCKuAEs5rm3s4ZuLJY428Ca8ZhvR2Dkwu118y3NAoMDxhicRj9")],
@@ -158,7 +158,7 @@ final class ABICodableTests: XCTestCase {
             "0100205150A67288C3B393FDBA9061B05019C54B12BDAC295FC83BEBAD7CD63C7BB67D5CB8CC220564DA006240A58419F64D06A5C6E1FC62889816A6C3DFDD231ED389"
         )
     }
-
+    
     func testPermissionLevel() {
         AssertABICodable(
             SigningRequest.placeholderPermission,
@@ -175,37 +175,37 @@ final class ABICodableTests: XCTestCase {
             "0101000000000000000100000000000000"
         )
     }
-
+    
     func testComplexAbi() {
         let decentiumAbi = loadTestDataPair("decentiumorg.abi")
-
+        
         let abi1 = try! ABI(binary: decentiumAbi.bin)
         let abi2 = try! ABI(json: decentiumAbi.json.utf8Data)
-
+        
         XCTAssertEqual(abi1, abi2)
-
+        
         let post = loadTestDataPair("decentium-post")
-
+        
         let decoded1 = try! ABIDecoder().decode("action_post", from: post.bin, using: abi1)
         let decoded2 = try! JSONDecoder().decode("action_post", from: post.json.data(using: .utf8)!, using: abi2)
-
+        
         let json1 = try! JSONEncoder().encode(decoded1, asType: "action_post", using: abi1)
         let json2 = try! JSONEncoder().encode(decoded2, asType: "action_post", using: abi2)
-
+        
         XCTAssertEqual(json1.utf8String.normalizedJSON, post.json.normalizedJSON)
         XCTAssertEqual(json2.utf8String.normalizedJSON, post.json.normalizedJSON)
-
+        
         let bin1 = try! ABIEncoder().encode(decoded1, asType: "action_post", using: abi1)
         let bin2 = try! ABIEncoder().encode(decoded2, asType: "action_post", using: abi2)
-
+        
         XCTAssertEqual(bin1, post.bin)
         XCTAssertEqual(bin2, post.bin)
-
+        
         let action = Action(account: "decentiumorg", name: "post", data: bin1)
         let jsonData = try! action.jsonData(using: abi1)
         XCTAssertEqual(jsonData.utf8String.normalizedJSON, post.json.normalizedJSON)
     }
-
+    
     func testTimePoint() {
         let tp = TimePoint(Date(timeIntervalSince1970: 1_234_567_890.123))
         AssertABICodable(
@@ -232,7 +232,7 @@ final class ABICodableTests: XCTestCase {
             "01a47e5122"
         )
     }
-
+    
     func testComplexABI() {
         let abi = try! ABI(json: loadTestResource("atomicassets.abi.json"))
         let json = """
@@ -251,14 +251,14 @@ final class ABICodableTests: XCTestCase {
         let object = try! JSONDecoder().decode("createcol", from: json.utf8Data, using: abi)
         let recoded = try! JSONEncoder().encode(object, asType: "createcol", using: abi)
         XCTAssertEqual(json.normalizedJSON, recoded.utf8String.normalizedJSON)
-
+        
         let data = try! ABIEncoder().encode(object, asType: "createcol", using: abi)
         XCTAssertEqual(data.hexEncodedString(), "000000005c73285d000000000090b1ca0102000000005c73285d0000000050baae3902000000005c73285d0000000050baae391bde8342cac0f33f01036f6e65083d0ad73e")
         let object2 = try! ABIDecoder().decode("createcol", from: data, using: abi)
         let recoded2 = try! JSONEncoder().encode(object2, asType: "createcol", using: abi)
         XCTAssertEqual(json.normalizedJSON, recoded2.utf8String.normalizedJSON)
     }
-
+    
     func testComplexVariant() {
         let abi = try! ABI(json: loadTestResource("variant.abi.json"))
         let actionJSON = """
@@ -300,6 +300,26 @@ final class ABICodableTests: XCTestCase {
         let object = try! JSONDecoder().decode("unlinkauth", from: json.utf8Data, using: abi)
         let recoded = try! JSONEncoder().encode(object, asType: "unlinkauth", using: abi)
         XCTAssertEqual(json.normalizedJSON, recoded.utf8String.normalizedJSON)
+        
+        let data = try! ABIEncoder().encode(object, asType: "unlinkauth", using: abi)
+        
+        let object2 = try! ABIDecoder().decode("unlinkauth", from: data, using: abi)
+        let recoded2 = try! JSONEncoder().encode(object2, asType: "unlinkauth", using: abi)
+        XCTAssertEqual(json.normalizedJSON, recoded2.utf8String.normalizedJSON)
+    }
+    
+    func testUnlinkAuthNotSet() {
+        let abi = try! ABI(json: loadTestResource("eosio.json"))
+        let json = """
+        {
+            "account": "test.gm",
+            "code": "rams.eos",
+            "type": "mint",
+        }
+        """
+        let object = try! JSONDecoder().decode("unlinkauth", from: json.utf8Data, using: abi)
+        let recoded = try! JSONEncoder().encode(object, asType: "unlinkauth", using: abi)
+        XCTAssertEqual(json.normalizedJSON, recoded.utf8String.normalizedJSON)
 
         let data = try! ABIEncoder().encode(object, asType: "unlinkauth", using: abi)
 
@@ -307,4 +327,26 @@ final class ABICodableTests: XCTestCase {
         let recoded2 = try! JSONEncoder().encode(object2, asType: "unlinkauth", using: abi)
         XCTAssertEqual(json.normalizedJSON, recoded2.utf8String.normalizedJSON)
     }
+    
+    func testUnlinkAuthNull() {
+        let abi = try! ABI(json: loadTestResource("eosio.json"))
+        let json = """
+        {
+            "account": "test.gm",
+            "code": "rams.eos",
+            "type": "mint",
+            "authorized_by": null
+        }
+        """
+        let object = try! JSONDecoder().decode("unlinkauth", from: json.utf8Data, using: abi)
+        let recoded = try! JSONEncoder().encode(object, asType: "unlinkauth", using: abi)
+        XCTAssertEqual(json.normalizedJSON, recoded.utf8String.normalizedJSON)
+
+        let data = try! ABIEncoder().encode(object, asType: "unlinkauth", using: abi)
+
+        let object2 = try! ABIDecoder().decode("unlinkauth", from: data, using: abi)
+        let recoded2 = try! JSONEncoder().encode(object2, asType: "unlinkauth", using: abi)
+        XCTAssertEqual(json.normalizedJSON, recoded2.utf8String.normalizedJSON)
+    }
+
 }
