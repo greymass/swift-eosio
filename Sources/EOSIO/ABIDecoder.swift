@@ -108,6 +108,8 @@ public extension ABIDecoder {
             return Int(try self.readVarint()) as! T
         case is UInt.Type:
             return UInt(try self.readVaruint()) as! T
+        case is Array<Never>.Type:
+            return [] as! T
         case let abiType as ABIDecodable.Type:
             let decodedAbiType = try abiType.init(fromAbi: self)
 
