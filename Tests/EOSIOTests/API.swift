@@ -26,7 +26,7 @@ var mockSession = MockSession(
     resourcePath.appendingPathComponent("API", isDirectory: true),
     mode: env["MOCK_RECORD"] != nil ? .record : .replay
 )
-let nodeAddress = URL(string: "https://jungle3.greymass.com")! // only used when recording
+let nodeAddress = URL(string: "https://jungle4.greymass.com")! // only used when recording
 let client = Client(address: nodeAddress, session: mockSession)
 
 final class APITests: XCTestCase {
@@ -39,7 +39,7 @@ final class APITests: XCTestCase {
         let req = API.V1.Chain.GetTableRows<CurrencyStats>(
             code: "eosio.token",
             table: "stat",
-            scope: Asset.Symbol("4,EOS").symbolCode
+            scope: Asset.Symbol("4,EOS").name
         )
         let res = try? client.sendSync(req).get()
         XCTAssertGreaterThan(res?.rows.first?.supply ?? "0.0000 EOS", "1000000000.0000 EOS")
@@ -50,7 +50,7 @@ final class APITests: XCTestCase {
     func testGetInfo() {
         let req = API.V1.Chain.GetInfo()
         let res = try? client.sendSync(req).get()
-        XCTAssertEqual(res?.chainId, "e70aaab8997e1dfce58fbfac80cbbb8fecec7b99cf982a9444273cbc64c41473")
+        XCTAssertEqual(res?.chainId, "73e4385a2708e6d7048834fbc1079f2fabb17b3c125b146af438971e90716c4d")
     }
 
     func testGetRawAbi() {
@@ -98,24 +98,24 @@ final class APITests: XCTestCase {
         let res = try! client.sendSync(req).get()
 
         XCTAssertEqual(res.transactionId, transaction.id)
-        XCTAssertEqual(res.processed["blockNum"] as! Int, 60_423_261)
+        XCTAssertEqual(res.processed["blockNum"] as! Int, 129_978_519)
     }
 
     func testGetAccount() {
         let req = API.V1.Chain.GetAccount("eosio")
         let res = try! client.sendSync(req).get()
         XCTAssertEqual(res.accountName, "eosio")
-        XCTAssertEqual(res.cpuLimit.used, -1)
+        XCTAssertEqual(res.cpuLimit.used, 149300)
         XCTAssertEqual(res.voterInfo?.proxy, 0)
         XCTAssertEqual(res.voterInfo?.producers.count, 0)
     }
 
     func testGetAccountsByAuthorizersUsingKey() {
-        let pubkey = PublicKey("EOS8X5SC2m6Q1iBpvP91mLBNpEu9LYuynC44os35n5RKaAVt9n7Ji")
+        let pubkey = PublicKey("EOS8aL4dzqLudQQbcNZYVeyuHfjE7K76BMNGRRT8hwyURPPapDt4h")
         let req = API.V1.Chain.GetAccountsByAuthorizers(keys: [pubkey])
         let res = try! client.sendSync(req).get()
-        XCTAssertEqual(res.accounts.first?.accountName, "jestasmobile")
-        XCTAssertEqual(res.accounts.first?.permissionName, "owner")
+        XCTAssertEqual(res.accounts.first?.accountName, "iamthewalrus")
+        XCTAssertEqual(res.accounts.first?.permissionName, "active")
         XCTAssertEqual(res.accounts.first?.authorizingKey, pubkey)
         XCTAssertEqual(res.accounts.first?.threshold, 1)
         XCTAssertEqual(res.accounts.first?.weight, 1)
@@ -176,7 +176,7 @@ final class APITests: XCTestCase {
         )
         let req = API.V1.Chain.GetAccount("teamgreymass")
         let res = try! client.sendSync(req).get()
-        XCTAssertEqual(res.netWeight, 432_714_455_333)
+        XCTAssertEqual(res.netWeight, 455_096_542_392)
         XCTAssert(res.netWeight > 0xFFFFFF)
     }
 
