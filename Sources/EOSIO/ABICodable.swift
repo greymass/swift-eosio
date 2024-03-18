@@ -164,18 +164,6 @@ public struct BinaryExtension<Value: ABICodable>: ABICodable {
 extension BinaryExtension: Equatable where Value: Equatable {}
 extension BinaryExtension: Hashable where Value: Hashable {}
 
-extension Never: ABICodable {
-    public init(from decoder: Decoder) throws {
-        let ctx = DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Attempted to decode Never")
-        throw DecodingError.dataCorrupted(ctx)
-    }
-
-    public func encode(to encoder: Encoder) throws {
-        let ctx = EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Attempted to encode Never")
-        throw EncodingError.invalidValue(self, ctx)
-    }
-}
-
 // MARK: Dynamic ABI Coding
 
 public extension CodingUserInfoKey {
