@@ -251,6 +251,7 @@ extension Client {
         encoder.dataEncodingStrategy = self.dataEncoder
         encoder.dateEncodingStrategy = self.dateEncoder
         encoder.keyEncodingStrategy = .convertToSnakeCase
+        encoder.outputFormatting = .sortedKeys
         return encoder
     }
 }
