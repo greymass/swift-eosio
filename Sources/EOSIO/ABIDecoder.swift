@@ -108,19 +108,8 @@ public extension ABIDecoder {
             return Int(try self.readVarint()) as! T
         case is UInt.Type:
             return UInt(try self.readVaruint()) as! T
-        case is Array<Never>.Type:
-            return [] as! T
         case let abiType as ABIDecodable.Type:
-            let decodedAbiType = try abiType.init(fromAbi: self)
-
-            // Instead of forcefully casting, verify the type at runtime.
-            if let result = decodedAbiType as? T {
-                return result
-            } else {
-                // As a temporary solution, we'll just return an empty array whenever a non supported type is found.
-                // This is not ideal, but it's better than crashing the app.
-                return [] as! T
-            }
+            return try abiType.init(fromAbi: self) as! T
         default:
             throw Error.typeNotConformingToABIDecodable(type)
         }

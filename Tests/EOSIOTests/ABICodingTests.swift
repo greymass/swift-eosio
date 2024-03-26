@@ -235,7 +235,7 @@ final class ABICodableTests: XCTestCase {
 
     func testComplexABI() {
         let abi = try! ABI(json: loadTestResource("atomicassets.abi.json"))
-        let json = """
+        let colJson = """
         {
             "author": "foobar",
             "collection_name": "test",
@@ -248,15 +248,41 @@ final class ABICodableTests: XCTestCase {
             ]
         }
         """
-        let object = try! JSONDecoder().decode("createcol", from: json.utf8Data, using: abi)
-        let recoded = try! JSONEncoder().encode(object, asType: "createcol", using: abi)
-        XCTAssertEqual(json.normalizedJSON, recoded.utf8String.normalizedJSON)
+        let colObject = try! JSONDecoder().decode("createcol", from: colJson.utf8Data, using: abi)
+        let colRecoded = try! JSONEncoder().encode(colObject, asType: "createcol", using: abi)
+        XCTAssertEqual(colJson.normalizedJSON, colRecoded.utf8String.normalizedJSON)
 
-        let data = try! ABIEncoder().encode(object, asType: "createcol", using: abi)
-        XCTAssertEqual(data.hexEncodedString(), "000000005c73285d000000000090b1ca0102000000005c73285d0000000050baae3902000000005c73285d0000000050baae391bde8342cac0f33f01036f6e65083d0ad73e")
-        let object2 = try! ABIDecoder().decode("createcol", from: data, using: abi)
-        let recoded2 = try! JSONEncoder().encode(object2, asType: "createcol", using: abi)
-        XCTAssertEqual(json.normalizedJSON, recoded2.utf8String.normalizedJSON)
+        let colData = try! ABIEncoder().encode(colObject, asType: "createcol", using: abi)
+        XCTAssertEqual(colData.hexEncodedString(), "000000005c73285d000000000090b1ca0102000000005c73285d0000000050baae3902000000005c73285d0000000050baae391bde8342cac0f33f01036f6e65083d0ad73e")
+        let colObject2 = try! ABIDecoder().decode("createcol", from: colData, using: abi)
+        let colRecoded2 = try! JSONEncoder().encode(colObject2, asType: "createcol", using: abi)
+        XCTAssertEqual(colJson.normalizedJSON, colRecoded2.utf8String.normalizedJSON)
+
+        let templateJson = """
+        {
+            "authorized_creator": "foobar",
+            "collection_name": "test",
+            "schema_name": "test",
+            "transferable": true,
+            "burnable": true,
+            "max_supply": 0,
+            "immutable_data": [
+                {"key": "one", "value": ["float32", "0.42"]},
+                {"key": "name", "value": ["string", "Test"]}
+            ]
+        }
+        """
+
+        let templateObject = try! JSONDecoder().decode("createtempl", from: templateJson.utf8Data, using: abi)
+        let templateRecoded = try! JSONEncoder().encode(templateObject, asType: "createtempl", using: abi)
+        XCTAssertEqual(templateJson.normalizedJSON, templateRecoded.utf8String.normalizedJSON)
+
+        let templateData = try! ABIEncoder().encode(templateObject, asType: "createtempl", using: abi)
+        XCTAssertEqual(templateData.hexEncodedString(), "000000005c73285d000000000090b1ca000000000090b1ca01010000000002036f6e65083d0ad73e046e616d650a0454657374")
+        let templateObject2 = try! ABIDecoder().decode("createtempl", from: templateData, using: abi)
+        let templateRecoded2 = try! JSONEncoder().encode(templateObject2, asType: "createtempl", using: abi)
+        XCTAssertEqual(templateJson.normalizedJSON, templateRecoded2.utf8String.normalizedJSON)
+
     }
 
     func testComplexVariant() {

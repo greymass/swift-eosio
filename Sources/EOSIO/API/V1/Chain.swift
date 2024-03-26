@@ -223,7 +223,7 @@ public extension API.V1.Chain {
         }
 
         /// Create a new `get_table_rows` request with scope set from any type representable by a 64-bit unsigned integer.
-        public init<T: RawRepresentable>(code: Name, table: Name, scope: T) where T.RawValue == UInt64 {
+        public init<RT: RawRepresentable>(code: Name, table: Name, scope: RT) where RT.RawValue == UInt64 {
             self.code = code
             self.scope = Name(rawValue: scope.rawValue).stringValue
             self.table = table

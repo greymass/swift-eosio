@@ -307,6 +307,11 @@ public extension ABI {
         let errorCode: UInt64
         let errorMsg: String
     }
+
+    private struct ExtensionsEntry: ABICodable, Equatable, Hashable {
+        let errorCode: UInt16
+        let errorMsg: Data
+    }
 }
 
 // MARK: ABI Coding
@@ -345,7 +350,7 @@ extension ABI: ABICodable {
         self.tables = try decoder.decode([ABI.Table].self)
         self.ricardianClauses = try decoder.decode([ABI.Clause].self)
         _ = try decoder.decode([ABI.ErrorMessage].self) // ignore error messages, used only by abi compiler
-        _ = try decoder.decode([Never].self) // abi extensions not used
+        _ = try decoder.decode([ABI.ExtensionsEntry].self) // abi extensions not used
         // decode variant typedefs (Y U NO USE EXTENSIONS?!)
         do {
             self.variants = try decoder.decode([ABI.Variant].self)
@@ -362,8 +367,8 @@ extension ABI: ABICodable {
         try container.encode(self.actions, forKey: .actions)
         try container.encode(self.tables, forKey: .tables)
         try container.encode(self.ricardianClauses, forKey: .ricardianClauses)
-        try container.encode([] as [Never], forKey: .errorMessages)
-        try container.encode([] as [Never], forKey: .abiExtensions)
+        try container.encode([] as [ABI.ErrorMessage], forKey: .errorMessages)
+        try container.encode([] as [ABI.ExtensionsEntry], forKey: .abiExtensions)
         try container.encode(self.variants, forKey: .variants)
     }
 }
