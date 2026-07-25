@@ -127,18 +127,18 @@ extension PublicKey: ABICodable {
 
     public init(fromAbi decoder: ABIDecoder) throws {
         let type = try decoder.decode(UInt8.self)
-        let data = try decoder.decode(Data.self, byteCount: 33)
-        if type == 0 {
-            self.value = .k1(key: data)
-        } else {
-            switch type {
-            case 1:
-                self.value = .unknown(name: "R1", data: data)
-            case 2:
-                self.value = .unknown(name: "WA", data: data)
-            default:
-                self.value = .unknown(name: "XX", data: data)
-            }
+        switch type {
+        case 0:
+            self.value = .k1(key: try decoder.decode(Data.self, byteCount: 33))
+        case 1:
+            self.value = .unknown(name: "R1", data: try decoder.decode(Data.self, byteCount: 33))
+        case 2:
+            // 33-byte compressed point plus the user presence flag, then the rpid string.
+            var data = try decoder.decode(Data.self, byteCount: 34)
+            data.append(try decoder.readLengthPrefixedBytes())
+            self.value = .unknown(name: "WA", data: data)
+        default:
+            throw Error.parsingFailed("Unknown key type \(type)")
         }
     }
 

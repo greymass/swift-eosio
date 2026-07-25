@@ -178,6 +178,19 @@ private extension ABIDecoder {
     }
 }
 
+/// Internal methods for decoding variable-length values, used by the `WA` key
+/// and signature types which embed length-prefixed blobs.
+extension ABIDecoder {
+    /// Read a `varuint32`-length-prefixed blob, returning the length prefix and its
+    /// payload exactly as they appear on the wire.
+    func readLengthPrefixedBytes() throws -> Data {
+        let start = self.cursor
+        let length = Int(try self.readVaruint())
+        _ = try self.readData(length)
+        return self.data.subdata(in: start..<self.cursor)
+    }
+}
+
 extension ABIDecoder: Decoder {
     public func container<Key>(keyedBy _: Key.Type) throws -> KeyedDecodingContainer<Key> where Key: CodingKey {
         return KeyedDecodingContainer(KeyedContainer<Key>(decoder: self))

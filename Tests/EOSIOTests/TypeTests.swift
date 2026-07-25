@@ -229,6 +229,37 @@ final class TypeTests: XCTestCase {
         XCTAssertEqual(key2.legacyFormattedString("XXX"), "XXX833UzE2PyXhvQMenoD2MESD8hVroRTHjBR58G94Hr6Uo7aSPb2")
     }
 
+    func testNonK1KeysHaveNoLegacyString() {
+        let r1: PublicKey = "PUB_R1_82ua5qburg82c9eWY1qZVNUAAD6VPHsTMoPMGDrk7s4BQgxEoc"
+        let wa: PublicKey = "PUB_WA_WdCPfafVNxVMiW5ybdNs83oWjenQXvSt1F49fg9mv7qrCiRwHj5b38U3ponCFWxQTkDsMC"
+        XCTAssertNil(r1.legacyStringValue)
+        XCTAssertNil(wa.legacyStringValue)
+        XCTAssertNil(r1.legacyFormattedString("XXX"))
+        XCTAssertNil(wa.legacyFormattedString("XXX"))
+    }
+
+    /// Matching an account by its key is how a wallet finds which permission it can
+    /// sign for, so it has to work for every key type, not just K1.
+    func testAuthorityWithNonK1Keys() {
+        let k1: PublicKey = "PUB_K1_5AHoNnWetuDhKWSDx3WUf8W7Dg5xjHCMc4yHmmSiaJCFvvAgnB"
+        let r1: PublicKey = "PUB_R1_82ua5qburg82c9eWY1qZVNUAAD6VPHsTMoPMGDrk7s4BQgxEoc"
+        let wa: PublicKey = "PUB_WA_WdCPfafVNxVMiW5ybdNs83oWjenQXvSt1F49fg9mv7qrCiRwHj5b38U3ponCFWxQTkDsMC"
+        let other: PublicKey = "EOS8YttBP1djravhBMt1u4yWrafG6fyHNPyRKXWRMbrqrHBHtEYHt"
+
+        let auth = Authority(threshold: 2, keys: [
+            KeyWeight(k1, weight: 1),
+            KeyWeight(r1, weight: 1),
+            KeyWeight(wa, weight: 2),
+        ])
+
+        XCTAssertTrue(auth.hasPermission(for: wa))
+        XCTAssertFalse(auth.hasPermission(for: r1))
+        XCTAssertTrue(auth.hasPermission(for: r1, includePartial: true))
+        XCTAssertFalse(auth.hasPermission(for: k1))
+        XCTAssertTrue(auth.hasPermission(for: k1, includePartial: true))
+        XCTAssertFalse(auth.hasPermission(for: other, includePartial: true))
+    }
+
     func testSymbolCode() {
         let code = try! Asset.Symbol.Code(stringValue: "PI")
         XCTAssertEqual(code.rawValue, 18768)

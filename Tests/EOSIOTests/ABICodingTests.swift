@@ -159,6 +159,191 @@ final class ABICodableTests: XCTestCase {
         )
     }
 
+    func testPublicKeyWA() {
+        AssertABICodable(
+            ["PUB_WA_WdCPfafVNxVMiW5ybdNs83oWjenQXvSt1F49fg9mv7qrCiRwHj5b38U3ponCFWxQTkDsMC" as PublicKey],
+            """
+            ["PUB_WA_WdCPfafVNxVMiW5ybdNs83oWjenQXvSt1F49fg9mv7qrCiRwHj5b38U3ponCFWxQTkDsMC"]
+            """,
+            "01020220B9DAB512E892392A44A9F41F9433C9FBD80DB864E9DF5889C2407DB3ACBB9F010D6B656F73642E696E76616C6964"
+        )
+    }
+
+    func testSignatureWA() {
+        AssertABICodable(
+            ["SIG_WA_2AAAuLJS3pLPgkQQPqLsehL6VeRBaAZS7NYM91UYRUrSAEfUvzKN7DCSwhjsDqe74cZNWKUUGAHGG8ddSA7cvUxChbfKxLSrDCpwe6MVUqz4PDdyCt5tXhEJmKekxG1o1ucY3LVj8Vi9rRbzAkKPCzWqC8cPcUtpLHNG8qUKkQrN4Xuwa9W8rsBiUKwZv1ToLyVhLrJe42pvHYBXicp4E8qec5E4m6SX11KuXERFcV48Mhiie2NyaxdtNtNzQ5XZ5hjBkxRujqejpF4SNHvdAGKRBbvhkiPLA25FD3xoCbrN26z72" as Signature],
+            """
+            ["SIG_WA_2AAAuLJS3pLPgkQQPqLsehL6VeRBaAZS7NYM91UYRUrSAEfUvzKN7DCSwhjsDqe74cZNWKUUGAHGG8ddSA7cvUxChbfKxLSrDCpwe6MVUqz4PDdyCt5tXhEJmKekxG1o1ucY3LVj8Vi9rRbzAkKPCzWqC8cPcUtpLHNG8qUKkQrN4Xuwa9W8rsBiUKwZv1ToLyVhLrJe42pvHYBXicp4E8qec5E4m6SX11KuXERFcV48Mhiie2NyaxdtNtNzQ5XZ5hjBkxRujqejpF4SNHvdAGKRBbvhkiPLA25FD3xoCbrN26z72"]
+            """,
+            "010220D9132BBDB219E4E2D99AF9C507E3597F86B615814F36672D501034861792BBCF21A46D1A2EB12BACE4A29100B942F987494F3AEFC8EFB2D5AF4D4D8DE3E0871525AA14905AF60CA17A1BB80E0CF9C3B46908A0F14F72567A2F140C3A3BD2EF074C010000006D737B226F726967696E223A2268747470733A2F2F6B656F73642E696E76616C6964222C2274797065223A22776562617574686E2E676574222C226368616C6C656E6765223A226F69567235794848304A4336453962446675347142735A6A527A70416C5131505A50436E5974766850556B3D227D"
+        )
+    }
+
+    func testPublicKeyR1() {
+        AssertABICodable(
+            ["PUB_R1_82ua5qburg82c9eWY1qZVNUAAD6VPHsTMoPMGDrk7s4BQgxEoc" as PublicKey],
+            """
+            ["PUB_R1_82ua5qburg82c9eWY1qZVNUAAD6VPHsTMoPMGDrk7s4BQgxEoc"]
+            """,
+            "0101039E338BB411813F6B10A9D5DAC9CF1AFEEDC698FF5726F81B521F6C328459B936"
+        )
+    }
+
+    func testSignatureR1() {
+        AssertABICodable(
+            ["SIG_R1_K5VEcCFUxF2jptQJUjVhV99PNiBXur6kdz6xuHtqvjqoTnzGqcCkEpD6cuA4q9DPdEHysdXjfksLB5xfkERxBuWxb9QJ8y" as Signature],
+            """
+            ["SIG_R1_K5VEcCFUxF2jptQJUjVhV99PNiBXur6kdz6xuHtqvjqoTnzGqcCkEpD6cuA4q9DPdEHysdXjfksLB5xfkERxBuWxb9QJ8y"]
+            """,
+            "01011F4E35AD2C5959634DAB0EFF0303B2CFA4B81B1FF3943E6B8B06BD9BDAA720748865B8D9C2566E1E9695BF179D5FAD5FC81E78982841F7654BD6F69ECF2B7A20BA"
+        )
+    }
+
+    /// All three key formats in one stream, with distinct weights so a misread offset
+    /// cannot coincidentally produce the expected value.
+    func testAuthorityWithAllKeyTypes() {
+        AssertABICodable(
+            Authority(
+                threshold: 3,
+                keys: [
+                    KeyWeight("PUB_K1_5AHoNnWetuDhKWSDx3WUf8W7Dg5xjHCMc4yHmmSiaJCFvvAgnB", weight: 1),
+                    KeyWeight("PUB_R1_82ua5qburg82c9eWY1qZVNUAAD6VPHsTMoPMGDrk7s4BQgxEoc", weight: 2),
+                    KeyWeight("PUB_WA_WdCPfafVNxVMiW5ybdNs83oWjenQXvSt1F49fg9mv7qrCiRwHj5b38U3ponCFWxQTkDsMC", weight: 3),
+                ]
+            ),
+            """
+            {"threshold": 3,
+             "keys": [{"key": "PUB_K1_5AHoNnWetuDhKWSDx3WUf8W7Dg5xjHCMc4yHmmSiaJCFvvAgnB", "weight": 1},
+                      {"key": "PUB_R1_82ua5qburg82c9eWY1qZVNUAAD6VPHsTMoPMGDrk7s4BQgxEoc", "weight": 2},
+                      {"key": "PUB_WA_WdCPfafVNxVMiW5ybdNs83oWjenQXvSt1F49fg9mv7qrCiRwHj5b38U3ponCFWxQTkDsMC", "weight": 3}],
+             "accounts": [],
+             "waits": []}
+            """,
+            "0300000003000223E0AE8AACB41B06DC74AF1A56B2EB69133F07F7F75BD1D5E53316BFF195EDF4010001039E338BB411813F6B10A9D5DAC9CF1AFEEDC698FF5726F81B521F6C328459B9360200020220B9DAB512E892392A44A9F41F9433C9FBD80DB864E9DF5889C2407DB3ACBB9F010D6B656F73642E696E76616C696403000000"
+        )
+    }
+
+    /// A WA key is variable-length, so a decoder that assumes a fixed width leaves the
+    /// stream mid-key and silently misreads every field after it. Before the fix the
+    /// second key's weight decodes as 3329 and the accounts array length as 107.
+    func testAuthorityWithWAKey() {
+        AssertABICodable(
+            Authority(
+                threshold: 2,
+                keys: [
+                    KeyWeight("PUB_K1_5AHoNnWetuDhKWSDx3WUf8W7Dg5xjHCMc4yHmmSiaJCFvvAgnB"),
+                    KeyWeight("PUB_WA_WdCPfafVNxVMiW5ybdNs83oWjenQXvSt1F49fg9mv7qrCiRwHj5b38U3ponCFWxQTkDsMC"),
+                ]
+            ),
+            """
+            {"threshold": 2,
+             "keys": [{"key": "PUB_K1_5AHoNnWetuDhKWSDx3WUf8W7Dg5xjHCMc4yHmmSiaJCFvvAgnB", "weight": 1},
+                      {"key": "PUB_WA_WdCPfafVNxVMiW5ybdNs83oWjenQXvSt1F49fg9mv7qrCiRwHj5b38U3ponCFWxQTkDsMC", "weight": 1}],
+             "accounts": [],
+             "waits": []}
+            """,
+            "0200000002000223E0AE8AACB41B06DC74AF1A56B2EB69133F07F7F75BD1D5E53316BFF195EDF40100020220B9DAB512E892392A44A9F41F9433C9FBD80DB864E9DF5889C2407DB3ACBB9F010D6B656F73642E696E76616C696401000000"
+        )
+    }
+
+    /// Wallets decode action data untyped, against an ABI fetched from the chain, so
+    /// this is the path an `eosio::updateauth` carrying a passkey actually takes.
+    func testUntypedUpdateAuthWithWAKey() throws {
+        let abi = ABI(
+            structs: [
+                ["key_weight": [["key", "public_key"], ["weight", "uint16"]]],
+                ["permission_level": [["actor", "name"], ["permission", "name"]]],
+                ["permission_level_weight": [["permission", "permission_level"], ["weight", "uint16"]]],
+                ["wait_weight": [["wait_sec", "uint32"], ["weight", "uint16"]]],
+                ["authority": [
+                    ["threshold", "uint32"],
+                    ["keys", "key_weight[]"],
+                    ["accounts", "permission_level_weight[]"],
+                    ["waits", "wait_weight[]"],
+                ]],
+                ["updateauth": [
+                    ["account", "name"],
+                    ["permission", "name"],
+                    ["parent", "name"],
+                    ["auth", "authority"],
+                ]],
+            ],
+            actions: ["updateauth"]
+        )
+
+        let data = Data(hexEncoded: "000000A00393B17A00000000A8ED323200000000A8ED3232" +
+            "0200000002000223E0AE8AACB41B06DC74AF1A56B2EB69133F07F7F75BD1D5E53316BFF195EDF40100" +
+            "020220B9DAB512E892392A44A9F41F9433C9FBD80DB864E9DF5889C2407DB3ACBB9F010D6B656F73642E696E76616C696401000000")
+
+        let decoded = try ABIDecoder().decode("updateauth", from: data, using: abi) as! [String: Any]
+        let auth = decoded["auth"] as! [String: Any]
+        let keys = auth["keys"] as! [Any]
+
+        XCTAssertEqual(keys.count, 2)
+        let waKey = (keys[1] as! [String: Any])
+        XCTAssertEqual(
+            (waKey["key"] as? PublicKey)?.stringValue,
+            "PUB_WA_WdCPfafVNxVMiW5ybdNs83oWjenQXvSt1F49fg9mv7qrCiRwHj5b38U3ponCFWxQTkDsMC"
+        )
+        // The fields after the WA key are where a truncated read shows up first.
+        XCTAssertEqual(waKey["weight"] as? UInt16, 1)
+        XCTAssertEqual((auth["accounts"] as! [Any]).count, 0)
+        XCTAssertEqual((auth["waits"] as! [Any]).count, 0)
+    }
+
+    /// An rpid longer than 127 bytes needs a multi-byte varuint length prefix, which
+    /// must be preserved verbatim for the payload to stay canonical.
+    func testPublicKeyWAWithMultiByteLengthPrefix() {
+        let rpid = String(repeating: "a", count: 196) + ".com"
+        let hex = "020220B9DAB512E892392A44A9F41F9433C9FBD80DB864E9DF5889C2407DB3ACBB9F01C801"
+            + rpid.utf8.map { String(format: "%02X", $0) }.joined()
+        let key = try! ABIDecoder.decode(PublicKey.self, data: Data(hexEncoded: hex))
+
+        XCTAssertEqual(key.keyType, "WA")
+        XCTAssertEqual(key.stringValue, "PUB_WA_BU1GFsHVzzcnmjQMQedLkff4ns8cgFfHPr6AdSHNYmxwQ1CNjhAv1pGi5fPVEX5qzQeWhABYhLbhqkVAG2hg98VpuvHoZ97NDSrAUaSZWmRo8shVqJEr1GCj5mjtA5tSDYNzS2J9FobpkVVnBwQWKU6qsNEYjdLo7CwfybXsqvBafpG3odZRZz3wMhtZYt5pgPTVrrhHcHQ2vfG5D5QQz3jJJRVHakQBx5YuZ3t3tuWE72WMWjK6PLHP3DQ2HqiJ19MYb62wyN1wSLe2hiX7mQzwTCUGxMks9jbdhmC5RqeVkDKqsM3UWSZ6UKYJytZbGJhAAeK")
+        XCTAssertEqual((try! ABIEncoder.encode(key) as Data).hexEncodedString(), hex.lowercased())
+    }
+
+    /// The invariant the fixed-width read broke: a key is the same value however it
+    /// arrives. Wallets mix both paths, matching a JSON-sourced key against one decoded
+    /// from action data.
+    func testWAKeyIsEqualAcrossCodingPaths() {
+        let fromString: PublicKey = "PUB_WA_WdCPfafVNxVMiW5ybdNs83oWjenQXvSt1F49fg9mv7qrCiRwHj5b38U3ponCFWxQTkDsMC"
+        let hex = "020220B9DAB512E892392A44A9F41F9433C9FBD80DB864E9DF5889C2407DB3ACBB9F010D6B656F73642E696E76616C6964"
+        let fromAbi = try! ABIDecoder.decode(PublicKey.self, data: Data(hexEncoded: hex))
+        XCTAssertEqual(fromString, fromAbi)
+        XCTAssertEqual(fromString.hashValue, fromAbi.hashValue)
+        XCTAssertEqual(fromString.keyData, fromAbi.keyData)
+    }
+
+    func testTruncatedWAValuesThrow() {
+        // Key claiming a 13-byte rpid but carrying only 5 bytes of it.
+        XCTAssertThrowsError(try ABIDecoder.decode(
+            PublicKey.self,
+            data: Data(hexEncoded: "020220B9DAB512E892392A44A9F41F9433C9FBD80DB864E9DF5889C2407DB3ACBB9F010D6B656F7364")
+        ))
+        // Key cut off inside the fixed-width portion.
+        XCTAssertThrowsError(try ABIDecoder.decode(
+            PublicKey.self,
+            data: Data(hexEncoded: "020220B9DAB512E892392A44A9F41F9433C9FBD")
+        ))
+        // Signature with the first blob present and the second missing entirely.
+        XCTAssertThrowsError(try ABIDecoder.decode(
+            Signature.self,
+            data: Data(hexEncoded: "02" + String(repeating: "AA", count: 65) + "0401020304")
+        ))
+    }
+
+    func testUnknownKeyAndSignatureTypesThrow() {
+        // An unrecognised variant has an unknown width, so the stream is unrecoverable.
+        XCTAssertThrowsError(
+            try ABIDecoder.decode(PublicKey.self, data: Data(hexEncoded: "03" + String(repeating: "AA", count: 33)))
+        )
+        XCTAssertThrowsError(
+            try ABIDecoder.decode(Signature.self, data: Data(hexEncoded: "03" + String(repeating: "AA", count: 65)))
+        )
+    }
+
     func testPermissionLevel() {
         AssertABICodable(
             SigningRequest.placeholderPermission,

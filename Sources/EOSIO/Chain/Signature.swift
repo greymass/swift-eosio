@@ -128,18 +128,19 @@ extension Signature: ABICodable {
 
     public init(fromAbi decoder: ABIDecoder) throws {
         let type = try decoder.decode(UInt8.self)
-        let data = try decoder.decode(Data.self, byteCount: 65)
-        if type == 0 {
-            self = try Signature(fromK1Data: data)
-        } else {
-            switch type {
-            case 1:
-                self.value = .unknown(name: "R1", data: data)
-            case 2:
-                self.value = .unknown(name: "WA", data: data)
-            default:
-                self.value = .unknown(name: "XX", data: data)
-            }
+        switch type {
+        case 0:
+            self = try Signature(fromK1Data: try decoder.decode(Data.self, byteCount: 65))
+        case 1:
+            self.value = .unknown(name: "R1", data: try decoder.decode(Data.self, byteCount: 65))
+        case 2:
+            // 65-byte compact signature, then the auth data and client json blobs.
+            var data = try decoder.decode(Data.self, byteCount: 65)
+            data.append(try decoder.readLengthPrefixedBytes())
+            data.append(try decoder.readLengthPrefixedBytes())
+            self.value = .unknown(name: "WA", data: data)
+        default:
+            throw Error.parsingFailed("Unknown signature type \(type)")
         }
     }
 
