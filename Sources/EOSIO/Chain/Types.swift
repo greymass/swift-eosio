@@ -135,6 +135,20 @@ public struct Authority: ABICodable, Equatable, Hashable {
 }
 
 public extension Authority {
+    /// Sort authority members in the binary order enforced by nodeos.
+    ///
+    /// Call before including an authority in an `updateauth` action.
+    mutating func sort() {
+        self.keys.sort { $0.key.compare($1.key) == .orderedAscending }
+        self.accounts.sort {
+            if $0.permission.actor.rawValue != $1.permission.actor.rawValue {
+                return $0.permission.actor.rawValue < $1.permission.actor.rawValue
+            }
+            return $0.permission.permission.rawValue < $1.permission.permission.rawValue
+        }
+        self.waits.sort { $0.waitSec < $1.waitSec }
+    }
+
     /// Total weight of all waits.
     var waitThreshold: UInt32 {
         self.waits.reduce(0) { val, wait -> UInt32 in
