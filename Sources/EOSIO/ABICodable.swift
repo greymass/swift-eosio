@@ -251,7 +251,10 @@ private func _encodeAny(_ value: Any,
         if type.flags.contains(.binaryExt), !hasValue {
             return
         }
-        if let abiEncoder = encoder as? ABIEncoder {
+        // Binary extensions append their value without a presence byte. Only ABI
+        // optionals use the leading boolean; adding it to a populated `$` field
+        // changes the action bytes and causes wallets to sign a different digest.
+        if type.flags.contains(.optional), let abiEncoder = encoder as? ABIEncoder {
             try abiEncoder.encode(hasValue)
         }
         if !hasValue {
