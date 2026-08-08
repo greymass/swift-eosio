@@ -246,9 +246,10 @@ final class ABICodableTests: XCTestCase {
         )
     }
 
-    /// Wallets decode action data untyped, against an ABI fetched from the chain, so
-    /// this is the path an `eosio::updateauth` carrying a passkey actually takes.
-    func testUntypedUpdateAuthWithWAKey() throws {
+    /// Wallets decode and re-encode action data untyped against a fetched ABI. The
+    /// populated binary extension matches Vaulta's live `updateauth` action and must
+    /// round-trip without adding an optional-presence byte to the signing payload.
+    func testUntypedUpdateAuthWithWAKeyAndBinaryExtension() throws {
         let abi = ABI(
             structs: [
                 ["key_weight": [["key", "public_key"], ["weight", "uint16"]]],
@@ -266,6 +267,7 @@ final class ABICodableTests: XCTestCase {
                     ["permission", "name"],
                     ["parent", "name"],
                     ["auth", "authority"],
+                    ["authorized_by", "name$"],
                 ]],
             ],
             actions: ["updateauth"]
@@ -273,7 +275,8 @@ final class ABICodableTests: XCTestCase {
 
         let data = Data(hexEncoded: "000000A00393B17A00000000A8ED323200000000A8ED3232" +
             "0200000002000223E0AE8AACB41B06DC74AF1A56B2EB69133F07F7F75BD1D5E53316BFF195EDF40100" +
-            "020220B9DAB512E892392A44A9F41F9433C9FBD80DB864E9DF5889C2407DB3ACBB9F010D6B656F73642E696E76616C696401000000")
+            "020220B9DAB512E892392A44A9F41F9433C9FBD80DB864E9DF5889C2407DB3ACBB9F010D6B656F73642E696E76616C696401000000" +
+            "00000000A8ED3232")
 
         let decoded = try ABIDecoder().decode("updateauth", from: data, using: abi) as! [String: Any]
         let auth = decoded["auth"] as! [String: Any]
@@ -289,6 +292,10 @@ final class ABICodableTests: XCTestCase {
         XCTAssertEqual(waKey["weight"] as? UInt16, 1)
         XCTAssertEqual((auth["accounts"] as! [Any]).count, 0)
         XCTAssertEqual((auth["waits"] as! [Any]).count, 0)
+        XCTAssertEqual(decoded["authorized_by"] as? Name, "active")
+
+        let reencoded = try ABIEncoder().encode(decoded, asType: "updateauth", using: abi)
+        XCTAssertEqual(reencoded, data)
     }
 
     /// An rpid longer than 127 bytes needs a multi-byte varuint length prefix, which

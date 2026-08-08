@@ -217,6 +217,72 @@ final class TypeTests: XCTestCase {
         XCTAssertTrue(auth.hasPermission(for: key))
     }
 
+    func testAuthoritySortMatchesNodeosOrdering() {
+        let k1A: PublicKey = "PUB_K1_5ZexUstSEjwgcZWfziD6zC6xqvDzYkoMH4bf2MjuyJdnejdjWy"
+        let k1B: PublicKey = "PUB_K1_5wBCjBSLvTm44r6cFBvHVYDcq9syfS7oTh6X8YSPst6msRH7um"
+        let waA: PublicKey = "PUB_WA_9EgZ4NdyTxraccNd6SHSqfGNdqDGPC2Der6AvnzBJQtTHRgRxf8DZZjf2V4azLnC2YUnWgYDizuLTAWt7bHB"
+        let waB: PublicKey = "PUB_WA_2CSuysB2uR6ewLaqXNxzT2ugL3TqnKUTELtyDB9SiFxnRj3FF4H9KyPmRVBQuwSfejbDe2jGfdqnPta4v3VR3G1maz"
+
+        var authority = Authority(
+            threshold: 1,
+            keys: [
+                KeyWeight(waB),
+                KeyWeight(k1B),
+                KeyWeight(waA),
+                KeyWeight(k1A),
+            ],
+            accounts: [
+                PermissionLevelWeight(PermissionLevel("zzzzzzzzzzzz", "owner")),
+                PermissionLevelWeight(PermissionLevel("aaaaaaaaaaaa", "owner")),
+                PermissionLevelWeight(PermissionLevel("aaaaaaaaaaaa", "active")),
+            ],
+            waits: [
+                WaitWeight(60),
+                WaitWeight(1),
+                WaitWeight(30),
+            ]
+        )
+
+        authority.sort()
+
+        XCTAssertEqual(authority.keys.map(\.key), [k1A, k1B, waA, waB])
+        XCTAssertEqual(
+            authority.accounts.map(\.permission),
+            [
+                PermissionLevel("aaaaaaaaaaaa", "active"),
+                PermissionLevel("aaaaaaaaaaaa", "owner"),
+                PermissionLevel("zzzzzzzzzzzz", "owner"),
+            ]
+        )
+        XCTAssertEqual(authority.waits.map(\.waitSec), [1, 30, 60])
+    }
+
+    func testPublicKeyCompareOrdersTypesBeforeData() {
+        let k1: PublicKey = "PUB_K1_5ZexUstSEjwgcZWfziD6zC6xqvDzYkoMH4bf2MjuyJdnejdjWy"
+        let r1: PublicKey = "PUB_R1_82ua5qburg82c9eWY1qZVNUAAD6VPHsTMoPMGDrk7s4BQgxEoc"
+        let wa: PublicKey = "PUB_WA_9EgZ4NdyTxraccNd6SHSqfGNdqDGPC2Der6AvnzBJQtTHRgRxf8DZZjf2V4azLnC2YUnWgYDizuLTAWt7bHB"
+
+        XCTAssertEqual(k1.compare(r1), .orderedAscending)
+        XCTAssertEqual(r1.compare(wa), .orderedAscending)
+        XCTAssertEqual(wa.compare(k1), .orderedDescending)
+        XCTAssertEqual(k1.compare(k1), .orderedSame)
+    }
+
+    func testWebAuthnCompareIgnoresRpidLengthPrefix() throws {
+        let pointAndPresence = Data(repeating: 2, count: 34)
+        let shortRpid = try PublicKey(
+            type: "WA",
+            data: pointAndPresence + Data([1]) + Data("z".utf8)
+        )
+        let longRpid = try PublicKey(
+            type: "WA",
+            data: pointAndPresence + Data([2]) + Data("aa".utf8)
+        )
+
+        XCTAssertEqual(longRpid.compare(shortRpid), .orderedAscending)
+        XCTAssertEqual(shortRpid.compare(longRpid), .orderedDescending)
+    }
+
     func testPublicKey() {
         let key = PublicKey("PUB_K1_833UzE2PyXhvQMenoD2MESD8hVroRTHjBR58G94Hr6Uo3EQP1L")
         // test legacy prefixes

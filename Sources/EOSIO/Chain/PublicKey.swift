@@ -99,6 +99,25 @@ public struct PublicKey: Equatable, Hashable {
         return "PUB_\(type)_\(encoded)"
     }
 
+    /// Compare this key using the binary ordering enforced by nodeos authorities.
+    ///
+    /// Public-key strings are not safe to sort because WebAuthn keys can contain
+    /// RP IDs with different encoded lengths. Authority keys are ordered by key
+    /// type first, then their underlying data. WebAuthn keys compare their
+    /// compressed point and user-presence byte first, followed by the RP ID
+    /// bytes without the ABI length prefix.
+    public func compare(_ other: PublicKey) -> ComparisonResult {
+        let type = self.typeIndex
+        let otherType = other.typeIndex
+        if type != otherType {
+            return type < otherType ? .orderedAscending : .orderedDescending
+        }
+        if self.keyType == "WA" {
+            return Self.compareWebAuthn(self.keyData, other.keyData)
+        }
+        return Self.compareBytes(self.keyData, other.keyData)
+    }
+
     /// Format key to legacy public key string representation using given prefix, `<prefix><base58key>`.
     /// - Note: Returns `nil` for other key formats than `K1`.
     public func legacyFormattedString(_ prefix: String = "EOS") -> String? {
@@ -114,6 +133,49 @@ public struct PublicKey: Equatable, Hashable {
     /// - Note: Returns `nil` for other key formats than `K1`.
     public var legacyStringValue: String? {
         return self.legacyFormattedString()
+    }
+
+    private var typeIndex: UInt8 {
+        switch self.keyType {
+        case "K1":
+            return 0
+        case "R1":
+            return 1
+        case "WA":
+            return 2
+        default:
+            return 255
+        }
+    }
+
+    private static func compareBytes(_ lhs: Data, _ rhs: Data) -> ComparisonResult {
+        if lhs == rhs {
+            return .orderedSame
+        }
+        return lhs.lexicographicallyPrecedes(rhs) ? .orderedAscending : .orderedDescending
+    }
+
+    private static func compareWebAuthn(_ lhs: Data, _ rhs: Data) -> ComparisonResult {
+        let prefixLength = 34
+        guard lhs.count >= prefixLength, rhs.count >= prefixLength else {
+            return compareBytes(lhs, rhs)
+        }
+        let prefix = compareBytes(lhs.prefix(prefixLength), rhs.prefix(prefixLength))
+        if prefix != .orderedSame {
+            return prefix
+        }
+        return compareBytes(webAuthnRpid(in: lhs), webAuthnRpid(in: rhs))
+    }
+
+    private static func webAuthnRpid(in data: Data) -> Data {
+        var offset = 34
+        while offset < data.count, data[offset] & 0x80 != 0 {
+            offset += 1
+        }
+        guard offset < data.count else {
+            return Data()
+        }
+        return data.suffix(from: offset + 1)
     }
 }
 
